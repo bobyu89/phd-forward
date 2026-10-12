@@ -165,6 +165,15 @@ export const resources: Resource[] = [
     external: true,
   },
   {
+    topic: "Obsidian",
+    title: "延伸｜Markdown 入門",
+    kind: "影片",
+    description: "為什麼 AI 時代最好用的是 Markdown，以及標題、粗體、清單、連結、引用、表格的寫法。",
+    href: "decks/markdown-starter/video.mp4",
+    meta: "1 分 27 秒",
+    external: true,
+  },
+  {
     topic: "Notion",
     title: "Notion 新手上路｜介紹影片",
     kind: "影片",
