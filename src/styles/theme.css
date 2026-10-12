@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #ffffff;
+  --color-ink: #000000;
+  --color-muted: #6f6f6f;
+  --color-line: #e7e5e1;
+
+  /* Latin glyphs come from Instrument Serif / Inter; CJK falls through to Noto. */
+  --font-display: "Instrument Serif", "Noto Serif TC", serif;
+  --font-sans: "Inter", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+
+  --animate-fade-rise: fade-rise 0.8s ease-out both;
+  --animate-fade-rise-delay: fade-rise 0.8s ease-out 0.2s both;
+  --animate-fade-rise-delay-2: fade-rise 0.8s ease-out 0.4s both;
+
+  @keyframes fade-rise {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background: #000000;
+  color: #ffffff;
+}
+
+:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 3px;
+}
+
+html {
+  scrollbar-color: #c9c6c0 #ffffff;
+  caret-color: #000000;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-fade-rise,
+  .animate-fade-rise-delay,
+  .animate-fade-rise-delay-2 {
+    animation: none;
+  }
+}
