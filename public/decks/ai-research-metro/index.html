@@ -79,6 +79,7 @@ h2{font-size:76px;margin-bottom:36px}
 .vidwrap{position:absolute;left:112px;right:112px;top:140px;bottom:96px;border:4px solid var(--ink);background:var(--ink);display:flex;align-items:center;justify-content:center}
 .vidwrap video{width:100%;height:100%;object-fit:contain;background:#000}
 .vidmissing{color:var(--cream);font-size:30px;text-align:center;line-height:1.6;padding:40px}
+#stage.dark #topbar .pill{background:transparent;border-color:var(--cream)}
 /* notes panel (outside stage) */
 #notes{position:fixed;left:0;right:0;bottom:0;max-height:38vh;overflow:auto;background:rgba(15,15,15,.94);color:#EFE9D9;font-size:20px;line-height:1.7;padding:18px 28px 22px;display:none;z-index:50;border-top:4px solid var(--yellow)}
 #notes.show{display:block}
@@ -128,7 +129,7 @@ aside.notes{display:none}
       <text x="320" y="275">找問題</text><text x="700" y="55">讀文獻</text><text x="960" y="55">做分析</text><text x="1330" y="275">寫論文</text><text x="1560" y="290">你的研究</text>
     </g>
   </svg>
-  <div class="mono small" style="position:absolute;left:112px;bottom:56px">報告人：＿＿＿＿　｜　護理研究所博士班</div>
+  <div class="mono small" style="position:absolute;left:112px;bottom:56px">報告人：宋建美 助理教授　｜　協助：游明勳 碩士生</div>
   <aside class="notes">開場先不講內容，直接問：「讀博士這幾年，有多少時間是真的花在研究上？」讓大家想三秒，再播影片。今天的主軸是一張地鐵圖：研究是一條有站點的路線，AI 可以陪每一站，但開車的人是我們。</aside>
 </section>
 
@@ -433,6 +434,7 @@ anxiety_pre、anxiety_post。
     drawRoute(sec);
     const dark = slides[idx].style.background.indexOf('green') >= 0;
     document.getElementById('topbar').style.color = dark ? '#EFE9D9' : '';
+    stage.classList.toggle('dark', dark);
     counter.style.color = dark ? '#EFE9D9' : '';
     counter.textContent = String(idx+1).padStart(2,'0') + ' • ' + String(slides.length).padStart(2,'0');
     const n = slides[idx].querySelector('aside.notes');

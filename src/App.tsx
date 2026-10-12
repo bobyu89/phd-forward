@@ -1,17 +1,14 @@
-import { useMemo, useState } from "react";
 import { LoopingVideo } from "./components/LoopingVideo";
-import { resources, site, type Resource, type ResourceKind } from "./data/site";
+import { resources, site, topics, type Resource, type ResourceKind, type Topic } from "./data/site";
 
 const HERO_VIDEO = "media/hero-landscape.mp4";
 
 const NAV = [
   { label: "首頁", href: "#top", active: true },
   { label: "開場影片", href: "#film" },
-  { label: "簡報與資源", href: "#resources" },
+  { label: "系列主題", href: "#topics" },
   { label: "講者", href: "#speakers" },
 ];
-
-const FILTERS: Array<"全部" | ResourceKind> = ["全部", "影片", "簡報", "資源"];
 
 function ArrowIcon({ className = "" }: { className?: string }) {
   return (
@@ -43,7 +40,7 @@ function Navbar() {
         ))}
       </ul>
       <a
-        href="#resources"
+        href="#topics"
         className="shrink-0 rounded-full bg-[#000000] px-6 py-2.5 text-sm text-[#FFFFFF] transition-transform duration-200 ease-out hover:scale-[1.03] active:scale-[0.98]"
       >
         開始探索
@@ -117,113 +114,111 @@ function Film() {
   );
 }
 
-function TitleParts({ title }: { title: string }) {
-  const [series, part] = title.split("｜");
-  if (!part) return <>{title}</>;
-  return (
-    <>
-      {series}
-      <span className="mx-3 text-[#C9C6C0]" aria-hidden="true">/</span>
-      <span className="sr-only">：</span>
-      {part}
-    </>
-  );
+const SLOT_KINDS: ResourceKind[] = ["影片", "簡報"];
+
+/** "系列｜項目" → "項目"; the topic heading already names the series. */
+function shortTitle(title: string) {
+  const parts = title.split("｜");
+  return parts[parts.length - 1];
 }
 
-function ResourceRow({ item }: { item: Resource }) {
-  const inner = (
-    <>
-      <span className="text-sm text-[#6F6F6F] md:pt-3">{item.kind}</span>
-      <span className="min-w-0">
-        <span
-          className={`block font-display text-3xl sm:text-4xl ${item.comingSoon ? "text-[#6F6F6F]" : "text-[#000000]"}`}
-          style={{ lineHeight: 1.15, letterSpacing: "-0.5px" }}
-        >
-          <TitleParts title={item.title} />
-        </span>
-        <span className="mt-2 block max-w-2xl text-base leading-relaxed text-pretty text-[#6F6F6F]">{item.description}</span>
-      </span>
-      <span className="flex items-center gap-4 text-sm text-[#6F6F6F] md:justify-end md:pt-3">
-        <span className="tabular-nums">{item.comingSoon ? "即將推出" : item.meta}</span>
-        {!item.comingSoon && (
-          <ArrowIcon className="size-6 shrink-0 text-[#000000] transition-transform duration-300 ease-out group-hover:translate-x-1.5" />
-        )}
-      </span>
-    </>
+function ResourceLink({ item }: { item: Resource }) {
+  const label = (
+    <span className="text-sm text-[#6F6F6F] tabular-nums">
+      {item.kind}
+      {item.meta && <>　·　{item.meta}</>}
+    </span>
   );
-
-  const rowClass = "grid gap-2 py-8 md:grid-cols-[7rem_minmax(0,1fr)_14rem] md:gap-8";
-
   if (item.comingSoon) {
-    return <li className={`border-t border-line ${rowClass}`}>{inner}</li>;
+    return (
+      <li className="flex items-center justify-between gap-6 rounded-2xl border border-dashed border-line px-5 py-5">
+        <span className="min-w-0">
+          {label}
+          <span className="mt-1 block font-display text-2xl text-[#6F6F6F] sm:text-3xl">{shortTitle(item.title)}</span>
+        </span>
+        <span className="shrink-0 text-sm text-[#6F6F6F]">即將推出</span>
+      </li>
+    );
   }
   return (
-    <li className="border-t border-line">
+    <li>
       <a
         href={item.href}
         target={item.external ? "_blank" : undefined}
         rel={item.external ? "noopener noreferrer" : undefined}
-        className={`group ${rowClass} -mx-4 my-1 rounded-2xl px-4 transition-colors duration-200 hover:bg-[#F6F5F2]`}
+        className="group flex items-center justify-between gap-6 rounded-2xl border border-line px-5 py-5 transition-colors duration-200 hover:border-[#000000] hover:bg-[#F6F5F2]"
       >
-        {inner}
+        <span className="min-w-0">
+          {label}
+          <span className="mt-1 block font-display text-2xl text-[#000000] sm:text-3xl" style={{ lineHeight: 1.2 }}>
+            {shortTitle(item.title)}
+          </span>
+          <span className="mt-1 block text-base leading-relaxed text-pretty text-[#6F6F6F]">{item.description}</span>
+        </span>
+        <ArrowIcon className="size-6 shrink-0 text-[#000000] transition-transform duration-300 ease-out group-hover:translate-x-1.5" />
         {item.external && <span className="sr-only">（在新分頁開啟）</span>}
       </a>
     </li>
   );
 }
 
-function Resources() {
-  const [filter, setFilter] = useState<(typeof FILTERS)[number]>("全部");
-  const shown = useMemo(
-    () => (filter === "全部" ? resources : resources.filter((r) => r.kind === filter)),
-    [filter],
-  );
-
+function SlotPlaceholder({ kind }: { kind: ResourceKind }) {
   return (
-    <section
-      id="resources"
-      aria-labelledby="resources-title"
-      className="mx-auto max-w-7xl scroll-mt-6 px-5 py-16 sm:px-8 sm:py-28"
-    >
-      <div className="mb-12 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
-        <div>
-          <h2
-            id="resources-title"
-            className="font-display text-5xl font-normal text-[#000000] sm:text-6xl md:text-7xl"
-            style={{ lineHeight: 1.05, letterSpacing: "-1.5px" }}
-          >
-            簡報與資源
-          </h2>
-          <p className="mt-5 max-w-xl text-base leading-relaxed text-[#6F6F6F]">
-            課程用到的影片、簡報與工具清單都放在這裡，會持續更新。
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-2" role="group" aria-label="依類型篩選">
-          {FILTERS.map((f) => (
-            <button
-              key={f}
-              type="button"
-              aria-pressed={filter === f}
-              onClick={() => setFilter(f)}
-              className={`rounded-full px-5 py-2 text-sm transition-colors duration-200 ${
-                filter === f
-                  ? "bg-[#000000] text-[#FFFFFF]"
-                  : "border border-line text-[#6F6F6F] hover:border-[#000000] hover:text-[#000000]"
-              }`}
-            >
-              {f}
-            </button>
-          ))}
-        </div>
+    <li className="flex items-center justify-between gap-6 rounded-2xl border border-dashed border-line px-5 py-5 text-[#6F6F6F]">
+      <span className="text-sm">{kind}</span>
+      <span className="text-sm">即將推出</span>
+    </li>
+  );
+}
+
+function TopicRow({ topic }: { topic: Topic }) {
+  const items = resources.filter((r) => r.topic === topic.id);
+  const extras = items.filter((r) => !SLOT_KINDS.includes(r.kind));
+  return (
+    <li className="grid gap-8 border-t border-line py-12 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-12">
+      <div>
+        <h3 className="font-display text-5xl text-[#000000] sm:text-6xl" style={{ lineHeight: 1.05, letterSpacing: "-1.5px" }}>
+          {topic.name}
+        </h3>
+        <p className="mt-4 max-w-md text-base leading-relaxed text-pretty text-[#6F6F6F]">{topic.summary}</p>
       </div>
-      <ul className="border-b border-line" aria-live="polite">
-        {shown.map((item) => (
-          <ResourceRow key={item.title} item={item} />
+      <ul className="flex flex-col gap-3">
+        {SLOT_KINDS.map((kind) => {
+          const ofKind = items.filter((r) => r.kind === kind);
+          return ofKind.length ? (
+            ofKind.map((item) => <ResourceLink key={item.title} item={item} />)
+          ) : (
+            <SlotPlaceholder key={kind} kind={kind} />
+          );
+        })}
+        {extras.map((item) => (
+          <ResourceLink key={item.title} item={item} />
         ))}
-        {shown.length === 0 && (
-          <li className="border-t border-line py-12 text-base text-[#6F6F6F]">這個類型還沒有內容，很快會補上。</li>
-        )}
       </ul>
+    </li>
+  );
+}
+
+function Topics() {
+  return (
+    <section id="topics" aria-labelledby="topics-title" className="mx-auto max-w-7xl scroll-mt-6 px-5 py-16 sm:px-8 sm:py-28">
+      <div className="mb-12">
+        <h2
+          id="topics-title"
+          className="font-display text-5xl font-normal text-[#000000] sm:text-6xl md:text-7xl"
+          style={{ lineHeight: 1.05, letterSpacing: "-1.5px" }}
+        >
+          系列主題
+        </h2>
+        <p className="mt-5 max-w-xl text-base leading-relaxed text-[#6F6F6F]">
+          開場之後，四個主題各有影片與簡報，陸續更新。
+        </p>
+      </div>
+      <ol className="border-b border-line">
+        {topics.map((topic) => (
+          <TopicRow key={topic.id} topic={topic} />
+        ))}
+      </ol>
     </section>
   );
 }
@@ -283,7 +278,7 @@ export default function App() {
       </header>
       <main>
         <Film />
-        <Resources />
+        <Topics />
         <Speakers />
       </main>
       <Footer />

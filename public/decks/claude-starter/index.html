@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude 新手上路</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=JetBrains+Mono:wght@400;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#EFE9D9; --cream2:#E4DCC4; --ink:#0F0F0F; --ink2:#2A2A2A; --mute:#6A645A;
+  --green:#1F8A4C; --pink:#F06CA8; --orange:#E85A1F; --yellow:#F5C518;
+  --disp:'Archivo Black','Arial Black','Noto Sans TC','Microsoft JhengHei',sans-serif;
+  --cjk:'Noto Sans TC','Microsoft JhengHei','PingFang TC',sans-serif;
+  --mono:'JetBrains Mono','Consolas','Noto Sans TC',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;background:#1b1a17;overflow:hidden;font-family:var(--cjk);color:var(--ink)}
+#viewport{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#stage{width:1920px;height:1080px;position:relative;transform-origin:center center;flex:none;background:var(--cream);overflow:hidden}
+.slide{position:absolute;inset:0;padding:150px 112px 90px;opacity:0;visibility:hidden;transition:opacity .45s ease, visibility 0s linear .45s}
+.slide.active{opacity:1;visibility:visible;transition:opacity .45s ease}
+.slide .grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(15,15,15,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(15,15,15,.05) 1px,transparent 1px);background-size:64px 64px;pointer-events:none}
+/* chrome */
+#topbar{position:absolute;left:64px;right:64px;top:40px;height:64px;display:flex;align-items:center;gap:28px;z-index:20;font-family:var(--mono);font-size:22px;letter-spacing:.08em}
+#topbar .brand{white-space:nowrap}
+#route{flex:1;position:relative;height:64px}
+#route svg{width:100%;height:100%;overflow:visible}
+#topbar .pill{border:3px solid var(--ink);border-radius:999px;padding:6px 20px;white-space:nowrap;background:var(--cream)}
+#counter{position:absolute;right:64px;bottom:34px;font-family:var(--mono);font-size:20px;letter-spacing:.1em;z-index:20}
+#hint{position:absolute;left:64px;bottom:34px;font-family:var(--mono);font-size:18px;color:var(--mute);z-index:20;letter-spacing:.06em}
+/* type */
+.kicker{display:inline-block;background:var(--ink);color:var(--cream);font-family:var(--mono);font-size:24px;letter-spacing:.14em;padding:8px 18px;margin-bottom:28px}
+h1,h2{font-family:var(--cjk);font-weight:900;line-height:1.12;letter-spacing:-.01em}
+h1{font-size:132px}
+h2{font-size:76px;margin-bottom:36px}
+.en{font-family:var(--disp);text-transform:uppercase;letter-spacing:-.01em;line-height:.92}
+.lede{font-size:36px;line-height:1.55;max-width:1300px;color:var(--ink2)}
+.mono{font-family:var(--mono)}
+.small{font-size:26px;line-height:1.5;color:var(--mute)}
+.hl{background:linear-gradient(transparent 58%, var(--yellow) 58%)}
+/* blocks */
+.card{border:4px solid var(--ink);background:var(--cream);padding:32px 36px}
+.card h3{font-size:40px;font-weight:900;margin-bottom:14px;line-height:1.2}
+.card p,.card li{font-size:29px;line-height:1.55}
+.card ul{list-style:none}
+.card li{padding-left:34px;position:relative;margin:6px 0}
+.card li::before{content:"";position:absolute;left:0;top:.62em;width:16px;height:16px;background:var(--ink)}
+.shadow{box-shadow:20px 20px 0 var(--orange),20px 20px 0 4px var(--ink)}
+.fill-green{background:var(--green);color:var(--cream)} .fill-pink{background:var(--pink)} .fill-orange{background:var(--orange)} .fill-yellow{background:var(--yellow)} .fill-cream2{background:var(--cream2)} .fill-ink{background:var(--ink);color:var(--cream)}
+.row{display:flex;gap:36px}
+.col{display:flex;flex-direction:column;gap:28px}
+.badge{display:inline-block;background:var(--yellow);border:4px solid var(--ink);font-family:var(--disp);font-size:28px;padding:8px 18px;transform:rotate(-4deg);text-transform:uppercase}
+.tag{display:inline-block;font-family:var(--mono);font-size:21px;letter-spacing:.08em;border:3px solid var(--ink);border-radius:999px;padding:4px 16px;margin:4px 8px 4px 0;background:var(--cream)}
+.prompt{background:var(--ink);color:var(--cream);font-family:var(--mono);font-size:26px;line-height:1.6;padding:28px 34px;border-left:16px solid var(--c,var(--green));white-space:pre-wrap}
+.prompt b{color:var(--c,var(--green));font-weight:700}
+.warn{border:4px solid var(--ink);background:var(--cream2);padding:22px 28px;font-size:27px;line-height:1.5;display:flex;gap:18px;align-items:flex-start}
+.warn .ic{font-family:var(--disp);background:var(--pink);border:3px solid var(--ink);width:46px;height:46px;flex:none;display:flex;align-items:center;justify-content:center;font-size:28px}
+/* station sign */
+.sign{display:inline-flex;align-items:stretch;border:4px solid var(--ink);margin-bottom:34px}
+.sign .num{font-family:var(--disp);font-size:96px;line-height:1;padding:18px 26px;background:var(--c);border-right:4px solid var(--ink)}
+.sign .nm{padding:14px 30px;display:flex;flex-direction:column;justify-content:center;background:var(--cream)}
+.sign .nm b{font-size:64px;font-weight:900;line-height:1.05}
+.sign .nm span{font-family:var(--mono);font-size:22px;letter-spacing:.16em;margin-top:6px}
+/* steps */
+.step{opacity:0;transform:translateY(24px);transition:opacity .4s ease,transform .5s cubic-bezier(.2,.7,.2,1)}
+.step.on{opacity:1;transform:none}
+/* timeline */
+.tl{position:relative;height:470px;margin-top:20px}
+.tl .line{position:absolute;left:0;right:0;top:120px;height:22px;background:var(--ink)}
+.tl .st{position:absolute;top:96px;width:300px;transform:translateX(-50%)}
+.tl .dot{width:70px;height:70px;border-radius:50%;background:var(--cream);border:8px solid var(--ink);margin:0 auto}
+.tl .yr{font-family:var(--disp);font-size:60px;text-align:center;position:absolute;top:-92px;left:0;right:0}
+.tl .lb{margin-top:26px;text-align:center;font-size:28px;line-height:1.4}
+.tl .lb b{display:block;font-size:34px;font-weight:900}
+.tl .lb i{display:block;margin-top:8px;font-style:normal;font-family:var(--mono);font-size:19px;letter-spacing:.06em;color:var(--mute)}
+/* video */
+.vidwrap{position:absolute;left:112px;right:112px;top:140px;bottom:96px;border:4px solid var(--ink);background:var(--ink);display:flex;align-items:center;justify-content:center}
+.vidwrap video{width:100%;height:100%;object-fit:contain;background:#000}
+.vidmissing{color:var(--cream);font-size:30px;text-align:center;line-height:1.6;padding:40px}
+
+/* claude deck additions */
+.card p,.card li{font-size:33px}
+.card h3{font-size:46px}
+.row>.card{min-height:300px}
+.prompt{font-size:30px}
+.warn{font-size:30px}
+.small{font-size:28px}
+.lede{font-size:40px}
+.steptag{display:inline-block;background:var(--orange);border:4px solid var(--ink);font-family:var(--mono);font-weight:700;font-size:26px;letter-spacing:.12em;padding:6px 18px}
+.mock{border:4px solid var(--ink);background:#fff;box-shadow:20px 20px 0 var(--orange),20px 20px 0 4px var(--ink)}
+.mock-bar{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:4px solid var(--ink);background:var(--cream2)}
+.mock-bar i{width:14px;height:14px;border:3px solid var(--ink)}
+.mock-bar span{margin-left:12px;border:3px solid var(--ink);background:#fff;font-family:var(--mono);font-size:20px;padding:2px 14px}
+.mock-body{padding:30px 34px}
+.mock .search{border:3px solid var(--ink);border-radius:999px;padding:12px 26px;font-size:30px;margin-bottom:26px}
+.mock .result{padding:16px 20px;margin-bottom:12px;display:flex;flex-direction:column;gap:4px}
+.mock .result b{font-size:30px;color:#1a0dab;font-weight:500}
+.mock .result span{font-family:var(--mono);font-size:20px;color:var(--mute)}
+.mock .result.hit{border:4px solid var(--orange)}
+.mock .composer{border:4px solid var(--orange);padding:22px 24px;display:flex;align-items:center;gap:20px;font-size:28px;color:var(--mute)}
+.mock .composer .plus{border:3px solid var(--ink);color:var(--ink);width:46px;height:46px;display:flex;align-items:center;justify-content:center;font-weight:900}
+.statbox{border:4px solid var(--ink);background:#fff;padding:24px 34px;display:flex;flex-direction:column;gap:6px}
+.statbox span{font-size:24px}
+.statbox b{font-size:120px;line-height:1}
+#stage.dark #topbar .pill{background:transparent;border-color:var(--cream)}
+/* notes panel (outside stage) */
+#notes{position:fixed;left:0;right:0;bottom:0;max-height:38vh;overflow:auto;background:rgba(15,15,15,.94);color:#EFE9D9;font-size:20px;line-height:1.7;padding:18px 28px 22px;display:none;z-index:50;border-top:4px solid var(--yellow)}
+#notes.show{display:block}
+#notes h4{font-family:var(--mono);font-size:14px;letter-spacing:.14em;color:var(--yellow);margin-bottom:6px}
+aside.notes{display:none}
+/* help */
+#help{position:fixed;right:18px;top:18px;background:rgba(15,15,15,.92);color:#EFE9D9;font:15px/1.8 var(--mono);padding:14px 20px;display:none;z-index:60;border:2px solid var(--yellow)}
+#help.show{display:block}
+@media print{
+  html,body{background:#fff;overflow:visible;height:auto}
+  #viewport{position:static;display:block}
+  #stage{transform:none!important;width:1920px;height:auto;overflow:visible;background:none}
+  .slide{position:relative;opacity:1;visibility:visible;width:1920px;height:1080px;page-break-after:always;background:var(--cream)}
+  .step{opacity:1;transform:none}
+  #topbar,#counter,#hint,#notes,#help{display:none}
+}
+</style>
+</head>
+<body>
+<div id="viewport"><div id="stage">
+
+<header id="topbar">
+  <span class="brand">CLAUDE 新手上路</span>
+  <div id="route"></div>
+  <span class="pill">博士班超前部署</span>
+</header>
+
+<!-- 1 封面 -->
+<section class="slide" data-sec="0">
+  <div class="grid-bg"></div>
+  <div style="position:absolute;left:112px;top:210px;right:112px">
+    <span class="kicker">博士班超前部署 · 系列主題 01</span>
+    <div style="display:flex;align-items:center;gap:56px;margin-top:20px">
+      <svg viewBox="0 0 100 100" width="190" height="190" aria-hidden="true"><g stroke="var(--orange)" stroke-width="11" stroke-linecap="round"><line x1="50" y1="6" x2="50" y2="94"/><line x1="6" y1="50" x2="94" y2="50"/><line x1="19" y1="19" x2="81" y2="81"/><line x1="81" y1="19" x2="19" y2="81"/><line x1="32" y1="9" x2="68" y2="91"/><line x1="9" y1="32" x2="91" y2="68"/><line x1="68" y1="9" x2="32" y2="91"/><line x1="91" y1="32" x2="9" y2="68"/></g></svg>
+      <div>
+        <div class="en" style="font-size:190px">Claude</div>
+        <div style="font-size:64px;font-weight:900;margin-top:18px">新手上路：讀文獻的 AI 助理</div>
+      </div>
+    </div>
+    <p class="lede" style="margin-top:48px">從找到官網、註冊、上傳第一篇論文，到用它抓出原文的錯誤</p>
+  </div>
+  <div class="mono small" style="position:absolute;left:112px;bottom:56px">報告人：宋建美 助理教授　｜　協助：游明勳 碩士生</div>
+  <aside class="notes">開場：「文獻讀不完」是每個研究生的共同經驗。今天介紹的 Claude，是很多研究生都在用的 AI 助理。先看 90 秒影片，再一步一步實際操作。</aside>
+</section>
+
+<!-- 2 影片 -->
+<section class="slide" data-sec="0">
+  <div class="vidwrap" id="vidwrap">
+    <video id="intro-video" src="video.mp4" poster="poster.jpg" controls preload="auto" playsinline></video>
+  </div>
+  <aside class="notes">按空白鍵或點畫面播放（約 90 秒）。影片走完整個流程，接下來每一步都會停下來細講。</aside>
+</section>
+
+<!-- 3 Claude 是什麼 -->
+<section class="slide" data-sec="0">
+  <div class="grid-bg"></div>
+  <span class="kicker">開始之前</span>
+  <h2>文獻讀不完？先認識 <span class="en" style="font-size:80px;color:var(--orange)">Claude</span></h2>
+  <div class="row" style="margin-top:16px;align-items:stretch">
+    <div class="card step" style="flex:1"><h3>它是什麼</h3><p>Anthropic 公司開發的 AI 助理。用打字的方式和它對話，它能讀你上傳的論文、表格與圖片。</p></div>
+    <div class="card fill-yellow step" style="flex:1"><h3>研究生最常拿來</h3><ul><li>整理一篇論文的重點</li><li>比對多篇研究的設計</li><li>潤飾中英文寫作</li></ul></div>
+    <div class="card step" style="flex:1"><h3>今天的路線</h3><p>找官網 → 註冊 → 認識介面 → 讀第一篇論文 → 學會查證</p></div>
+  </div>
+  <aside class="notes">一句話定位：Claude 是讀文獻、寫作的 AI 助理，跟 ChatGPT 是同一類工具，各有擅長。今天用五個步驟，讓完全沒用過的人也能開始。</aside>
+</section>
+
+<!-- 4 Step 1 -->
+<section class="slide" data-sec="1">
+  <div class="grid-bg"></div>
+  <div class="steptag">STEP 1</div>
+  <h2 style="margin-top:6px">搜尋並找到官網</h2>
+  <div class="row" style="align-items:flex-start">
+    <div class="mock step" style="flex:1.15">
+      <div class="mock-bar"><i></i><i></i><i></i><span>google.com</span></div>
+      <div class="mock-body">
+        <div class="search">Claude</div>
+        <div class="result hit"><b>Claude: Sign in</b><span>https://claude.ai</span></div>
+        <div class="result"><b>Log in</b><span>Sign in to Claude …</span></div>
+      </div>
+    </div>
+    <div class="col" style="flex:1">
+      <div class="card step"><ul><li>① Google 搜尋「Claude」</li><li>② 認明官方網址</li></ul></div>
+      <div class="step"><span class="badge" style="font-size:64px;padding:14px 32px;text-transform:none;font-family:var(--mono);font-weight:700">claude.ai</span></div>
+      <div class="warn step"><span class="ic">!</span><span>網址不對的「山寨站」別點。手機版：App Store／Google Play 搜尋 Claude，開發者是 Anthropic。</span></div>
+    </div>
+  </div>
+  <aside class="notes">重點只有一個：認明 claude.ai。搜尋結果偶爾有仿冒或廣告網站，名字很像但網址不同，不要在那裡登入或付款。</aside>
+</section>
+
+<!-- 5 Step 2 -->
+<section class="slide" data-sec="2">
+  <div class="grid-bg"></div>
+  <div class="steptag">STEP 2</div>
+  <h2 style="margin-top:6px">註冊＝登入，同一個按鈕</h2>
+  <div class="row" style="margin-top:10px;align-items:stretch">
+    <div class="card step" style="flex:1"><div class="en" style="font-size:72px">1</div><h3 style="margin-top:14px">按「使用 Google 繼續」</h3><p>不用另外設密碼</p></div>
+    <div class="card step" style="flex:1"><div class="en" style="font-size:72px">2</div><h3 style="margin-top:14px">選你的 Google 帳號</h3><p>學校或個人帳號都可以</p></div>
+    <div class="card fill-green step" style="flex:1"><div class="en" style="font-size:72px">3</div><h3 style="margin-top:14px">完成</h3><p>下次登入，按同一顆按鈕</p></div>
+  </div>
+  <p class="small step" style="margin-top:30px">基本功能免費；付費方案可用量更多、功能更完整，先用免費版試試再決定。</p>
+  <aside class="notes">很多人以為要先「註冊」再「登入」，其實第一次按「使用 Google 繼續」就完成註冊了。現場可以請大家拿手機一起做。</aside>
+</section>
+
+<!-- 6 Step 3 -->
+<section class="slide" data-sec="3">
+  <div class="grid-bg"></div>
+  <div class="steptag">STEP 3</div>
+  <h2 style="margin-top:6px">介面只要記兩個位置</h2>
+  <div class="row" style="align-items:flex-start">
+    <div class="mock step" style="flex:1.15">
+      <div class="mock-bar"><i></i><i></i><i></i><span>claude.ai</span></div>
+      <div class="mock-body" style="height:430px;display:flex;flex-direction:column;justify-content:flex-end;gap:26px">
+        <div style="text-align:center;font-size:44px;font-family:'Noto Serif TC',serif"><span style="color:var(--orange)">✳</span> 晚安</div>
+        <div class="composer"><span class="plus">＋</span><span class="ph">今天我能為您做些什麼？</span></div>
+      </div>
+    </div>
+    <div class="col" style="flex:1">
+      <div class="card step"><h3>① 對話框</h3><p>像傳訊息一樣打字</p></div>
+      <div class="card fill-yellow step"><h3>② 加號 ＋</h3><p>上傳 PDF、圖片、表格</p></div>
+      <div class="card fill-pink step"><h3>③ 專案 Projects</h3><p>同一個研究的資料收在一起，之後的對話都能參考</p></div>
+    </div>
+  </div>
+  <aside class="notes">介面比 LINE 還簡單：中間的對話框打字、左下角的加號上傳檔案。進階一點的是左側的「專案」，可以把同一個研究的文獻、計畫書都放進去。</aside>
+</section>
+
+<!-- 7 Step 4 -->
+<section class="slide" data-sec="4" style="--c:var(--orange)">
+  <div class="grid-bg"></div>
+  <div class="steptag">STEP 4</div>
+  <h2 style="margin-top:6px">上傳一篇論文，請它整理</h2>
+  <div class="row">
+    <div class="col" style="flex:1.15">
+      <div class="prompt step" style="--c:var(--orange)"><b>▍可以照抄的指令</b>
+請用表格整理這篇論文：
+研究目的、研究設計、樣本、
+主要發現、研究限制。
+每一項請標註出自原文第幾頁，
+方便我回去核對。</div>
+    </div>
+    <div class="col" style="flex:1">
+      <div class="card step"><h3>它會交回一張表</h3><span class="tag">目的</span><span class="tag">設計</span><span class="tag">樣本</span><span class="tag">發現</span><span class="tag">限制</span></div>
+      <div class="card fill-orange shadow step"><h3>關鍵：每項標原文頁碼</h3><p>有頁碼，你才能在幾秒內回去確認它說的對不對。</p></div>
+      <p class="small step">幾十秒就完成。示範論文：Liu et al. (2026). <i>BMJ Open, 16</i>(1), e106817（CC BY-NC）</p>
+    </div>
+  </div>
+  <aside class="notes">現場示範：用加號上傳一篇 PDF，貼上這段指令。強調「標頁碼」這個小動作，讓 AI 的整理變成可以查證的整理。</aside>
+</section>
+
+<!-- 8 Step 5 -->
+<section class="slide" data-sec="5">
+  <div class="grid-bg"></div>
+  <div class="steptag" style="background:var(--pink)">彩蛋</div>
+  <h2 style="margin-top:6px">它還發現原文自相矛盾</h2>
+  <div class="row" style="align-items:center;margin-top:10px">
+    <div class="statbox step"><span class="mono">摘要 · p.1</span><b class="en">72.26</b></div>
+    <div class="en step" style="font-size:120px;color:var(--orange)">≠</div>
+    <div class="statbox step"><span class="mono">Table 2 · p.4</span><b class="en">76.26</b></div>
+    <div class="col step" style="flex:1;padding-left:20px">
+      <p style="font-size:34px;line-height:1.5">同一個「自主學習」平均數，摘要和表格寫的不一樣。</p>
+      <div><span class="badge" style="background:var(--green);color:var(--cream);font-family:var(--cjk);font-weight:900;font-size:40px;text-transform:none">✓ 已回原文查證</span></div>
+    </div>
+  </div>
+  <div class="prompt step" style="--c:var(--pink);margin-top:44px"><b>▍延伸指令</b>　請找出這篇論文前後不一致的數字或敘述，標出頁碼，並說明哪一處比較可信。</div>
+  <aside class="notes">這是影片裡最精彩的一段：AI 不只摘要，還比對了摘要、表格和討論，發現同一個平均數寫成兩個值。但重點是最後那個勾：我們自己回到原文確認了。AI 負責發現，人負責確認。</aside>
+</section>
+
+<!-- 9 三件事 -->
+<section class="slide" data-sec="6">
+  <div class="grid-bg"></div>
+  <span class="kicker">一定要記住</span>
+  <h2>用 AI 讀文獻，記住三件事</h2>
+  <div class="row" style="margin-top:16px;align-items:stretch">
+    <div class="card fill-orange step" style="flex:1"><div class="en" style="font-size:80px">01</div><h3 style="margin-top:14px;font-size:48px">先給原文</h3><p>上傳 PDF 再提問，別叫它憑空生參考文獻</p></div>
+    <div class="card fill-yellow step" style="flex:1"><div class="en" style="font-size:80px">02</div><h3 style="margin-top:14px;font-size:48px">回原文核對</h3><p>重要數字、頁碼，自己翻回去看</p></div>
+    <div class="card fill-green step" style="flex:1"><div class="en" style="font-size:80px">03</div><h3 style="margin-top:14px;font-size:48px">守住倫理</h3><p>病人資料不上傳；依學校和期刊規定揭露 AI 使用</p></div>
+  </div>
+  <aside class="notes">這三件事和「AI 研究地鐵圖」的三條規則一致：引用要查證、使用要揭露、病人資料不上傳。給老師們的重點：AI 不是不能用，而是要用得透明、可查證。</aside>
+</section>
+
+<!-- 10 為什麼 -->
+<section class="slide" data-sec="7">
+  <div class="grid-bg"></div>
+  <span class="kicker">為什麼是 Claude</span>
+  <h2>為什麼研究生愛用 Claude？</h2>
+  <div class="row" style="margin-top:16px;align-items:stretch">
+    <div class="card step" style="flex:1"><span class="mono small">01 · 長文件</span><h3 style="margin-top:12px">一次讀完整篇長論文</h3><p>整篇 PDF 連同表格一起讀，前後對照不漏段落。</p></div>
+    <div class="card fill-yellow step" style="flex:1"><span class="mono small" style="color:var(--ink)">02 · 中文寫作</span><h3 style="margin-top:12px">中文寫得自然</h3><p>「這是一篇單一大學、239 位護理系學生的橫斷性調查。」</p></div>
+    <div class="card fill-pink shadow step" style="flex:1"><span class="mono small" style="color:var(--ink)">03 · 專案 Projects</span><h3 style="margin-top:12px">研究資料收在同一處</h3><p>文獻、計畫書、筆記放進同一個專案，對話都能參考。</p></div>
+  </div>
+  <aside class="notes">三個特色對應研究生的三個需求：讀長文件、寫中文、管理一個長期研究。第二點的例句就是它整理示範論文時寫出來的句子。</aside>
+</section>
+
+<!-- 11 現場練習 -->
+<section class="slide" data-sec="7">
+  <div class="grid-bg"></div>
+  <span class="kicker">現場練習 · 10 分鐘</span>
+  <h2>拿一篇你最近在讀的論文試試</h2>
+  <div class="col" style="margin-top:6px;gap:22px">
+    <div class="prompt step" style="--c:var(--orange)"><b>1　整理</b>　請用表格整理這篇論文的目的、設計、樣本、發現與限制，每項標原文頁碼。</div>
+    <div class="prompt step" style="--c:var(--pink)"><b>2　查錯</b>　請找出前後不一致的數字或敘述，標出頁碼。</div>
+    <div class="prompt step" style="--c:var(--yellow)"><b>3　轉述</b>　請用三句話向不熟這個領域的老師說明這篇研究的貢獻與限制。</div>
+  </div>
+  <p class="small step" style="margin-top:26px">做完後，挑一個它標出的頁碼回原文核對。</p>
+  <aside class="notes">如果時間允許，讓大家用自己的論文做三個指令。第三個指令很適合準備口試或 meeting 報告。提醒：用的是已發表的論文，不要上傳未公開的資料。</aside>
+</section>
+
+<!-- 12 結尾 -->
+<section class="slide" data-sec="8" style="background:var(--green);color:var(--cream)">
+  <div style="position:absolute;left:112px;top:240px;right:112px">
+    <h1 style="font-size:150px;color:var(--cream)">AI 是你的研究助理</h1>
+    <div style="display:inline-block;margin-top:34px;background:var(--yellow);color:var(--ink);border:5px solid var(--ink);padding:10px 34px;font-size:120px;font-weight:900;line-height:1.15">不是作者。</div>
+    <p class="mono" style="font-size:40px;margin-top:56px;letter-spacing:.06em">claude.ai</p>
+  </div>
+  <aside class="notes">收尾：AI 是研究助理，不是作者。下一場會介紹 Codex、Zotero、Notion。</aside>
+</section>
+
+<!-- 13 系列預告 -->
+<section class="slide" data-sec="8">
+  <div class="grid-bg"></div>
+  <span class="kicker">博士班超前部署 · 系列主題</span>
+  <h2>下一站</h2>
+  <div class="row" style="margin-top:20px;align-items:stretch">
+    <div class="card fill-orange shadow step" style="flex:1"><div class="en" style="font-size:54px">Claude</div><p style="margin-top:16px">讀文獻、寫作的 AI 助理</p><p class="mono small" style="margin-top:20px;color:var(--ink)">✓ 今天</p></div>
+    <div class="card step" style="flex:1"><div class="en" style="font-size:54px">Codex</div><p style="margin-top:16px">用說的寫分析程式、整理資料</p></div>
+    <div class="card step" style="flex:1"><div class="en" style="font-size:54px">Zotero</div><p style="margin-top:16px">收集、整理、引用文獻</p></div>
+    <div class="card step" style="flex:1"><div class="en" style="font-size:54px">Notion</div><p style="margin-top:16px">研究筆記與進度管理</p></div>
+  </div>
+  <p class="small step" style="margin-top:30px">影片與簡報都放在網站：bobyu89.github.io/phd-forward</p>
+  <aside class="notes">預告後面三個主題。網站會持續放上影片與簡報。</aside>
+</section>
+
+<div id="counter">01 • 13</div>
+<div id="hint">← → 換頁　F 全螢幕　N 講稿　? 說明</div>
+</div></div>
+<div id="notes"><h4>SPEAKER NOTES</h4><div id="notes-body"></div></div>
+<div id="help">← / → / 空白鍵：下一步／上一步<br>Home / End：第一頁／最後一頁<br>F：全螢幕　N：顯示講稿<br>影片頁：空白鍵或 P 播放／暫停<br>數字＋Enter：跳到指定頁</div>
+
+<script>
+(function(){
+  const stage = document.getElementById('stage');
+  const slides = [...document.querySelectorAll('.slide')];
+  const counter = document.getElementById('counter');
+  const notesBox = document.getElementById('notes');
+  const notesBody = document.getElementById('notes-body');
+  const video = document.getElementById('intro-video');
+  const SECS = [
+    {n:'起點', c:'var(--ink)'}, {n:'找官網', c:'var(--orange)'}, {n:'註冊', c:'var(--orange)'},
+    {n:'介面', c:'var(--orange)'}, {n:'讀論文', c:'var(--orange)'}, {n:'查證', c:'var(--pink)'},
+    {n:'三件事', c:'var(--yellow)'}, {n:'為什麼', c:'var(--yellow)'}, {n:'結尾', c:'var(--green)'}
+  ];
+  let idx = 0;
+
+  function fit(){
+    const s = Math.min(window.innerWidth/1920, window.innerHeight/1080);
+    stage.style.transform = 'scale(' + s + ')';
+  }
+  window.addEventListener('resize', fit); fit();
+
+  function drawRoute(sec){
+    const W = 1000, y = 32, gap = W/(SECS.length-1);
+    let svg = '<svg viewBox="-20 0 1040 64" preserveAspectRatio="xMidYMid meet">';
+    svg += '<line x1="0" y1="'+y+'" x2="'+W+'" y2="'+y+'" stroke="#0F0F0F" stroke-width="8"/>';
+    for(let i=0;i<SECS.length-1;i++){
+      if(i < sec) svg += '<line x1="'+(i*gap)+'" y1="'+y+'" x2="'+((i+1)*gap)+'" y2="'+y+'" stroke="'+(SECS[i+1].c)+'" stroke-width="4"/>';
+    }
+    SECS.forEach((s,i)=>{
+      const x = i*gap, cur = i===sec, done = i<sec;
+      const fill = cur ? s.c : (done ? '#0F0F0F' : '#EFE9D9');
+      svg += '<circle cx="'+x+'" cy="'+y+'" r="'+(cur?13:9)+'" fill="'+fill+'" stroke="#0F0F0F" stroke-width="4"/>';
+      if(cur) svg += '<text x="'+x+'" y="'+(y-20)+'" text-anchor="middle" font-family="Noto Sans TC, Microsoft JhengHei" font-weight="900" font-size="18" fill="#0F0F0F">'+s.n+'</text>';
+    });
+    svg += '</svg>';
+    document.getElementById('route').innerHTML = svg;
+  }
+
+  function steps(s){ return [...s.querySelectorAll('.step')]; }
+  function show(i, fromBack){
+    idx = Math.max(0, Math.min(slides.length-1, i));
+    slides.forEach((s,k)=>s.classList.toggle('active', k===idx));
+    const st = steps(slides[idx]);
+    st.forEach(e=>e.classList.toggle('on', !!fromBack));
+    const sec = +slides[idx].dataset.sec;
+    drawRoute(sec);
+    const dark = slides[idx].style.background.indexOf('green') >= 0;
+    document.getElementById('topbar').style.color = dark ? '#EFE9D9' : '';
+    stage.classList.toggle('dark', dark);
+    counter.style.color = dark ? '#EFE9D9' : '';
+    counter.textContent = String(idx+1).padStart(2,'0') + ' • ' + String(slides.length).padStart(2,'0');
+    const n = slides[idx].querySelector('aside.notes');
+    notesBody.textContent = n ? n.textContent.trim() : '';
+    if (video && !slides[idx].contains(video)) video.pause();
+    try { history.replaceState(null,'','#'+(idx+1)); } catch(e){}
+  }
+  function next(){
+    const hidden = steps(slides[idx]).filter(e=>!e.classList.contains('on'));
+    if(hidden.length){ hidden[0].classList.add('on'); return; }
+    if(idx < slides.length-1) show(idx+1);
+  }
+  function prev(){
+    const shown = steps(slides[idx]).filter(e=>e.classList.contains('on'));
+    if(shown.length){ shown[shown.length-1].classList.remove('on'); return; }
+    if(idx > 0) show(idx-1, true);
+  }
+  let typed = '';
+  document.addEventListener('keydown', e=>{
+    const onVideo = video && slides[idx].contains(video);
+    if(/^[0-9]$/.test(e.key)){ typed += e.key; return; }
+    if(e.key==='Enter' && typed){ show(parseInt(typed,10)-1); typed=''; return; }
+    typed = '';
+    if((e.key===' ' || e.key==='p' || e.key==='P') && onVideo){ e.preventDefault(); video.paused ? video.play() : video.pause(); return; }
+    if(['ArrowRight','PageDown',' '].includes(e.key)){ e.preventDefault(); next(); }
+    else if(['ArrowLeft','PageUp','Backspace'].includes(e.key)){ e.preventDefault(); prev(); }
+    else if(e.key==='Home') show(0);
+    else if(e.key==='End') show(slides.length-1);
+    else if(e.key==='f' || e.key==='F'){ document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(()=>{}); }
+    else if(e.key==='n' || e.key==='N') notesBox.classList.toggle('show');
+    else if(e.key==='?') document.getElementById('help').classList.toggle('show');
+  });
+  document.getElementById('viewport').addEventListener('click', e=>{
+    if(e.target.closest('video') || e.target.closest('a')) return;
+    const x = e.clientX / window.innerWidth;
+    x < 0.25 ? prev() : next();
+  });
+  if (video) video.addEventListener('error', ()=>{
+    document.getElementById('vidwrap').innerHTML = '<div class="vidmissing">找不到影片檔 video.mp4<br>請把影片放在與 index.html 同一個資料夾</div>';
+  });
+  const start = parseInt((location.hash||'').slice(1),10);
+  show(isNaN(start) ? 0 : start-1);
+})();
+</script>
+</body>
+</html>
