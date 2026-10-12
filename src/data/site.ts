@@ -139,7 +139,7 @@ export const resources: Resource[] = [
   },
   {
     topic: "Zotero",
-    title: "ZotMax｜Zotero 外掛介紹",
+    title: "Zotero 外掛｜ZotMax 新手上路",
     kind: "影片",
     description: "把 Zotero 的書目、劃線、筆記和評讀自動整理進 Obsidian 或 Notion，三步驟上手；預設不開 AI。",
     href: "decks/zotmax-intro/video.mp4",
