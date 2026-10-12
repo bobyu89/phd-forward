@@ -183,6 +183,15 @@ export const resources: Resource[] = [
     external: true,
   },
   {
+    topic: "Obsidian",
+    title: "延伸｜Markdown 入門簡報",
+    kind: "簡報",
+    description: "原文與排版對照的語法示範、Word 與 Markdown 比較、結構化提問範本與語法小抄。",
+    href: "decks/markdown-starter/index.html",
+    meta: "13 頁",
+    external: true,
+  },
+  {
     topic: "Notion",
     title: "Notion 新手上路｜介紹影片",
     kind: "影片",
