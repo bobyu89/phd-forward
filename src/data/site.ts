@@ -91,4 +91,22 @@ export const resources: Resource[] = [
     meta: "13 頁",
     external: true,
   },
+  {
+    topic: "Codex",
+    title: "Codex 新手上路｜介紹影片",
+    kind: "影片",
+    description: "下載、登入、開專案，用模擬問卷實測跑出統計表與散佈圖。",
+    href: "decks/codex-starter/video.mp4",
+    meta: "1 分 29 秒",
+    external: true,
+  },
+  {
+    topic: "Codex",
+    title: "Codex 新手上路｜簡報",
+    kind: "簡報",
+    description: "可照抄的分析指令、權限與資料安全提醒、三件要記住的事。",
+    href: "decks/codex-starter/index.html",
+    meta: "16 頁",
+    external: true,
+  },
 ];
