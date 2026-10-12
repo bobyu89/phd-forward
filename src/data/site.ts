@@ -138,6 +138,15 @@ export const resources: Resource[] = [
     external: true,
   },
   {
+    topic: "Zotero",
+    title: "ZotMax｜Zotero 外掛介紹",
+    kind: "影片",
+    description: "把 Zotero 的書目、劃線、筆記和評讀自動整理進 Obsidian 或 Notion，三步驟上手；預設不開 AI。",
+    href: "decks/zotmax-intro/video.mp4",
+    meta: "1 分 59 秒",
+    external: true,
+  },
+  {
     topic: "Obsidian",
     title: "Obsidian 新手上路｜介紹影片",
     kind: "影片",
