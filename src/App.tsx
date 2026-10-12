@@ -2,8 +2,7 @@ import { useMemo, useState } from "react";
 import { LoopingVideo } from "./components/LoopingVideo";
 import { resources, site, type Resource, type ResourceKind } from "./data/site";
 
-const HERO_VIDEO =
-  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_083109_283f3553-e28f-428b-a723-d639c617eb2b.mp4";
+const HERO_VIDEO = "media/hero-landscape.mp4";
 
 const NAV = [
   { label: "首頁", href: "#top", active: true },
