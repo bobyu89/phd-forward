@@ -1,4 +1,5 @@
 import { LoopingVideo } from "./components/LoopingVideo";
+import { linkGroups } from "./data/links";
 import { resources, site, topics, type Resource, type ResourceKind, type Topic } from "./data/site";
 
 const HERO_VIDEO = "media/hero-landscape.mp4";
@@ -8,6 +9,7 @@ const NAV = [
   { label: "開場影片", href: "#film" },
   { label: "系列主題", href: "#topics" },
   { label: "講者", href: "#speakers" },
+  { label: "學習連結", href: "#links" },
 ];
 
 function ArrowIcon({ className = "" }: { className?: string }) {
@@ -253,6 +255,58 @@ function Speakers() {
   );
 }
 
+function hostOf(href: string) {
+  return new URL(href).hostname.replace(/^www\./, "");
+}
+
+function Links() {
+  return (
+    <section id="links" aria-labelledby="links-title" className="mx-auto max-w-7xl scroll-mt-6 px-5 py-16 sm:px-8 sm:py-28">
+      <div className="mb-12">
+        <h2
+          id="links-title"
+          className="font-display text-5xl font-normal text-[#000000] sm:text-6xl md:text-7xl"
+          style={{ lineHeight: 1.05, letterSpacing: "-1.5px" }}
+        >
+          學習連結
+        </h2>
+        <p className="mt-5 max-w-xl text-base leading-relaxed text-[#6F6F6F]">課程用到的官方網站、下載頁與說明文件，點了會在新分頁開啟。</p>
+      </div>
+      <div className="grid gap-x-12 border-b border-line md:grid-cols-2">
+        {linkGroups.map((group) => (
+          <div key={group.name} className="border-t border-line py-8">
+            <h3 className="mb-4 font-display text-3xl text-[#000000] sm:text-4xl" style={{ lineHeight: 1.1 }}>
+              {group.name}
+            </h3>
+            <ul className="flex flex-col">
+              {group.links.map((link) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group -mx-3 flex items-center justify-between gap-4 rounded-xl px-3 py-3 transition-colors duration-200 hover:bg-[#F6F5F2]"
+                  >
+                    <span className="min-w-0">
+                      <span className="block text-lg text-[#000000]">{link.title}</span>
+                      <span className="block text-sm leading-relaxed text-pretty text-[#6F6F6F]">
+                        {link.note}
+                        <span className="text-[#9A9A9A]">　{hostOf(link.href)}</span>
+                      </span>
+                    </span>
+                    <ArrowIcon className="size-5 shrink-0 text-[#000000] transition-transform duration-300 ease-out group-hover:translate-x-1" />
+                    <span className="sr-only">（在新分頁開啟）</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function Footer() {
   return (
     <footer className="mx-auto flex max-w-7xl flex-col gap-3 px-5 pt-10 pb-14 text-sm text-[#6F6F6F] sm:flex-row sm:items-center sm:justify-between sm:px-8">
@@ -280,6 +334,7 @@ export default function App() {
         <Film />
         <Topics />
         <Speakers />
+        <Links />
       </main>
       <Footer />
     </>
