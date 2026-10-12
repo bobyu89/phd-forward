@@ -3,7 +3,7 @@
 // 某個主題還沒有影片或簡報時，頁面會自動顯示「即將推出」的空位，不需要手動加。
 
 export type ResourceKind = "影片" | "簡報" | "資源";
-export type TopicId = "開場" | "Claude" | "Codex" | "Zotero" | "Notion";
+export type TopicId = "開場" | "Claude" | "Codex" | "Zotero" | "Notion" | "Obsidian";
 
 export interface Topic {
   id: TopicId;
@@ -52,6 +52,7 @@ export const topics: Topic[] = [
   { id: "Codex", name: "Codex", summary: "會寫程式的 AI 代理：用說的請它寫 R／Python 分析程式、整理資料、處理重複工作。" },
   { id: "Zotero", name: "Zotero", summary: "免費的文獻管理工具：收集、標註、整理文獻，一鍵產生 APA 引用格式。" },
   { id: "Notion", name: "Notion", summary: "筆記與知識管理：研究日誌、文獻筆記、論文進度，都收在同一個地方。" },
+  { id: "Obsidian", name: "Obsidian", summary: "會連起來的研究筆記：一篇文獻一則筆記，用 [[ ]] 把概念串成網，筆記存在自己電腦。" },
 ];
 
 export const resources: Resource[] = [
@@ -133,6 +134,24 @@ export const resources: Resource[] = [
     kind: "簡報",
     description: "十個關卡的操作步驟與真實截圖，附兩個提醒與現場練習，內嵌兩支影片。",
     href: "decks/zotero-starter/index.html",
+    meta: "14 頁",
+    external: true,
+  },
+  {
+    topic: "Obsidian",
+    title: "Obsidian 新手上路｜介紹影片",
+    kind: "影片",
+    description: "下載、建立儲存庫、寫第一則文獻筆記，用 [[ ]] 連結概念並打開關聯圖。",
+    href: "decks/obsidian-starter/video.mp4",
+    meta: "1 分 24 秒",
+    external: true,
+  },
+  {
+    topic: "Obsidian",
+    title: "Obsidian 新手上路｜簡報",
+    kind: "簡報",
+    description: "文獻筆記範本、真實介面截圖、搭配 Claude 起草的指令與現場練習。",
+    href: "decks/obsidian-starter/index.html",
     meta: "14 頁",
     external: true,
   },

@@ -213,7 +213,7 @@ function Topics() {
           系列主題
         </h2>
         <p className="mt-5 max-w-xl text-base leading-relaxed text-[#6F6F6F]">
-          開場之後，四個主題各有影片與簡報，陸續更新。
+          開場之後，五個主題各有影片與簡報，陸續更新。
         </p>
       </div>
       <ol className="border-b border-line">
