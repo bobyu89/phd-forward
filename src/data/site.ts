@@ -51,7 +51,7 @@ export const topics: Topic[] = [
   { id: "Claude", name: "Claude", summary: "讀文獻、寫作的 AI 助理：上傳論文請它整理、比對，還能抓出原文前後矛盾。" },
   { id: "Codex", name: "Codex", summary: "會寫程式的 AI 代理：用說的請它寫 R／Python 分析程式、整理資料、處理重複工作。" },
   { id: "Zotero", name: "Zotero", summary: "免費的文獻管理工具：收集、標註、整理文獻，一鍵產生 APA 引用格式。" },
-  { id: "Notion", name: "Notion", summary: "筆記與知識管理：研究日誌、文獻筆記、論文進度，都收在同一個地方。" },
+  { id: "Notion", name: "Notion", summary: "研究資料庫：文獻追蹤表、閱讀看板與進度管理，每篇論文點開就是一頁筆記。" },
   { id: "Obsidian", name: "Obsidian", summary: "會連起來的研究筆記：一篇文獻一則筆記，用 [[ ]] 把概念串成網，筆記存在自己電腦。" },
 ];
 
@@ -152,6 +152,24 @@ export const resources: Resource[] = [
     kind: "簡報",
     description: "文獻筆記範本、真實介面截圖、搭配 Claude 起草的指令與現場練習。",
     href: "decks/obsidian-starter/index.html",
+    meta: "14 頁",
+    external: true,
+  },
+  {
+    topic: "Notion",
+    title: "Notion 新手上路｜介紹影片",
+    kind: "影片",
+    description: "註冊、用斜線指令建資料庫，把五篇真實論文收成表格與閱讀看板。",
+    href: "decks/notion-starter/video.mp4",
+    meta: "1 分 25 秒",
+    external: true,
+  },
+  {
+    topic: "Notion",
+    title: "Notion 新手上路｜簡報",
+    kind: "簡報",
+    description: "欄位怎麼設計、看板怎麼用、單篇讀書筆記範本與三件要記住的事。",
+    href: "decks/notion-starter/index.html",
     meta: "14 頁",
     external: true,
   },
