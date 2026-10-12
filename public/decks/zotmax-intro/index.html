@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ZotMax 新手上路</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=JetBrains+Mono:wght@400;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#EFE9D9; --cream2:#E4DCC4; --ink:#0F0F0F; --ink2:#2A2A2A; --mute:#6A645A;
+  --green:#1F8A4C; --pink:#F06CA8; --orange:#E85A1F; --yellow:#F5C518;
+  --disp:'Archivo Black','Arial Black','Noto Sans TC','Microsoft JhengHei',sans-serif;
+  --cjk:'Noto Sans TC','Microsoft JhengHei','PingFang TC',sans-serif;
+  --mono:'JetBrains Mono','Consolas','Noto Sans TC',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;background:#1b1a17;overflow:hidden;font-family:var(--cjk);color:var(--ink)}
+#viewport{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#stage{width:1920px;height:1080px;position:relative;transform-origin:center center;flex:none;background:var(--cream);overflow:hidden}
+.slide{position:absolute;inset:0;padding:150px 112px 90px;opacity:0;visibility:hidden;transition:opacity .45s ease, visibility 0s linear .45s}
+.slide.active{opacity:1;visibility:visible;transition:opacity .45s ease}
+.slide .grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(15,15,15,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(15,15,15,.05) 1px,transparent 1px);background-size:64px 64px;pointer-events:none}
+/* chrome */
+#topbar{position:absolute;left:64px;right:64px;top:40px;height:64px;display:flex;align-items:center;gap:28px;z-index:20;font-family:var(--mono);font-size:22px;letter-spacing:.08em}
+#topbar .brand{white-space:nowrap}
+#route{flex:1;position:relative;height:64px}
+#route svg{width:100%;height:100%;overflow:visible}
+#topbar .pill{border:3px solid var(--ink);border-radius:999px;padding:6px 20px;white-space:nowrap;background:var(--cream)}
+#counter{position:absolute;right:64px;bottom:34px;font-family:var(--mono);font-size:20px;letter-spacing:.1em;z-index:20}
+#hint{position:absolute;left:64px;bottom:34px;font-family:var(--mono);font-size:18px;color:var(--mute);z-index:20;letter-spacing:.06em}
+/* type */
+.kicker{display:inline-block;background:var(--ink);color:var(--cream);font-family:var(--mono);font-size:24px;letter-spacing:.14em;padding:8px 18px;margin-bottom:28px}
+h1,h2{font-family:var(--cjk);font-weight:900;line-height:1.12;letter-spacing:-.01em}
+h1{font-size:132px}
+h2{font-size:76px;margin-bottom:36px}
+.en{font-family:var(--disp);text-transform:uppercase;letter-spacing:-.01em;line-height:.92}
+.lede{font-size:36px;line-height:1.55;max-width:1300px;color:var(--ink2)}
+.mono{font-family:var(--mono)}
+.small{font-size:26px;line-height:1.5;color:var(--mute)}
+.hl{background:linear-gradient(transparent 58%, var(--yellow) 58%)}
+/* blocks */
+.card{border:4px solid var(--ink);background:var(--cream);padding:32px 36px}
+.card h3{font-size:40px;font-weight:900;margin-bottom:14px;line-height:1.2}
+.card p,.card li{font-size:29px;line-height:1.55}
+.card ul{list-style:none}
+.card li{padding-left:34px;position:relative;margin:6px 0}
+.card li::before{content:"";position:absolute;left:0;top:.62em;width:16px;height:16px;background:var(--ink)}
+.shadow{box-shadow:20px 20px 0 var(--orange),20px 20px 0 4px var(--ink)}
+.fill-green{background:var(--green);color:var(--cream)} .fill-pink{background:var(--pink)} .fill-orange{background:var(--orange)} .fill-yellow{background:var(--yellow)} .fill-cream2{background:var(--cream2)} .fill-ink{background:var(--ink);color:var(--cream)}
+.row{display:flex;gap:36px}
+.col{display:flex;flex-direction:column;gap:28px}
+.badge{display:inline-block;background:var(--yellow);border:4px solid var(--ink);font-family:var(--disp);font-size:28px;padding:8px 18px;transform:rotate(-4deg);text-transform:uppercase}
+.tag{display:inline-block;font-family:var(--mono);font-size:21px;letter-spacing:.08em;border:3px solid var(--ink);border-radius:999px;padding:4px 16px;margin:4px 8px 4px 0;background:var(--cream)}
+.prompt{background:var(--ink);color:var(--cream);font-family:var(--mono);font-size:26px;line-height:1.6;padding:28px 34px;border-left:16px solid var(--c,var(--green));white-space:pre-wrap}
+.prompt b{color:var(--c,var(--green));font-weight:700}
+.warn{border:4px solid var(--ink);background:var(--cream2);padding:22px 28px;font-size:27px;line-height:1.5;display:flex;gap:18px;align-items:flex-start}
+.warn .ic{font-family:var(--disp);background:var(--pink);border:3px solid var(--ink);width:46px;height:46px;flex:none;display:flex;align-items:center;justify-content:center;font-size:28px}
+/* station sign */
+.sign{display:inline-flex;align-items:stretch;border:4px solid var(--ink);margin-bottom:34px}
+.sign .num{font-family:var(--disp);font-size:96px;line-height:1;padding:18px 26px;background:var(--c);border-right:4px solid var(--ink)}
+.sign .nm{padding:14px 30px;display:flex;flex-direction:column;justify-content:center;background:var(--cream)}
+.sign .nm b{font-size:64px;font-weight:900;line-height:1.05}
+.sign .nm span{font-family:var(--mono);font-size:22px;letter-spacing:.16em;margin-top:6px}
+/* steps */
+.step{opacity:0;transform:translateY(24px);transition:opacity .4s ease,transform .5s cubic-bezier(.2,.7,.2,1)}
+.step.on{opacity:1;transform:none}
+/* timeline */
+.tl{position:relative;height:470px;margin-top:20px}
+.tl .line{position:absolute;left:0;right:0;top:120px;height:22px;background:var(--ink)}
+.tl .st{position:absolute;top:96px;width:300px;transform:translateX(-50%)}
+.tl .dot{width:70px;height:70px;border-radius:50%;background:var(--cream);border:8px solid var(--ink);margin:0 auto}
+.tl .yr{font-family:var(--disp);font-size:60px;text-align:center;position:absolute;top:-92px;left:0;right:0}
+.tl .lb{margin-top:26px;text-align:center;font-size:28px;line-height:1.4}
+.tl .lb b{display:block;font-size:34px;font-weight:900}
+.tl .lb i{display:block;margin-top:8px;font-style:normal;font-family:var(--mono);font-size:19px;letter-spacing:.06em;color:var(--mute)}
+/* video */
+.vidwrap{position:absolute;left:112px;right:112px;top:140px;bottom:96px;border:4px solid var(--ink);background:var(--ink);display:flex;align-items:center;justify-content:center}
+.vidwrap video{width:100%;height:100%;object-fit:contain;background:#000}
+.vidmissing{color:var(--cream);font-size:30px;text-align:center;line-height:1.6;padding:40px}
+#stage.dark #topbar .pill{background:transparent;border-color:var(--cream)}
+/* notes panel (outside stage) */
+#notes{position:fixed;left:0;right:0;bottom:0;max-height:38vh;overflow:auto;background:rgba(15,15,15,.94);color:#EFE9D9;font-size:20px;line-height:1.7;padding:18px 28px 22px;display:none;z-index:50;border-top:4px solid var(--yellow)}
+#notes.show{display:block}
+#notes h4{font-family:var(--mono);font-size:14px;letter-spacing:.14em;color:var(--yellow);margin-bottom:6px}
+aside.notes{display:none}
+/* help */
+#help{position:fixed;right:18px;top:18px;background:rgba(15,15,15,.92);color:#EFE9D9;font:15px/1.8 var(--mono);padding:14px 20px;display:none;z-index:60;border:2px solid var(--yellow)}
+#help.show{display:block}
+@media print{
+  html,body{background:#fff;overflow:visible;height:auto}
+  #viewport{position:static;display:block}
+  #stage{transform:none!important;width:1920px;height:auto;overflow:visible;background:none}
+  .slide{position:relative;opacity:1;visibility:visible;width:1920px;height:1080px;page-break-after:always;background:var(--cream)}
+  .step{opacity:1;transform:none}
+  #topbar,#counter,#hint,#notes,#help{display:none}
+}
+.shot{border:4px solid var(--ink);background:#fff;box-shadow:20px 20px 0 var(--orange),20px 20px 0 4px var(--ink)}
+.shot img{display:block;width:100%}
+.shot.plain{box-shadow:none}
+.shot.crop{overflow:hidden}
+.cap{font-family:var(--mono);font-size:20px;color:var(--mute);margin-top:12px;letter-spacing:.04em}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:36px}
+.qa h3{font-size:34px}
+.qa p{font-size:27px}
+.thumb{border:4px solid var(--ink);background:#fff;overflow:hidden;margin-top:18px}
+.thumb img{display:block;width:100%}
+</style>
+</head>
+<body>
+<div id="viewport"><div id="stage">
+
+<header id="topbar">
+  <span class="brand">AI × RESEARCH · ZOTERO 外掛</span>
+  <div id="route"></div>
+  <span class="pill">ZotMax 新手上路</span>
+</header>
+
+<!-- 1 封面 -->
+<section class="slide" data-sec="0">
+  <div class="grid-bg"></div>
+  <div style="position:absolute;left:112px;top:230px;width:1100px">
+    <span class="kicker">博士生的超前部署 · Zotero 主題</span>
+    <h1 style="font-size:150px;margin-top:6px"><span class="en" style="font-size:168px">ZotMax</span><br>新手上路</h1>
+    <p class="lede" style="margin-top:34px">把 Zotero 裡的文獻、劃線和評讀，自動整理進你的 Obsidian 或 Notion</p>
+  </div>
+  <div class="card fill-yellow shadow" style="position:absolute;right:150px;top:300px;width:440px;height:440px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:18px">
+    <div class="card" style="position:relative;padding:10px 30px;font-size:40px;font-weight:900">Zotero</div>
+    <div style="font-size:44px;font-weight:900">↓ ZotMax</div>
+    <div class="card fill-green" style="position:relative;padding:10px 22px;font-size:30px;font-weight:900;color:var(--cream);white-space:nowrap">Obsidian／Notion</div>
+  </div>
+  <div class="mono small" style="position:absolute;left:112px;bottom:56px">報告人：宋建美 助理教授　｜　協助：游明勳 碩士生</div>
+  <aside class="notes">前面介紹了 Zotero 怎麼收文獻、在 Word 插入引用。這一段介紹 ZotMax：一個裝在 Zotero 上的外掛，把讀過的文獻、畫的重點、寫的評讀，自動整理到 Obsidian 或 Notion。先播 2 分鐘影片。</aside>
+</section>
+
+<!-- 2 影片 -->
+<section class="slide" data-sec="0">
+  <div class="vidwrap" id="vidwrap">
+    <video id="intro-video" src="video.mp4" controls preload="auto" playsinline poster="poster.jpg"></video>
+  </div>
+  <aside class="notes">按空白鍵或點畫面播放影片（約 2 分鐘）。影片裡都是實際操作畫面。</aside>
+</section>
+
+<!-- 3 它是什麼 -->
+<section class="slide" data-sec="1">
+  <div class="grid-bg"></div>
+  <span class="kicker">A · 它是什麼</span>
+  <h2>雜事交班給它，找文獻和寫作留給你</h2>
+  <div class="vs" style="margin-top:20px">
+    <div class="card fill-cream2 step">
+      <h3>交給 ZotMax</h3>
+      <ul><li>書目、劃線、筆記同步到 Obsidian／Notion</li><li>閱讀狀態三邊一致（待讀、閱讀中、已讀、已引用）</li><li>CASP／JBI 評讀表、PRISMA 計數與流程圖</li><li>中文文獻也有 APA 7 格式</li></ul>
+    </div>
+    <div class="card fill-yellow shadow step">
+      <h3>留給你</h3>
+      <ul><li>決定研究問題、找文獻、訂納入排除</li><li>讀全文，自己回答每一題評讀</li><li>寫文獻探討、實證報告和論文</li></ul>
+    </div>
+  </div>
+  <p class="small step" style="margin-top:40px">免費外掛，放在 GitHub 公開下載；大部分功能不需要 AI，也不需要付費服務。</p>
+  <aside class="notes">這是 ZotMax 的定位：它做整理、追蹤、計數這些雜事，不替你判斷、不替你寫。新安裝預設是「研究生引導」模式，會自動找文獻和寫草稿的功能都先關著。</aside>
+</section>
+
+<!-- 4 三個工具 -->
+<section class="slide" data-sec="1">
+  <div class="grid-bg"></div>
+  <span class="kicker">沒用過也沒關係</span>
+  <h2>三個軟體，各用一句話認識</h2>
+  <div class="row" style="align-items:stretch;margin-top:20px">
+    <div class="card step" style="flex:1"><div class="en" style="font-size:72px">Zotero</div><h3 style="margin-top:16px">收文獻的書櫃</h3><p>存書目和 PDF、畫重點、產生引用格式。<b>一定要裝</b>（Zotero 10）。</p></div>
+    <div class="card fill-yellow step" style="flex:1"><div class="en" style="font-size:72px">Obsidian</div><h3 style="margin-top:16px">自己電腦裡的筆記本</h3><p>筆記是一般文字檔，存在自己電腦；建議 1.14 以上，可以看彩色劃線和看板。</p></div>
+    <div class="card fill-pink step" style="flex:1"><div class="en" style="font-size:72px">Notion</div><h3 style="margin-top:16px">線上的資料庫</h3><p>每篇一頁，手機也能看；設定精靈可以幫你建好資料庫。</p></div>
+  </div>
+  <div class="card fill-green shadow step" style="position:relative;display:inline-block;margin-top:40px;padding:14px 34px;color:var(--cream)"><h3 style="font-size:38px">Obsidian、Notion 至少選一個，兩個都要也可以</h3></div>
+  <aside class="notes">很多老師沒用過 Obsidian 和 Notion。可以這樣比喻：Zotero 是書櫃，Obsidian 是放在自己電腦的筆記本，Notion 是放在網路上的資料庫。只想要一個就選一個，不用兩個都學。在意資料放在自己電腦的，選 Obsidian；想要在手機看、跟同學分享的，選 Notion。</aside>
+</section>
+
+<!-- 5 安裝 -->
+<section class="slide" data-sec="2" style="--c:var(--orange)">
+  <div class="grid-bg"></div>
+  <div class="sign"><div class="num">01</div><div class="nm"><b>安裝</b><span>INSTALL</span></div></div>
+  <div class="row" style="align-items:flex-start;gap:60px">
+    <div class="col" style="width:640px;gap:18px">
+      <div class="card step" style="padding:20px 30px"><h3>① 到 GitHub 下載 .xpi</h3><p>Releases 頁面的 zotero-bridge-版本號.xpi（舊名，同一個外掛）</p></div>
+      <div class="card step" style="padding:20px 30px"><h3>② Zotero → 工具 → 附加元件</h3><p>打開外掛管理員</p></div>
+      <div class="card fill-yellow step" style="padding:20px 30px"><h3>③ 齒輪 → Install Plugin From File</h3><p>選剛剛下載的 .xpi，裝好後設定精靈會自動跳出來</p></div>
+    </div>
+    <div style="flex:1;position:relative;height:660px">
+      <div class="shot step" style="width:880px"><img src="img/release.jpg" alt="GitHub Releases 頁面"></div>
+      <div class="shot plain step" style="position:absolute;right:0;top:280px;width:560px"><img src="img/install.jpg" alt="Zotero 外掛管理員的從檔案安裝選單"></div>
+    </div>
+  </div>
+  <aside class="notes">檔名還是舊名 zotero-bridge，是同一個外掛，不用擔心。官網 bobyu89.github.io/ZotMax 有「下載最新版 .xpi」按鈕和一步一步的安裝精靈。</aside>
+</section>
+
+<!-- 6 設定精靈 -->
+<section class="slide" data-sec="3" style="--c:var(--pink)">
+  <div class="grid-bg"></div>
+  <div class="sign"><div class="num">02</div><div class="nm"><b>設定精靈</b><span>SETUP WIZARD</span></div></div>
+  <div class="row" style="align-items:flex-start;gap:40px">
+    <div class="shot step" style="width:500px"><img src="img/wiz2.jpg" alt="設定精靈：選模式"></div>
+    <div class="shot plain step" style="width:500px"><img src="img/wiz3.jpg" alt="設定精靈：筆記要放哪裡"></div>
+    <div class="col" style="flex:1;gap:18px">
+      <div class="card fill-yellow step" style="padding:20px 26px"><h3 style="font-size:34px">新手選「研究生引導」</h3><p style="font-size:25px">自動找文獻、AI 草稿先關著；整理、評讀、搜尋照常能用</p></div>
+      <div class="card step" style="padding:20px 26px"><h3 style="font-size:34px">選筆記放哪裡</h3><p style="font-size:25px">Obsidian：選筆記庫資料夾<br>Notion：精靈會帶你接上資料庫</p></div>
+      <div class="card step" style="padding:20px 26px"><h3 style="font-size:34px">AI 可以先跳過</h3><p style="font-size:25px">每個功能之後都能在設定裡單獨開關</p></div>
+    </div>
+  </div>
+  <aside class="notes">設定精靈共六步：歡迎、選模式、筆記放哪、AI（選用）、同步一次、完成。按 Esc 可以隨時關掉，設定會留著。「進階」模式會打開 AI 草稿、批次 API 和自動追蹤新文獻，熟悉之後再開。</aside>
+</section>
+
+<!-- 7 同步 -->
+<section class="slide" data-sec="4" style="--c:var(--yellow)">
+  <div class="grid-bg"></div>
+  <div class="sign"><div class="num">03</div><div class="nm"><b>同步</b><span>SYNC</span></div></div>
+  <div class="row" style="align-items:flex-start;gap:44px">
+    <div class="shot crop step" style="width:690px;height:640px;"><img src="img/menu.jpg" alt="Zotero 工具列的 ZotMax 選單" style="margin-top:-0px"></div>
+    <div class="shot plain step" style="width:258px"><img src="img/panel.jpg" alt="Zotero 右側的 ZotMax 面板"></div>
+    <div class="col" style="flex:1;gap:18px">
+      <div class="card step" style="padding:20px 26px"><h3 style="font-size:34px">① 選幾篇文獻</h3><p style="font-size:25px">第一次先選 3～5 篇試試</p></div>
+      <div class="card step" style="padding:20px 26px"><h3 style="font-size:34px">② 按工具列的 ZotMax 按鈕</h3><p style="font-size:25px">選「同步到 Notion + Obsidian」</p></div>
+      <div class="card fill-yellow step" style="padding:20px 26px"><h3 style="font-size:34px">不想花 AI 費用</h3><p style="font-size:25px">選「同步但不呼叫 AI」</p></div>
+    </div>
+  </div>
+  <aside class="notes">選單依用途分成同步、整理、找文獻、篩選與評讀、AI 輔助與寫作。右邊是 Zotero 右側面板的 ZotMax 區塊：重點摘要、在 Obsidian／Notion 開啟的連結，以及常用按鈕。記不得功能在哪，按 Ctrl+Shift+P 打開快速指令，輸入關鍵字就找得到。</aside>
+</section>
+
+<!-- 8 Obsidian 成果 -->
+<section class="slide" data-sec="5" style="--c:var(--green)">
+  <div class="grid-bg"></div>
+  <span class="kicker">同步之後 · Obsidian</span>
+  <h2>每篇文獻一份筆記</h2>
+  <div class="row" style="align-items:flex-start;gap:56px">
+    <div class="col" style="width:600px;gap:24px">
+      <div class="shot crop step" style="width:600px;height:288px;"><img src="img/note-a.jpg" alt="筆記的屬性欄：研究設計、證據等級、PICO" style="margin-top:-465px"></div>
+      <div class="shot crop step" style="width:600px;height:360px;box-shadow:none"><img src="img/note-b.jpg" alt="筆記最上方的重點摘要" style="margin-top:-112px"></div>
+    </div>
+    <div class="col" style="flex:1;gap:16px">
+      <div class="card fill-yellow step" style="padding:18px 28px"><h3 style="font-size:36px">研究設計、證據等級、PICO</h3><p style="font-size:25px">寫在屬性欄，可以排序、篩選、做成看板</p></div>
+      <div class="card step" style="padding:18px 28px"><h3 style="font-size:36px">最上方是重點摘要</h3><p style="font-size:25px">劃線、評讀表、AI 筆記收在下面，點開才展開</p></div>
+      <div class="card step" style="padding:18px 28px"><h3 style="font-size:36px">劃線點得回 PDF 原位置</h3><p style="font-size:25px">引用前回原文核對很方便</p></div>
+      <div class="card fill-green step" style="padding:18px 28px;color:var(--cream)"><h3 style="font-size:36px">重新同步不會蓋掉你寫的內容</h3><p style="font-size:25px">ZotMax 只更新它自己產生的區塊</p></div>
+    </div>
+  </div>
+  <aside class="notes">左上是筆記的屬性欄，研究設計、證據等級、JBI 等級、PICO 都在這裡。左下是重點摘要。筆記裡標著「此區塊由 ZotMax 自動產生」的範圍以外，都是你自己的空間，重新同步不會覆蓋。示範的是 Osman 等人 2026 年的系統性回顧。</aside>
+</section>
+
+<!-- 9 Notion 成果 -->
+<section class="slide" data-sec="5" style="--c:var(--green)">
+  <div class="grid-bg"></div>
+  <span class="kicker">同步之後 · Notion 與閱讀狀態</span>
+  <h2>每篇一頁，閱讀進度三邊一致</h2>
+  <div class="row" style="align-items:flex-start;gap:50px">
+    <div class="shot step" style="width:1040px"><img src="img/notion.jpg" alt="Notion 的 Zotero 文獻資料庫"></div>
+    <div class="col" style="flex:1;gap:18px">
+      <div class="card step" style="padding:18px 26px"><h3 style="font-size:32px">Notion 欄位自動建立</h3><p style="font-size:25px">APA、摘要、評讀結果、評讀工具</p></div>
+      <div class="card fill-yellow step" style="padding:18px 26px"><h3 style="font-size:32px">四種閱讀狀態</h3><p style="font-size:25px">待讀、閱讀中、已讀、已引用</p></div>
+      <div class="card step" style="padding:18px 26px"><h3 style="font-size:32px">改一邊，三邊跟著改</h3><p style="font-size:25px">Obsidian 另有閱讀進度看板，拖曳卡片就能改</p></div>
+    </div>
+  </div>
+  <aside class="notes">畫面是 Notion 資料庫；Obsidian 那邊另有一個閱讀進度看板（影片裡有出現）。在任何一邊改閱讀狀態，下次同步時另外兩邊會跟著更新。請不要改 Notion 裡的英文欄位名稱，外掛靠這些名稱對應資料。</aside>
+</section>
+
+<!-- 10 寫回顧論文 -->
+<section class="slide" data-sec="6">
+  <div class="grid-bg"></div>
+  <span class="kicker">寫回顧論文時</span>
+  <h2>它還能幫你做這些</h2>
+  <div class="row" style="align-items:stretch;gap:24px;margin-top:10px">
+    <div class="card step" style="flex:1;padding:24px 26px"><h3 style="font-size:34px">篩選 · PRISMA</h3><p style="font-size:24px">標題摘要、全文篩選存成標籤，產生 PRISMA 2020 流程圖</p><div class="thumb"><img src="img/m-screen.jpg" alt="篩選與評讀選單"></div></div>
+    <div class="card fill-yellow step" style="flex:1;padding:24px 26px"><h3 style="font-size:34px">CASP · JBI 評讀</h3><p style="font-size:24px">逐題記下答案與根據，雙人評讀可算 Cohen's κ</p><div class="thumb" style="height:200px"><img src="img/appraisal.jpg" alt="文獻評讀表" style="margin-top:-60px"></div></div>
+    <div class="card step" style="flex:1;padding:24px 26px"><h3 style="font-size:34px">概念串成網</h3><p style="font-size:24px">概念卡片把多篇文獻連起來，在 Obsidian 看關聯圖</p><div class="thumb" style="height:200px"><img src="img/graph.jpg" alt="Obsidian 關聯圖"></div></div>
+    <div class="card fill-pink shadow step" style="flex:1;padding:24px 26px"><h3 style="font-size:34px">進度報告</h3><p style="font-size:24px">整理閱讀與篩選進度給指導教授，不需要 AI</p><div class="thumb"><img src="img/m-report.jpg" alt="AI 輔助與寫作選單"></div></div>
+  </div>
+  <p class="small step" style="margin-top:34px">另有：醫學資料庫搜尋與 PICO 檢索式、PubMed 新文獻追蹤、引文追蹤（OpenAlex）、文獻比較表。</p>
+  <aside class="notes">做系統性回顧、範圍回顧、EBHC 報告或論文第二章時特別有用。要提醒：外掛只負責記錄和計數，納入、排除的決定還是由你自己判斷。</aside>
+</section>
+
+<!-- 11 AI 怎麼用 -->
+<section class="slide" data-sec="7" style="--c:var(--orange)">
+  <div class="grid-bg"></div>
+  <span class="kicker">AI 是選用的</span>
+  <h2>要用 AI，先知道這三件事</h2>
+  <div class="row" style="align-items:flex-start;gap:44px">
+    <div class="shot step" style="width:600px"><img src="img/aikey.jpg" alt="設定精靈的 AI 步驟"></div>
+    <div class="shot plain step" style="width:600px"><img src="img/draft.jpg" alt="評讀表上的「AI 初評，尚未核對」"></div>
+  </div>
+  <div class="row" style="margin-top:44px;gap:22px">
+    <div class="card step" style="flex:1;padding:22px 26px"><h3 style="font-size:32px">自備 API 金鑰</h3><p style="font-size:25px">Claude 或 OpenAI，依用量付費；Claude Pro、ChatGPT Plus 訂閱不能用</p></div>
+    <div class="card step" style="flex:1;padding:22px 26px"><h3 style="font-size:32px">大量產生先估費用</h3><p style="font-size:25px">批次 API 約半價、最久等 24 小時；大量作業前會請你確認</p></div>
+    <div class="card fill-yellow step" style="flex:1;padding:22px 26px"><h3 style="font-size:32px">產出都是初稿</h3><p style="font-size:25px">數字和引用一定回原文核對</p></div>
+  </div>
+  <aside class="notes">API 金鑰存在 Zotero 的密碼管理員，不會寫進設定檔。AI 筆記會寫研究設計、樣本、PICO、證據等級和評讀初稿，但都標示為初稿；評讀表上會寫「AI 初評，尚未核對」，核對完要自己勾選「我已核對」。</aside>
+</section>
+
+<!-- 12 三件事 -->
+<section class="slide" data-sec="8">
+  <div class="grid-bg"></div>
+  <span class="kicker">方向盤在你手上</span>
+  <h2>用 ZotMax，記住三件事</h2>
+  <div class="row" style="align-items:stretch">
+    <div class="card fill-orange step" style="flex:1"><div class="en" style="font-size:96px">01</div><h3 style="margin-top:20px;font-size:52px">從引導模式開始</h3><p>先用不花錢的整理與同步，熟了再開 AI</p></div>
+    <div class="card fill-yellow step" style="flex:1"><div class="en" style="font-size:96px">02</div><h3 style="margin-top:20px;font-size:52px">回原文核對</h3><p>AI 筆記和評讀是初稿；數字、引用自己翻回 PDF 看</p></div>
+    <div class="card fill-green shadow step" style="flex:1"><div class="en" style="font-size:96px">03</div><h3 style="margin-top:20px;font-size:52px">判斷留給自己</h3><p>納入排除、評讀結果由你決定；它只負責記錄和計數</p></div>
+  </div>
+  <aside class="notes">第二點對研究誠信最重要：AI 可能誤解結果或過度概括，掃描版 PDF 沒有文字層時效果也會變差。</aside>
+</section>
+
+<!-- 13 Q&A -->
+<section class="slide" data-sec="8">
+  <div class="grid-bg"></div>
+  <span class="kicker">老師最常問</span>
+  <h2>Q&amp;A</h2>
+  <div class="vs qa">
+    <div class="card step"><h3>要付費嗎？</h3><p>外掛免費，大部分功能不用 AI。AI 功能用自己的 API 帳號另外計費。</p></div>
+    <div class="card step"><h3>只用 Obsidian 或只用 Notion 可以嗎？</h3><p>可以，至少接一個就能用；兩個都接也可以。</p></div>
+    <div class="card step"><h3>文獻會被送給 AI 嗎？</h3><p>只有開啟 AI 功能並設定金鑰時才會送；自動同步不呼叫 AI。病人資料不要放進 AI 筆記。</p></div>
+    <div class="card step"><h3>中文文獻可以嗎？</h3><p>有中文 APA 7 專用格式，也能檢查並修正匯入資料的常見錯誤，改錯可以復原。</p></div>
+  </div>
+  <aside class="notes">其他常見問題：Zotero 11 推出時外掛可能暫時停用，確認相容後會恢復；OpenAlex 對中文期刊和較舊文獻的資料可能不完整。有問題可以用外掛裡的「回報問題」，或到 GitHub 開 Issue。</aside>
+</section>
+
+<!-- 14 結尾 -->
+<section class="slide" data-sec="9" style="background:var(--green);color:var(--cream)">
+  <div style="position:absolute;left:112px;top:240px">
+    <div style="font-size:110px;font-weight:900;line-height:1.15">雜事交班給 ZotMax，</div>
+    <div style="display:inline-block;margin-top:34px;background:var(--yellow);color:var(--ink);border:4px solid var(--ink);padding:10px 36px;font-size:96px;font-weight:900;line-height:1.2">判斷留給你。</div>
+  </div>
+  <div class="card shadow" style="position:absolute;right:150px;top:300px;width:360px;padding:26px;text-align:center">
+    <img src="img/qr.jpg" alt="ZotMax 官網 QR code" style="width:100%;display:block">
+    <div class="mono" style="font-size:22px;font-weight:700;margin-top:16px;color:var(--ink);white-space:nowrap">bobyu89.github.io/ZotMax</div>
+  </div>
+  <aside class="notes">QR code 連到 ZotMax 官網，有安裝精靈、下載按鈕，也有不用安裝的醫學文獻快速搜尋和評讀表網頁工具，可以請大家現場掃。</aside>
+</section>
+
+
+<div id="counter">01 • 14</div>
+<div id="hint">← → 換頁　F 全螢幕　N 講稿　? 說明</div>
+</div></div>
+<div id="notes"><h4>SPEAKER NOTES</h4><div id="notes-body"></div></div>
+<div id="help">← / → / 空白鍵：下一步／上一步<br>Home / End：第一頁／最後一頁<br>F：全螢幕　N：顯示講稿<br>影片頁：空白鍵或 P 播放／暫停<br>數字＋Enter：跳到指定頁</div>
+
+<script>
+(function(){
+  const stage = document.getElementById('stage');
+  const slides = [...document.querySelectorAll('.slide')];
+  const counter = document.getElementById('counter');
+  const notesBox = document.getElementById('notes');
+  const notesBody = document.getElementById('notes-body');
+  const video = document.getElementById('intro-video');
+  const SECS = [
+    {n:'起點', c:'var(--ink)'}, {n:'它是什麼', c:'var(--ink)'}, {n:'安裝', c:'var(--orange)'},
+    {n:'精靈', c:'var(--pink)'}, {n:'同步', c:'var(--yellow)'}, {n:'成果', c:'var(--green)'},
+    {n:'回顧', c:'var(--ink)'}, {n:'AI', c:'var(--orange)'}, {n:'規則', c:'var(--ink)'}, {n:'下一步', c:'var(--green)'}
+  ];
+  let idx = 0;
+
+  function fit(){
+    const s = Math.min(window.innerWidth/1920, window.innerHeight/1080);
+    stage.style.transform = 'scale(' + s + ')';
+  }
+  window.addEventListener('resize', fit); fit();
+
+  function drawRoute(sec){
+    const W = 1000, y = 32, gap = W/(SECS.length-1);
+    let svg = '<svg viewBox="-20 0 1040 64" preserveAspectRatio="xMidYMid meet">';
+    svg += '<line x1="0" y1="'+y+'" x2="'+W+'" y2="'+y+'" stroke="#0F0F0F" stroke-width="8"/>';
+    for(let i=0;i<SECS.length-1;i++){
+      if(i < sec) svg += '<line x1="'+(i*gap)+'" y1="'+y+'" x2="'+((i+1)*gap)+'" y2="'+y+'" stroke="'+(SECS[i+1].c)+'" stroke-width="4"/>';
+    }
+    SECS.forEach((s,i)=>{
+      const x = i*gap, cur = i===sec, done = i<sec;
+      const fill = cur ? s.c : (done ? '#0F0F0F' : '#EFE9D9');
+      svg += '<circle cx="'+x+'" cy="'+y+'" r="'+(cur?13:9)+'" fill="'+fill+'" stroke="#0F0F0F" stroke-width="4"/>';
+      if(cur) svg += '<text x="'+x+'" y="'+(y-20)+'" text-anchor="middle" font-family="Noto Sans TC, Microsoft JhengHei" font-weight="900" font-size="18" fill="#0F0F0F">'+s.n+'</text>';
+    });
+    svg += '</svg>';
+    document.getElementById('route').innerHTML = svg;
+  }
+
+  function steps(s){ return [...s.querySelectorAll('.step')]; }
+  function show(i, fromBack){
+    idx = Math.max(0, Math.min(slides.length-1, i));
+    slides.forEach((s,k)=>s.classList.toggle('active', k===idx));
+    const st = steps(slides[idx]);
+    st.forEach(e=>e.classList.toggle('on', !!fromBack));
+    const sec = +slides[idx].dataset.sec;
+    drawRoute(sec);
+    const dark = slides[idx].style.background.indexOf('green') >= 0;
+    document.getElementById('topbar').style.color = dark ? '#EFE9D9' : '';
+    stage.classList.toggle('dark', dark);
+    counter.style.color = dark ? '#EFE9D9' : '';
+    counter.textContent = String(idx+1).padStart(2,'0') + ' • ' + String(slides.length).padStart(2,'0');
+    const n = slides[idx].querySelector('aside.notes');
+    notesBody.textContent = n ? n.textContent.trim() : '';
+    if (video && !slides[idx].contains(video)) video.pause();
+    try { history.replaceState(null,'','#'+(idx+1)); } catch(e){}
+  }
+  function next(){
+    const hidden = steps(slides[idx]).filter(e=>!e.classList.contains('on'));
+    if(hidden.length){ hidden[0].classList.add('on'); return; }
+    if(idx < slides.length-1) show(idx+1);
+  }
+  function prev(){
+    const shown = steps(slides[idx]).filter(e=>e.classList.contains('on'));
+    if(shown.length){ shown[shown.length-1].classList.remove('on'); return; }
+    if(idx > 0) show(idx-1, true);
+  }
+  let typed = '';
+  document.addEventListener('keydown', e=>{
+    const onVideo = video && slides[idx].contains(video);
+    if(/^[0-9]$/.test(e.key)){ typed += e.key; return; }
+    if(e.key==='Enter' && typed){ show(parseInt(typed,10)-1); typed=''; return; }
+    typed = '';
+    if((e.key===' ' || e.key==='p' || e.key==='P') && onVideo){ e.preventDefault(); video.paused ? video.play() : video.pause(); return; }
+    if(['ArrowRight','PageDown',' '].includes(e.key)){ e.preventDefault(); next(); }
+    else if(['ArrowLeft','PageUp','Backspace'].includes(e.key)){ e.preventDefault(); prev(); }
+    else if(e.key==='Home') show(0);
+    else if(e.key==='End') show(slides.length-1);
+    else if(e.key==='f' || e.key==='F'){ document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(()=>{}); }
+    else if(e.key==='n' || e.key==='N') notesBox.classList.toggle('show');
+    else if(e.key==='?') document.getElementById('help').classList.toggle('show');
+  });
+  document.getElementById('viewport').addEventListener('click', e=>{
+    if(e.target.closest('video') || e.target.closest('a')) return;
+    const x = e.clientX / window.innerWidth;
+    x < 0.25 ? prev() : next();
+  });
+  if (video) video.addEventListener('error', ()=>{
+    document.getElementById('vidwrap').innerHTML = '<div class="vidmissing">找不到影片檔 video.mp4<br>請把影片放在與 index.html 同一個資料夾</div>';
+  });
+  const start = parseInt((location.hash||'').slice(1),10);
+  show(isNaN(start) ? 0 : start-1);
+})();
+</script>
+</body>
+</html>

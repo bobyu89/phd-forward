@@ -147,6 +147,15 @@ export const resources: Resource[] = [
     external: true,
   },
   {
+    topic: "Zotero",
+    title: "Zotero 外掛｜ZotMax 簡報",
+    kind: "簡報",
+    description: "安裝、設定精靈、同步三步驟與真實截圖，附 AI 使用提醒、三件要記住的事與 Q&A，內嵌介紹影片。",
+    href: "decks/zotmax-intro/index.html",
+    meta: "14 頁",
+    external: true,
+  },
+  {
     topic: "Obsidian",
     title: "Obsidian 新手上路｜介紹影片",
     kind: "影片",
