@@ -209,4 +209,22 @@ export const resources: Resource[] = [
     meta: "14 頁",
     external: true,
   },
+  {
+    topic: "Notion",
+    title: "延伸｜OGSM × 甘特圖管論文",
+    kind: "影片",
+    description: "一頁論文中心：用 OGSM 把論文拆成十個里程碑，甘特圖排到這一週，週報和老師對齊。畫面為示範資料。",
+    href: "decks/thesis-ogsm/video.mp4",
+    meta: "1 分 53 秒",
+    external: true,
+  },
+  {
+    topic: "Notion",
+    title: "延伸｜OGSM × 甘特圖管論文簡報",
+    kind: "簡報",
+    description: "寫好一句話的 O、十個里程碑與衡量指標、IRB 階段的甘特圖範例、每週節奏、三件事與 Q&A，內嵌介紹影片。",
+    href: "decks/thesis-ogsm/index.html",
+    meta: "15 頁",
+    external: true,
+  },
 ];
