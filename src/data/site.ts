@@ -236,4 +236,13 @@ export const resources: Resource[] = [
     meta: "3 分 51 秒",
     external: true,
   },
+  {
+    topic: "Notion",
+    title: "延伸｜從零建一套論文管理系統簡報",
+    kind: "簡報",
+    description: "平台首頁與四個管理區、學習專區、三個設計邏輯，七步驟建置（關聯圖到權限）、上線檢查清單、常見問題與三件事，內嵌介紹影片。",
+    href: "decks/lab-system/index.html",
+    meta: "18 頁",
+    external: true,
+  },
 ];
