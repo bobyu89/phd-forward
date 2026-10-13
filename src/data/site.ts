@@ -227,4 +227,13 @@ export const resources: Resource[] = [
     meta: "15 頁",
     external: true,
   },
+  {
+    topic: "Notion",
+    title: "延伸｜從零建一套論文管理系統",
+    kind: "影片",
+    description: "先導覽研究室平台首頁的設計邏輯與各區功能，再用七步驟從零建好共用中心：關聯圖、資料庫、自動回寫、成員範本、甘特圖、儀表板、權限與節奏。畫面為示範資料。",
+    href: "decks/lab-system/video.mp4",
+    meta: "3 分 51 秒",
+    external: true,
+  },
 ];
