@@ -215,7 +215,7 @@ export const resources: Resource[] = [
     kind: "影片",
     description: "一頁論文中心：用 OGSM 把論文拆成十個里程碑，甘特圖排到這一週，週報和老師對齊。畫面為示範資料。",
     href: "decks/thesis-ogsm/video.mp4",
-    meta: "1 分 53 秒",
+    meta: "1 分 57 秒",
     external: true,
   },
   {
