@@ -1,10 +1,8 @@
 import { useEffect, useState, type ReactNode } from "react";
-import { LoopingVideo } from "./components/LoopingVideo";
+import { HairlineLibrary } from "./components/HairlineLibrary";
+import { Shelf, shelfTotals, topicSlug } from "./components/Shelf";
 import { linkGroups } from "./data/links";
-import { schedule, scheduleTotal } from "./data/schedule";
 import { resources, site, topics, type Resource, type ResourceKind, type Topic, type TopicId } from "./data/site";
-
-const HERO_VIDEO = "media/hero-landscape.mp4";
 
 // ── 路由：用網址 # 後面的路徑切換子分頁（GitHub Pages 不需要伺服器設定）──
 
@@ -14,10 +12,7 @@ interface Route {
   topic?: TopicId;
 }
 
-/** 主題在網址裡的代稱：「開場」→ opening，其他用小寫英文 */
-function topicSlug(id: TopicId) {
-  return id === "開場" ? "opening" : id.toLowerCase();
-}
+/** 主題在網址裡的代稱見 Shelf.tsx 的 topicSlug：「開場」→ opening，其他用小寫英文 */
 function topicHref(id: TopicId) {
   return `#/topics/${topicSlug(id)}`;
 }
@@ -26,7 +21,8 @@ function topicHref(id: TopicId) {
 function parseHash(hash: string): { route: Route; anchor?: string } | null {
   const h = hash.replace(/^#/, "");
   if (h === "" || h === "/" || h === "top") return { route: { page: "home" } };
-  if (h === "film" || h === "schedule") return { route: { page: "home" }, anchor: h };
+  if (h === "film" || h === "shelf") return { route: { page: "home" }, anchor: h };
+  if (h === "schedule") return { route: { page: "home" }, anchor: "shelf" }; // 舊的時程表連結改到教材書架
   if (h === "/topics" || h === "topics") return { route: { page: "topics" } };
   if (h === "/links" || h === "links") return { route: { page: "links" } };
   if (h === "/speakers" || h === "speakers") return { route: { page: "speakers" } };
@@ -85,7 +81,7 @@ function ArrowIcon({ className = "" }: { className?: string }) {
 function Navbar({ current }: { current: Page }) {
   const active = current === "topic" ? "topics" : current;
   return (
-    <nav className="relative z-10 mx-auto max-w-7xl px-5 py-6 sm:px-8">
+    <nav className="relative z-10 mx-auto max-w-7xl px-5 pt-5 pb-3 sm:px-8 sm:py-6">
       <div className="flex items-center justify-between gap-4">
         <a href="#/" className="font-display text-2xl tracking-tight whitespace-nowrap text-[#000000] sm:text-3xl">
           {site.name}
@@ -106,22 +102,20 @@ function Navbar({ current }: { current: Page }) {
           ))}
         </ul>
         <a
-          href="#schedule"
+          href="#shelf"
           className="shrink-0 rounded-full bg-[#000000] px-6 py-2.5 text-sm text-[#FFFFFF] transition-transform duration-200 ease-out hover:scale-[1.03] active:scale-[0.98]"
         >
-          課程時程
+          教材書架
         </a>
       </div>
-      {/* 手機版：導覽改成一排可點的標籤 */}
-      <ul className="mt-4 flex flex-wrap gap-2 md:hidden">
+      {/* 手機版：導覽改成一排文字連結，目前所在頁用黑字 */}
+      <ul className="mt-3 flex flex-wrap gap-x-6 gap-y-1 md:hidden">
         {NAV.map((item) => (
           <li key={item.href}>
             <a
               href={item.href}
               aria-current={item.page === active ? "page" : undefined}
-              className={`block rounded-full border px-4 py-1.5 text-sm ${
-                item.page === active ? "border-[#000000] bg-[#000000] text-[#FFFFFF]" : "border-line bg-white/75 text-[#3F3F3F]"
-              }`}
+              className={`block py-2 text-base ${item.page === active ? "text-[#000000]" : "text-[#6F6F6F]"}`}
             >
               {item.label}
             </a>
@@ -132,36 +126,48 @@ function Navbar({ current }: { current: Page }) {
   );
 }
 
+/** 大標題：每一行各自從基線下方升起（masked line reveal），行尾在這裡手動斷好 */
+const HEADLINE = ["文獻讀得完，", "論文寫得出"];
+
 function Hero() {
   return (
     <section
-      className="relative z-10 flex flex-col items-center justify-center px-6 pb-40 text-center"
-      style={{ paddingTop: "calc(8rem - 75px)" }}
+      aria-labelledby="hero-title"
+      className="relative z-10 mx-auto grid max-w-7xl gap-12 px-5 pt-8 pb-16 sm:px-8 md:pt-12 lg:grid-cols-12 lg:items-center lg:gap-8 lg:pt-10 lg:pb-24"
     >
-      <h1
-        className="animate-fade-rise max-w-7xl font-display text-5xl font-normal text-balance text-[#000000] sm:text-7xl md:text-8xl"
-        style={{ lineHeight: 1.08, letterSpacing: "-2.46px" }}
-      >
-        用 <em className="pr-1 text-[#6F6F6F]">AI</em> 來幫助你
-        <br />
-        掌握<span className="text-[#6F6F6F]">人生</span>跟<span className="text-[#6F6F6F]">課業</span>
-      </h1>
-      <p className="animate-fade-rise-delay mt-8 max-w-2xl text-base leading-relaxed text-pretty text-[#6F6F6F] sm:text-lg">
-        {site.description}
-      </p>
-      <a
-        href="#film"
-        className="animate-fade-rise-delay-2 mt-12 rounded-full bg-[#000000] px-14 py-5 text-base text-[#FFFFFF] transition-transform duration-200 ease-out hover:scale-[1.03] active:scale-[0.98]"
-      >
-        觀看開場影片
-      </a>
-      <p className="animate-fade-rise-delay-2 mt-8 flex flex-wrap justify-center gap-x-5 gap-y-1 rounded-full bg-white/75 px-6 py-2 text-sm text-[#3F3F3F] backdrop-blur-md">
-        {site.speakers.map((s) => (
-          <span key={s.name} className="whitespace-nowrap">
-            {s.role}｜{s.name} {s.title}
-          </span>
-        ))}
-      </p>
+      <div className="lg:col-span-6">
+        <h1
+          id="hero-title"
+          className="font-display text-[clamp(2.75rem,12vw,5.5rem)] font-medium whitespace-nowrap text-[#000000] lg:text-[clamp(3.25rem,5.6vw,5.75rem)]"
+          style={{ lineHeight: 1.08, letterSpacing: "-0.02em" }}
+        >
+          {HEADLINE.map((line, i) => (
+            <span key={line} className="mask-line">
+              <span style={{ animationDelay: `${i * 110}ms` }}>{line}</span>
+            </span>
+          ))}
+        </h1>
+        <p className="animate-fade-rise-delay mt-8 max-w-[26rem] text-lg leading-relaxed text-pretty text-[#000000] sm:text-xl">
+          {site.description}
+        </p>
+        <div className="animate-fade-rise-delay mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
+          <a
+            href="#film"
+            className="rounded-full bg-[#000000] px-8 py-4 text-base text-[#FFFFFF] transition-transform duration-200 ease-out hover:scale-[1.03] active:scale-[0.98]"
+          >
+            觀看開場影片
+          </a>
+          <a href="#shelf" className="text-base text-[#000000] underline decoration-[#BDBAB3] underline-offset-[6px] hover:decoration-[#000000]">
+            直接挑一個工具
+          </a>
+        </div>
+        <p className="animate-fade-rise-delay-2 mt-10 text-sm text-[#5A5A5A]">
+          {site.speakers.map((s) => `${s.role}　${s.name} ${s.title}`).join("　/　")}
+        </p>
+      </div>
+      <div className="animate-fade-rise-delay lg:col-span-6">
+        <HairlineLibrary className="mx-auto block w-full max-w-[44rem]" />
+      </div>
     </section>
   );
 }
@@ -180,15 +186,15 @@ function SectionTitle({ id, children }: { id: string; children: ReactNode }) {
 
 function Film() {
   return (
-    <section id="film" aria-labelledby="film-title" className="mx-auto max-w-7xl scroll-mt-6 px-5 pt-12 pb-16 sm:px-8 sm:pt-24 sm:pb-28">
-      <div className="mb-10 grid gap-6 md:grid-cols-[1fr_minmax(0,26rem)] md:items-end">
+    <section id="film" aria-labelledby="film-title" className="reveal mx-auto max-w-7xl scroll-mt-6 px-5 pt-20 pb-20 sm:px-8 sm:pt-32 sm:pb-32">
+      <div className="mb-10 grid gap-6 lg:grid-cols-[1fr_minmax(0,26rem)] lg:items-end">
         <SectionTitle id="film-title">{site.film.title}</SectionTitle>
-        <p className="text-base leading-relaxed text-pretty text-[#6F6F6F]">
+        <p className="text-lg leading-relaxed text-pretty text-[#000000]">
           {site.film.caption}
-          <span className="mt-2 block text-sm tabular-nums text-[#000000]">{site.film.duration}　·　中文旁白與字幕</span>
+          <span className="mt-2 block text-sm tabular-nums text-[#6F6F6F]">{site.film.duration}　·　中文旁白與字幕</span>
         </p>
       </div>
-      <div className="overflow-hidden rounded-[28px] bg-[#000000] shadow-[0_40px_90px_-50px_rgba(0,0,0,0.55)]">
+      <div className="overflow-hidden bg-[#000000]">
         <video
           className="block aspect-video w-full"
           src={site.film.src}
@@ -203,72 +209,19 @@ function Film() {
   );
 }
 
-const pad2 = (n: number) => String(n).padStart(2, "0");
-
-/** 時程表每一段的開始、結束分鐘 */
-const timedSchedule = (() => {
-  let t = 0;
-  return schedule.map((item) => {
-    const start = t;
-    t += item.minutes;
-    return { ...item, start, end: t };
-  })
-})();
-
-function Schedule() {
+function ShelfSection() {
   return (
-    <section id="schedule" aria-labelledby="schedule-title" className="mx-auto max-w-7xl scroll-mt-6 px-5 py-16 sm:px-8 sm:py-28">
-      <div className="mb-10 grid gap-6 md:grid-cols-[1fr_minmax(0,26rem)] md:items-end">
-        <SectionTitle id="schedule-title">時程表</SectionTitle>
-        <p className="text-base leading-relaxed text-pretty text-[#6F6F6F]">
-          全程 <span className="text-[#000000] tabular-nums">{scheduleTotal}</span> 分鐘。點主題，可以看該主題的影片、簡報與學習連結。
-        </p>
+    <section id="shelf" aria-labelledby="shelf-title" className="reveal scroll-mt-6 bg-[#F2F2EF] py-20 sm:py-32">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+        <div className="mb-10 grid gap-6 lg:grid-cols-[1fr_minmax(0,26rem)] lg:items-end">
+          <SectionTitle id="shelf-title">教材書架</SectionTitle>
+          <p className="text-lg leading-relaxed text-pretty text-[#000000]">
+            開場加上五個工具，目前共 <span className="tabular-nums">{shelfTotals.videos}</span> 支影片、
+            <span className="tabular-nums">{shelfTotals.decks}</span> 份簡報。點一本書背，看它教什麼。
+          </p>
+        </div>
+        <Shelf />
       </div>
-      {/* 每一段的長度比例 */}
-      <div className="mb-10 flex h-3 overflow-hidden rounded-full" aria-hidden="true">
-        {timedSchedule.map((item, i) => (
-          <span
-            key={item.title}
-            className={i % 2 ? "bg-[#BDBAB3]" : "bg-[#000000]"}
-            style={{ width: `${(item.minutes / scheduleTotal) * 100}%` }}
-          />
-        ))}
-      </div>
-      <ol className="border-b border-line">
-        {timedSchedule.map((item) => {
-          const inner = (
-            <>
-              <span className="text-sm text-[#6F6F6F] tabular-nums md:text-base">
-                {pad2(item.start)}–{pad2(item.end)} 分
-              </span>
-              <span className="min-w-0">
-                <span className="block font-display text-3xl text-[#000000] sm:text-4xl" style={{ lineHeight: 1.15 }}>
-                  {item.title}
-                </span>
-                <span className="mt-1 block text-base leading-relaxed text-pretty text-[#6F6F6F]">{item.note}</span>
-              </span>
-              <span className="flex items-center gap-4 text-sm text-[#6F6F6F] tabular-nums">
-                {item.minutes} 分鐘
-                {item.topic && (
-                  <ArrowIcon className="size-6 shrink-0 text-[#000000] transition-transform duration-300 ease-out group-hover:translate-x-1.5" />
-                )}
-              </span>
-            </>
-          );
-          const cls = "grid items-center gap-2 py-7 md:grid-cols-[9rem_minmax(0,1fr)_auto] md:gap-8";
-          return (
-            <li key={item.title} className="border-t border-line">
-              {item.topic ? (
-                <a href={topicHref(item.topic)} className={`group -mx-4 rounded-2xl px-4 transition-colors duration-200 hover:bg-[#F6F5F2] ${cls}`}>
-                  {inner}
-                </a>
-              ) : (
-                <div className={cls}>{inner}</div>
-              )}
-            </li>
-          );
-        })}
-      </ol>
     </section>
   );
 }
@@ -425,7 +378,6 @@ function LinkList({ links }: { links: (typeof linkGroups)[number]["links"] }) {
 function TopicPage({ id }: { id: TopicId }) {
   const i = topics.findIndex((t) => t.id === id);
   const topic = topics[i];
-  const slot = timedSchedule.find((s) => s.topic === id);
   const group = linkGroups.find((g) => g.name === topic.id || g.name === topic.name);
   const prev = topics[i - 1];
   const next = topics[i + 1];
@@ -438,11 +390,6 @@ function TopicPage({ id }: { id: TopicId }) {
         <div>
           <SectionTitle id="topic-title">{topic.name}</SectionTitle>
           <p className="mt-5 max-w-md text-base leading-relaxed text-pretty text-[#6F6F6F]">{topic.summary}</p>
-          {slot && (
-            <p className="mt-6 inline-block rounded-full border border-line px-4 py-1.5 text-sm text-[#3F3F3F] tabular-nums">
-              課程時程　{pad2(slot.start)}–{pad2(slot.end)} 分（{slot.minutes} 分鐘）
-            </p>
-          )}
         </div>
         <TopicResources topic={topic} />
       </div>
@@ -523,8 +470,30 @@ function Footer() {
   );
 }
 
+/** 區塊進場：加上 is-in 後，區塊裡的標題、文字、圖片依序升起；只執行一次 */
+function useReveal(key: string) {
+  useEffect(() => {
+    const els = Array.from(document.querySelectorAll<HTMLElement>(".reveal:not(.is-in)"));
+    if (!("IntersectionObserver" in window) || !els.length) return;
+    document.documentElement.classList.add("js-reveal");
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries)
+          if (e.isIntersecting) {
+            e.target.classList.add("is-in");
+            io.unobserve(e.target);
+          }
+      },
+      { rootMargin: "0px 0px -10% 0px" },
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, [key]);
+}
+
 export default function App() {
   const route = useRoute();
+  useReveal(route.page);
   useEffect(() => {
     const t = route.page === "topic" && route.topic ? topics.find((x) => x.id === route.topic)?.name : PAGE_TITLES[route.page];
     document.title = route.page === "home" ? site.name : `${t}｜${site.name}`;
@@ -539,8 +508,7 @@ export default function App() {
         跳到主要內容
       </a>
       {route.page === "home" ? (
-        <header id="top" className="relative min-h-screen w-full overflow-hidden">
-          <LoopingVideo src={HERO_VIDEO} />
+        <header id="top" className="w-full bg-[#F2F2EF]">
           <Navbar current="home" />
           <Hero />
         </header>
@@ -553,7 +521,7 @@ export default function App() {
         {route.page === "home" && (
           <>
             <Film />
-            <Schedule />
+            <ShelfSection />
           </>
         )}
         {route.page === "topics" && <TopicsPage />}

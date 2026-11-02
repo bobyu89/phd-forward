@@ -62,3 +62,116 @@ body {
     animation: none;
   }
 }
+
+/* ── hairline illustration: one stroke weight, colour says what is lit ── */
+.hairline {
+  --hl-plate: #f2f2ef; /* the hero field the figure sits on */
+  --hl-hi: #000000; /* what is lit */
+  --hl-edge: #6f6b64; /* silhouettes */
+  --hl-mid: #a8a399; /* creases, page edges, lines of text */
+  --hl-lo: #c4beb3; /* what recedes: idle citation lines */
+  --hl-stroke: 1.1px;
+  overflow: visible;
+  touch-action: pan-y;
+}
+.hairline path,
+.hairline circle {
+  fill: none;
+  stroke-width: var(--hl-stroke);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  transition: stroke 260ms ease-out;
+}
+.hairline .hl-plate {
+  fill: var(--hl-plate);
+}
+.hairline .hl-sil {
+  stroke: var(--hl-edge);
+}
+.hairline .hl-crease,
+.hairline .hl-text {
+  stroke: var(--hl-mid);
+}
+.hairline .hl-link {
+  stroke: var(--hl-lo);
+  stroke-dasharray: 3 4;
+}
+.hairline .hl-dot {
+  fill: var(--hl-mid);
+  stroke: none;
+}
+.hairline .is-hi {
+  stroke: var(--hl-hi);
+}
+.hairline .hl-link.is-hi {
+  stroke-dasharray: none;
+}
+.hairline .hl-dot.is-hi {
+  fill: var(--hl-hi);
+}
+
+/* ── masked headline: each line rises from behind its own baseline ── */
+.mask-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.06em;
+  margin-bottom: -0.06em;
+}
+.mask-line > span {
+  display: block;
+  animation: mask-rise 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes mask-rise {
+  from {
+    transform: translateY(105%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* ── section entrance: the parts rise in turn once the section comes into view ── */
+.js-reveal .reveal:not(.is-in) > * > * {
+  opacity: 0;
+  transform: translateY(24px);
+}
+.reveal > * > * {
+  transition:
+    opacity 700ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal > * > *:nth-child(2) {
+  transition-delay: 80ms;
+}
+.reveal > * > *:nth-child(3) {
+  transition-delay: 160ms;
+}
+
+/* ── shelf: the open book's page slides in ── */
+.shelf-book .shelf-page {
+  animation: shelf-open 500ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes shelf-open {
+  from {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mask-line > span,
+  .shelf-book .shelf-page {
+    animation: none;
+  }
+  .js-reveal .reveal:not(.is-in) > * > * {
+    transform: none;
+  }
+  .reveal > * > * {
+    transition: opacity 200ms linear;
+  }
+}
