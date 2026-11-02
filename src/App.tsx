@@ -189,39 +189,21 @@ function SectionTitle({ id, children }: { id: string; children: ReactNode }) {
   );
 }
 
-function EventInfo() {
-  const e = site.event;
+function CourseInfo() {
+  const c = site.course;
   const rows: [string, string][] = [
-    ["日期", e.date],
-    ["座談會時間", e.time],
-    ["地點", e.place],
-    ["參加對象", e.audience],
-    ["收費", e.fee],
-    ["報名", `線上報名至 ${e.register.deadline}；${e.register.quota}`],
-    ["主辦單位", e.organizer],
+    ["日期", c.date],
+    ["時間", c.time],
+    ["形式", c.place],
+    ["主講", c.speaker],
   ];
   return (
-    <section id="event" aria-labelledby="event-title" className="reveal mx-auto max-w-7xl scroll-mt-6 px-5 pt-20 sm:px-8 sm:pt-32">
-      <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:gap-16">
+    <section id="course" aria-labelledby="course-title" className="reveal mx-auto max-w-7xl scroll-mt-6 px-5 pt-20 sm:px-8 sm:pt-32">
+      <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:items-end lg:gap-16">
         <div>
-          <SectionTitle id="event-title">活動資訊</SectionTitle>
-          <p className="mt-6 font-display text-2xl text-[#000000] sm:text-3xl">{e.title}</p>
-          <div className="mt-8 rounded-2xl border border-[#000000] p-6 sm:p-8">
-            <p className="text-sm text-[#6F6F6F]">本站場次　·　<span className="tabular-nums">{e.session.time}</span></p>
-            <p className="mt-2 font-display text-3xl text-[#000000] sm:text-4xl">{e.session.topic}</p>
-            <p className="mt-4 text-base text-[#3F3F3F]">
-              主講　<span className="text-[#000000]">{e.session.speaker}</span>　·　主持　<span className="text-[#000000]">{e.session.host}</span>
-            </p>
-          </div>
-          <p className="mt-8 max-w-[28rem] text-lg leading-relaxed text-pretty text-[#3F3F3F]">{e.intro}</p>
-          <a
-            href={e.register.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#000000] px-8 py-4 text-base text-[#FFFFFF] transition-transform duration-200 ease-out hover:scale-[1.03] active:scale-[0.98]"
-          >
-            前往報名（至 {e.register.shortDeadline}）<ArrowIcon className="size-4" />
-          </a>
+          <SectionTitle id="course-title">課程資訊</SectionTitle>
+          <p className="mt-6 font-display text-3xl text-[#000000] sm:text-4xl">{c.title}</p>
+          <p className="mt-4 text-sm leading-relaxed text-pretty text-[#6F6F6F]">{c.occasion}</p>
         </div>
         <dl className="border-b border-line">
           {rows.map(([k, v]) => (
@@ -660,7 +642,7 @@ export default function App() {
       <main id="main">
         {route.page === "home" && (
           <>
-            <EventInfo />
+            <CourseInfo />
             <Film />
             <ShelfSection />
           </>
