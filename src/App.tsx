@@ -83,7 +83,7 @@ function Navbar({ current }: { current: Page }) {
   return (
     <nav className="relative z-10 mx-auto max-w-7xl px-5 pt-5 pb-3 sm:px-8 sm:py-6">
       <div className="flex items-center justify-between gap-4">
-        <a href="#/" className="font-display text-2xl tracking-tight whitespace-nowrap text-[#000000] sm:text-3xl">
+        <a href="#/" className="font-display text-3xl tracking-tight whitespace-nowrap text-[#000000] sm:text-4xl lg:text-5xl">
           {site.name}
         </a>
         <ul className="hidden items-center gap-8 md:flex">

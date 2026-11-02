@@ -28,7 +28,7 @@ export interface Resource {
 }
 
 export const site = {
-  name: "博士班超前部署",
+  name: "博士超前部署",
   tagline: "用 AI 來幫助你掌握人生跟課業",
   description:
     "給博士生的 AI 研究工作法：從找研究問題、讀文獻、做分析到寫論文，學會和 AI 一起工作，同時守住研究誠信。",
