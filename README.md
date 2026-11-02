@@ -1,4 +1,4 @@
-# 博士超前部署｜官方網站
+# 博士生涯超前部署｜官方網站
 
 React + Vite + Tailwind CSS + TypeScript。
 
