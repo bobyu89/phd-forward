@@ -136,24 +136,6 @@ function Hero() {
       className="relative z-10 mx-auto grid max-w-7xl gap-12 px-5 pt-8 pb-16 sm:px-8 md:pt-12 lg:grid-cols-12 lg:items-center lg:gap-8 lg:pt-10 lg:pb-24"
     >
       <div className="lg:col-span-6">
-        <div className="animate-fade-rise mb-6 text-base leading-relaxed text-pretty text-[#3F3F3F] sm:text-lg">
-          <p>
-            {site.event.organizer}　·　<span className="text-[#000000]">{site.event.title}</span>
-          </p>
-          <p className="mt-1 text-sm sm:text-base">
-            <a href="#event" className="underline decoration-[#BDBAB3] underline-offset-4 hover:decoration-[#000000]">
-              11 月 6 日（五）{site.event.session.time}「{site.event.session.topic}」　·　{site.event.place}
-            </a>
-            <a
-              href={site.event.register.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="ml-3 inline-flex items-center gap-1 whitespace-nowrap text-[#000000] underline decoration-[#000000] underline-offset-4"
-            >
-              線上報名（至 {site.event.register.shortDeadline}）<ArrowIcon className="size-3.5" />
-            </a>
-          </p>
-        </div>
         <h1
           id="hero-title"
           className="font-display text-[clamp(2.75rem,12vw,5.5rem)] font-medium whitespace-nowrap text-[#000000] lg:text-[clamp(3.25rem,5.6vw,5.75rem)]"
