@@ -40,6 +40,8 @@ export interface Speaker {
   groups?: { label: string; items: string[] }[];
   quote?: string;
   link?: { label: string; href: string };
+  /** 作品：featured 的放大成卡片，其他列成清單 */
+  projects?: { name: string; desc: string; href: string; featured?: boolean }[];
 }
 
 export const site = {
@@ -80,6 +82,45 @@ export const site = {
         },
         { label: "AI 素養與應用", items: ["Google AI Essentials", "公民 AI 素養合格行動家證明", "產業 AI 人才培訓"] },
         { label: "生成式 AI 與工具", items: ["生成式 AI 辦公室應用能力認證", "資策會 生成式 AI 能力認證", "Claude Code in Action"] },
+        // 以下來自 Notion「證照文件夾」（只取名稱；附件與備註不公開）
+        {
+          label: "臨床與專業證照",
+          items: ["護理師證書", "BLS、ACLS", "基礎急重症證明", "預立醫療照護諮商人員", "戒菸服務人員證明", "IRB 證書", "醫學影像課程研習證書", "運動營養 L1"],
+        },
+      ],
+      // 以下來自 GitHub（github.com/bobyu89，只列公開專案）
+      projects: [
+        {
+          name: "專科護理師冒險記 NP Quest",
+          desc: "專科護理師甄審筆試刷題系統：109–115 年 1,680 題、18 個細科與 379 個考點分析；像素 RPG 風格，單一 HTML 離線可用。",
+          href: "https://bobyu89.github.io/np-quiz/",
+          featured: true,
+        },
+        {
+          name: "護理師國考冒險記 RN Quest",
+          desc: "護理師國考刷題系統：110–115 年 4,560 題官方考古題，每題結構化詳解，423 個高頻考點導讀，SRS 間隔複習。",
+          href: "https://bobyu89.github.io/rn-quiz/",
+          featured: true,
+        },
+        {
+          name: "ZotMax",
+          desc: "Zotero 外掛：把文獻、劃線和評讀整理進 Obsidian 或 Notion，附評讀表、PRISMA、星球與群島地圖。",
+          href: "https://bobyu89.github.io/ZotMax/",
+          featured: true,
+        },
+        { name: "腫瘤衛教機器人", desc: "化學治療病患的 RAG 衛教問答系統", href: "https://bobyu89.github.io/tumor-education-bot/" },
+        { name: "班守 ShiftGuard", desc: "缺工情境下的排班與人力缺口決策支援工具", href: "https://bobyu89.github.io/nursing-agent/" },
+        { name: "特護平台", desc: "特別護理師服務平台：派單、交班與照護紀錄的網頁原型", href: "https://bobyu89.github.io/tehu-platform/" },
+        { name: "cdss-training", desc: "可追溯的 AI 臨床推理訓練：專科護理師臨床決策學習系統", href: "https://bobyu89.github.io/cdss-training-site/" },
+        { name: "進階身體檢查與評估", desc: "OSCE 複習系統", href: "https://body-eight.vercel.app" },
+        { name: "身體評估複習 APP", desc: "身體評估重點複習", href: "https://bobyu89.github.io/physical-exam/" },
+        { name: "胸腔科臨床參考手冊", desc: "胸腔科臨床重點整理", href: "https://bobyu89.github.io/Respiratory/" },
+        { name: "nature-library-search", desc: "圖書館系統性文獻檢索 → 去重 → 篩選 → PRISMA → Zotero 的 Claude Code skill", href: "https://github.com/bobyu89/nature-library-search" },
+        { name: "nursing-claude-skills", desc: "護理與生醫研究用的 Claude Skills：APA 7、PRISMA 2020、混合研究設計、同儕審查", href: "https://github.com/bobyu89/nursing-claude-skills" },
+        { name: "LabSite Studio", desc: "研究室網站工作台，直接編輯 GitHub 上的靜態網站", href: "https://bobyu89.github.io/labsite-studio/" },
+        { name: "國防醫學大學護理學院網站", desc: "從舊官網擷取內容，重建 63 頁靜態網站", href: "https://bobyu89.github.io/ndmu-nursing-college-website/" },
+        { name: "SlideWeave 圖敘簡報", desc: "給 Codex 用的簡報製作 skill，36 種內建風格", href: "https://github.com/bobyu89/codex-ppt-style-expanded" },
+        { name: "AWS Cloud Practitioner 中文筆記", desc: "CLF-C02 考試重點整理", href: "https://bobyu89.github.io/aws-cloud-practitioner-notes/" },
       ],
     },
   ] as Speaker[],

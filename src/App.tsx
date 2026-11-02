@@ -471,6 +471,47 @@ function SpeakersPage() {
                 </div>
               )}
 
+              {s.projects && (
+                <div className="mt-14">
+                  <h3 className="font-display text-3xl text-[#000000] sm:text-4xl">作品</h3>
+                  <ul className="mt-6 grid gap-5 lg:grid-cols-3">
+                    {s.projects
+                      .filter((p) => p.featured)
+                      .map((p) => (
+                        <li key={p.name}>
+                          <a
+                            href={p.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="group flex h-full flex-col rounded-2xl border border-line p-6 transition-colors duration-200 hover:border-[#000000] hover:bg-[#F6F5F2]"
+                          >
+                            <span className="flex items-start justify-between gap-3">
+                              <span className="text-xl font-medium text-[#000000]">{p.name}</span>
+                              <ArrowIcon className="mt-1 size-5 shrink-0 text-[#6F6F6F] transition-transform group-hover:translate-x-1 group-hover:text-[#000000]" />
+                            </span>
+                            <span className="mt-3 text-base leading-relaxed text-pretty text-[#3F3F3F]">{p.desc}</span>
+                          </a>
+                        </li>
+                      ))}
+                  </ul>
+                  <ul className="mt-8 grid gap-x-10 sm:grid-cols-2">
+                    {s.projects
+                      .filter((p) => !p.featured)
+                      .map((p) => (
+                        <li key={p.name} className="border-t border-line">
+                          <a href={p.href} target="_blank" rel="noopener noreferrer" className="group flex items-start justify-between gap-4 py-4">
+                            <span className="min-w-0">
+                              <span className="block text-base text-[#000000] group-hover:underline group-hover:underline-offset-4">{p.name}</span>
+                              <span className="mt-1 block text-sm leading-relaxed text-pretty text-[#6F6F6F]">{p.desc}</span>
+                            </span>
+                            <ArrowIcon className="mt-1 size-4 shrink-0 text-[#6F6F6F] group-hover:text-[#000000]" />
+                          </a>
+                        </li>
+                      ))}
+                  </ul>
+                </div>
+              )}
+
               {s.quote && (
                 <blockquote className="mt-10 max-w-2xl border-l-2 border-[#000000] pl-5 text-lg leading-relaxed text-pretty text-[#000000]">
                   {s.quote}
