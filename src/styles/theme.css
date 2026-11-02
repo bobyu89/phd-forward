@@ -6,9 +6,12 @@
   --color-muted: #6f6f6f;
   --color-line: #e7e5e1;
 
-  /* Latin glyphs come from Instrument Serif / Inter; CJK falls through to Noto. */
-  --font-display: "Instrument Serif", "Noto Serif TC", serif;
-  --font-sans: "Inter", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+  /* Latin glyphs come from Times New Roman / Times; CJK falls through to the
+     system 標楷體 (DFKai-SB on Windows, BiauKai on macOS), then the web-loaded
+     LXGW WenKai TC. All three tokens share one stack site-wide. */
+  --font-sans: "Times New Roman", Times, DFKai-SB, BiauKai, "標楷體", "LXGW WenKai TC", serif;
+  --font-serif: "Times New Roman", Times, DFKai-SB, BiauKai, "標楷體", "LXGW WenKai TC", serif;
+  --font-display: "Times New Roman", Times, DFKai-SB, BiauKai, "標楷體", "LXGW WenKai TC", serif;
 
   --animate-fade-rise: fade-rise 0.8s ease-out both;
   --animate-fade-rise-delay: fade-rise 0.8s ease-out 0.2s both;
