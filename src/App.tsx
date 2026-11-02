@@ -136,6 +136,12 @@ function Hero() {
       className="relative z-10 mx-auto grid max-w-7xl gap-12 px-5 pt-8 pb-16 sm:px-8 md:pt-12 lg:grid-cols-12 lg:items-center lg:gap-8 lg:pt-10 lg:pb-24"
     >
       <div className="lg:col-span-6">
+        <p className="animate-fade-rise mb-6 text-base leading-relaxed text-pretty text-[#3F3F3F] sm:text-lg">
+          {site.event.organizer}　·　<span className="text-[#000000]">{site.event.title}</span>
+          <a href="#event" className="mt-1 block text-sm text-[#3F3F3F] underline decoration-[#BDBAB3] underline-offset-4 hover:decoration-[#000000] sm:text-base">
+            {site.event.date} {site.event.time}　·　{site.event.place}
+          </a>
+        </p>
         <h1
           id="hero-title"
           className="font-display text-[clamp(2.75rem,12vw,5.5rem)] font-medium whitespace-nowrap text-[#000000] lg:text-[clamp(3.25rem,5.6vw,5.75rem)]"
@@ -186,6 +192,37 @@ function SectionTitle({ id, children }: { id: string; children: ReactNode }) {
     >
       {children}
     </h2>
+  );
+}
+
+function EventInfo() {
+  const e = site.event;
+  const rows: [string, string][] = [
+    ["日期", e.date],
+    ["時間", e.time],
+    ["地點", e.place],
+    ["參加對象", e.audience],
+    ["收費", e.fee],
+    ["主辦單位", e.organizer],
+  ];
+  return (
+    <section id="event" aria-labelledby="event-title" className="reveal mx-auto max-w-7xl scroll-mt-6 px-5 pt-20 sm:px-8 sm:pt-32">
+      <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:gap-16">
+        <div>
+          <SectionTitle id="event-title">活動資訊</SectionTitle>
+          <p className="mt-6 font-display text-2xl text-[#000000] sm:text-3xl">{e.title}</p>
+          <p className="mt-6 max-w-[28rem] text-lg leading-relaxed text-pretty text-[#3F3F3F]">{e.intro}</p>
+        </div>
+        <dl className="border-b border-line">
+          {rows.map(([k, v]) => (
+            <div key={k} className="grid gap-1 border-t border-line py-4 sm:grid-cols-[7rem_minmax(0,1fr)] sm:gap-6">
+              <dt className="text-sm text-[#6F6F6F] sm:pt-1">{k}</dt>
+              <dd className="text-lg leading-relaxed text-pretty text-[#000000]">{v}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </section>
   );
 }
 
@@ -613,6 +650,7 @@ export default function App() {
       <main id="main">
         {route.page === "home" && (
           <>
+            <EventInfo />
             <Film />
             <ShelfSection />
           </>
