@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ZotMax 完整安裝指南</title>
+<meta name="description" content="給第一次用 Zotero、Obsidian、Notion 的研究生：從安裝到第一次同步，一步一步把 ZotMax 0.39 裝好。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#EFE9D9; --cream2:#E4DCC4; --paper:#FCFCFB; --ink:#0F0F0F; --ink2:#2A2A2A; --mute:#5F594F;
+  --orange:#E85A1F; --yellow:#F5C518; --green:#1F8A4C; --pink:#F06CA8; --purple:#7B68D6;
+  --sans:'Noto Sans TC','Microsoft JhengHei','PingFang TC',sans-serif; --mono:'JetBrains Mono',Consolas,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:24px}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--sans);font-size:18px;line-height:1.75;
+  background-image:linear-gradient(rgba(15,15,15,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(15,15,15,.05) 1px,transparent 1px);
+  background-size:48px 48px}
+a{color:var(--ink);text-decoration-color:var(--orange);text-decoration-thickness:2px;text-underline-offset:3px}
+a:hover{background:var(--yellow)}
+code,kbd{font-family:var(--mono);font-size:.86em;background:var(--paper);border:2px solid var(--ink);padding:2px 8px;white-space:nowrap}
+kbd{box-shadow:2px 2px 0 var(--ink)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+
+/* ── 頂端 ── */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 0;font-family:var(--mono);font-size:14px;letter-spacing:.05em}
+.top .tag{background:var(--ink);color:var(--cream);padding:6px 14px;font-weight:700}
+.top .pill{border:2px solid var(--ink);border-radius:999px;padding:3px 14px;background:var(--cream)}
+.hero{display:grid;grid-template-columns:1.25fr 1fr;gap:36px;align-items:center;padding:28px 0 40px}
+.hero h1{font-size:clamp(40px,6vw,76px);line-height:1.08;margin:12px 0 18px;font-weight:900;letter-spacing:-.01em}
+.hero h1 span{background:var(--yellow);padding:0 10px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.hero p.lede{font-size:20px;margin:0 0 22px;max-width:36em}
+.kicker{display:inline-block;font-family:var(--mono);font-size:14px;letter-spacing:.12em;background:var(--ink);color:var(--cream);padding:4px 12px;font-weight:700}
+.facts{display:flex;flex-wrap:wrap;gap:10px;margin:0;padding:0;list-style:none}
+.facts li{border:2px solid var(--ink);background:var(--paper);padding:6px 14px;font-weight:700;font-size:16px}
+.hero .card{border:4px solid var(--ink);background:var(--paper);box-shadow:16px 16px 0 var(--orange),16px 16px 0 4px var(--ink)}
+.hero .card img{display:block;width:100%;height:auto}
+.btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+.btn{display:inline-block;border:3px solid var(--ink);background:var(--paper);padding:10px 20px;font-weight:700;text-decoration:none;box-shadow:5px 5px 0 var(--ink);transition:transform .12s,box-shadow .12s}
+.btn:hover{transform:translate(2px,2px);box-shadow:3px 3px 0 var(--ink);background:var(--paper)}
+.btn.primary{background:var(--orange);color:var(--ink)}
+.btn.primary:hover{background:var(--orange)}
+
+/* ── 版面：目錄＋內容 ── */
+.layout{display:grid;grid-template-columns:260px 1fr;gap:44px;align-items:start;padding-bottom:80px}
+nav.toc{position:sticky;top:20px;border:3px solid var(--ink);background:var(--paper);padding:18px 18px 14px}
+.toc h2{font-size:15px;font-family:var(--mono);letter-spacing:.1em;margin:0 0 10px}
+.toc ol{list-style:none;margin:0;padding:0;font-size:15px;line-height:1.5}
+.toc li{margin:0 0 6px}
+.toc a{text-decoration:none;display:flex;gap:8px;align-items:baseline;padding:4px 10px}
+.toc a .d{flex:none;width:16px;height:16px;border:2px solid var(--ink);display:inline-block;transform:translateY(2px)}
+.toc a.done .d{background:var(--green)}
+.toc a.on{background:var(--yellow)}
+.bar{height:12px;border:2px solid var(--ink);background:var(--cream);margin:12px 0 6px}
+.bar i{display:block;height:100%;width:100%;background:var(--green);transform:scaleX(0);transform-origin:left center;transition:transform .3s}
+.barlab{font-family:var(--mono);font-size:13px}
+main{min-width:0}
+
+/* ── 步驟 ── */
+section.step{border:4px solid var(--ink);background:var(--paper);margin:0 0 40px;padding:30px 32px 26px;position:relative}
+section.step.opt{border-style:dashed}
+.step-h{display:flex;gap:16px;align-items:center;margin-bottom:6px;flex-wrap:wrap}
+.num{flex:none;font-family:var(--mono);font-weight:700;font-size:17px;background:var(--orange);border:3px solid var(--ink);padding:4px 12px;letter-spacing:.06em}
+.opt .num{background:var(--cream2)}
+section.step h2{font-size:clamp(26px,3.4vw,34px);line-height:1.25;margin:0}
+.time{font-family:var(--mono);font-size:14px;color:var(--mute)}
+section.step h3{font-size:22px;margin:28px 0 8px}
+section.step ol, section.step ul{padding-left:1.4em}
+section.step li{margin:6px 0}
+.done-box{display:flex;align-items:center;gap:12px;margin-top:24px;padding-top:18px;border-top:2px dashed var(--ink);font-weight:700;cursor:pointer;user-select:none}
+.done-box input{appearance:none;width:28px;height:28px;border:3px solid var(--ink);background:var(--paper);margin:0;cursor:pointer;display:grid;place-content:center}
+.done-box input:checked{background:var(--green)}
+.done-box input:checked::after{content:'✓';color:var(--cream);font-size:18px;font-weight:900}
+.done-box input:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+
+figure{margin:20px 0;}
+figure .shot{border:3px solid var(--ink);background:#fff;overflow:hidden}
+figure img{display:block;width:100%;height:auto}
+figcaption{font-size:15px;color:var(--mute);margin-top:8px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.two figure{margin:10px 0}
+.narrow{max-width:520px}
+
+.call{border:3px solid var(--ink);padding:14px 18px;margin:18px 0;background:var(--cream)}
+.call b.t{display:block;font-size:16px;margin-bottom:4px}
+.call.tip{background:#E3F1E7;border-color:var(--green)}
+.call.warn{background:#FCE8DE;border-color:var(--orange)}
+.call.ai{background:#EEEAFB;border-color:var(--purple)}
+.call p{margin:4px 0}
+
+table{border-collapse:collapse;width:100%;font-size:16px;margin:14px 0;background:var(--paper)}
+th,td{border:2px solid var(--ink);padding:10px 12px;text-align:left;vertical-align:top}
+th{background:var(--cream2)}
+.tbl{overflow-x:auto}
+.pick{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:16px 0}
+.pick .c{border:3px solid var(--ink);padding:16px 18px;background:var(--cream)}
+.pick .c.y{background:#FFF5CC}
+.pick .c h4{margin:0 0 6px;font-size:21px}
+.pick .c p{margin:4px 0;font-size:16px}
+
+details{border:3px solid var(--ink);background:var(--paper);margin:0 0 12px}
+details summary{cursor:pointer;padding:14px 18px;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:12px}
+details summary::after{content:'＋';font-family:var(--mono)}
+details[open] summary::after{content:'－'}
+details summary::-webkit-details-marker{display:none}
+details .in{padding:12px 18px 14px;border-top:2px dashed var(--ink)}
+details .in p{margin:0}
+.faq h2{font-size:32px;margin:0 0 18px}
+
+footer{border-top:4px solid var(--ink);padding:28px 0 60px;font-size:15px}
+footer .row{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:space-between}
+
+@media (max-width:960px){
+  .layout{grid-template-columns:1fr}
+  nav.toc{position:static}
+  .hero{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  body{font-size:17px}
+  section.step{padding:22px 18px 18px}
+  .two,.pick{grid-template-columns:1fr}
+  .hero .card{box-shadow:8px 8px 0 var(--orange),8px 8px 0 3px var(--ink)}
+}
+@media print{
+  body{background:#fff}
+  nav.toc,.btns,.done-box{display:none}
+  .layout{grid-template-columns:1fr}
+  section.step{break-inside:avoid-page}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <span class="tag">ZOTMAX 完整安裝指南</span>
+    <span class="pill">適用 0.39 版</span>
+  </header>
+
+  <div class="hero">
+    <div>
+      <span class="kicker">博士班超前部署 · Zotero 主題</span>
+      <h1>第一次用也能裝好的 <span>ZotMax</span></h1>
+      <p class="lede">ZotMax 是 Zotero 的免費外掛：把你收的文獻、PDF 劃線和評讀，整理成 Obsidian 筆記或 Notion 資料庫。照著這頁做，約 15 分鐘就能完成第一次同步。</p>
+      <ul class="facts">
+        <li>⏱ 約 15 分鐘</li>
+        <li>💰 不用付費</li>
+        <li>🤖 AI 選用，沒有 API key 也行</li>
+      </ul>
+      <div class="btns">
+        <a class="btn primary" href="#s1">從第一步開始 ↓</a>
+        <a class="btn" href="https://github.com/bobyu89/ZotMax/releases/latest" target="_blank" rel="noopener">下載最新版 .xpi</a>
+      </div>
+    </div>
+    <div class="card"><img src="img/note-a.jpg" alt="同步後的 Obsidian 文獻筆記：最上面是研究設計、場域、證據等級、JBI 等級的數字卡，下面是一句話摘要、PICO 和評讀燈號"></div>
+  </div>
+
+  <div class="layout">
+    <nav class="toc" aria-label="目錄">
+      <h2>目錄</h2>
+      <ol id="toc"></ol>
+      <div class="bar" aria-hidden="true"><i id="bar"></i></div>
+      <div class="barlab" id="barlab">已完成 0 / 0 步</div>
+    </nav>
+
+    <main>
+      <!-- 0 -->
+      <section class="step" id="s0" data-title="開始前：你需要什麼">
+        <div class="step-h"><span class="num">STEP 0</span><h2>開始前：你需要什麼</h2></div>
+        <span class="time">2 分鐘 · 先決定筆記要放哪裡</span>
+        <p>ZotMax 本身不存文獻，它是一座「橋」：從 <b>Zotero</b> 讀出文獻，整理後寫進 <b>Obsidian</b> 或 <b>Notion</b>。三個軟體各用一句話認識：</p>
+        <div class="tbl"><table>
+          <tr><th>軟體</th><th>像什麼</th><th>要不要裝</th></tr>
+          <tr><td><b>Zotero 10</b></td><td>收文獻的書櫃：存書目和 PDF、畫重點、產生引用格式</td><td><b>一定要</b>（免費）</td></tr>
+          <tr><td><b>Obsidian</b></td><td>存在自己電腦裡的筆記本，筆記是一般文字檔</td><td>和 Notion <b>至少選一個</b>（免費，建議 1.14 以上）</td></tr>
+          <tr><td><b>Notion</b></td><td>線上的資料庫，每篇文獻一頁，手機也能看</td><td>和 Obsidian <b>至少選一個</b>（個人免費）</td></tr>
+        </table></div>
+        <h3>Obsidian 還是 Notion？</h3>
+        <div class="pick">
+          <div class="c y"><h4>選 Obsidian，如果你…</h4><p>希望資料留在自己電腦；想要首頁、主題頁、證據地圖、星球與群島地圖這些視覺化功能（ZotMax 的大部分新功能都在 Obsidian 上）。</p></div>
+          <div class="c"><h4>選 Notion，如果你…</h4><p>已經習慣 Notion；想在手機或平板上看、和同學分享；喜歡表格、篩選、排序。</p></div>
+        </div>
+        <div class="call tip"><b class="t">拿不定主意？</b><p>先選 Obsidian。之後想加 Notion，隨時可以在設定裡接上，兩個可以同時用。</p></div>
+        <label class="done-box"><input type="checkbox" data-step="s0"> 我決定好要用哪一個了</label>
+      </section>
+
+      <!-- 1 -->
+      <section class="step" id="s1" data-title="安裝 Zotero 10">
+        <div class="step-h"><span class="num">STEP 1</span><h2>安裝 Zotero 10</h2></div>
+        <span class="time">3 分鐘 · 已經裝過可以跳過</span>
+        <ol>
+          <li>到 <a href="https://www.zotero.org/download/" target="_blank" rel="noopener">zotero.org/download</a> 下載安裝檔，一路按「下一步」裝好。</li>
+          <li>已經有 Zotero 的人，打開 Zotero →「說明」→「關於 Zotero」，確認版本是 <b>10</b> 開頭。ZotMax 只支援 Zotero 10。</li>
+          <li>建議順便裝瀏覽器外掛 <b>Zotero Connector</b>，在 PubMed 或期刊網站按一下就能存文獻和 PDF。</li>
+        </ol>
+        <div class="call"><b class="t">還不會用 Zotero？</b><p>網站上的「Zotero 新手任務」兩支影片和簡報，會教你收文獻、畫重點、在 Word 插入引用。</p></div>
+        <label class="done-box"><input type="checkbox" data-step="s1"> Zotero 10 已經裝好</label>
+      </section>
+
+      <!-- 2 -->
+      <section class="step" id="s2" data-title="準備 Obsidian 或 Notion">
+        <div class="step-h"><span class="num">STEP 2</span><h2>準備 Obsidian 或 Notion</h2></div>
+        <span class="time">3–5 分鐘 · 只要做你選的那一個</span>
+        <h3>A. 用 Obsidian</h3>
+        <ol>
+          <li>到 <a href="https://obsidian.md/download" target="_blank" rel="noopener">obsidian.md</a> 下載安裝（免費）。</li>
+          <li>第一次打開時按「建立新的儲存庫」（vault），取個名字，例如「文獻庫」，放在你找得到的地方（例如桌面或文件）。</li>
+          <li>記住這個資料夾的位置，第 5 步的設定精靈會請你選它。</li>
+        </ol>
+        <div class="call tip"><b class="t">什麼是 vault？</b><p>就是一個資料夾。Obsidian 把裡面的每個 <code>.md</code> 檔當成一則筆記；ZotMax 會在裡面建一個 <code>Zotero</code> 子資料夾放文獻筆記。</p></div>
+        <h3>B. 用 Notion</h3>
+        <p>Notion 需要先讓 ZotMax「有權限」寫入，所以多三個小步驟：</p>
+        <ol>
+          <li>到 <a href="https://www.notion.so/profile/integrations" target="_blank" rel="noopener">notion.so/profile/integrations</a> 建立一個 <b>Internal integration</b>（名字隨意，例如「ZotMax」），複製它的 token（<code>ntn_</code> 開頭）。</li>
+          <li>在 Notion 新增一個頁面，例如「碩論文獻」。打開它，右上角 <code>⋯</code> → <b>Connections</b>（連結）→ 選剛剛建的 integration。</li>
+          <li>資料庫不用自己建：第 5 步的設定精靈可以按 <b>找可以放資料庫的頁面</b> → 選「碩論文獻」→ <b>在這個頁面建立資料庫</b>，欄位會全部自動建好。</li>
+        </ol>
+        <div class="call warn"><b class="t">token 像密碼一樣</b><p>不要貼到群組或截圖給別人。ZotMax 會把它存在 Zotero 的密碼管理員，不會寫進設定檔。</p></div>
+        <label class="done-box"><input type="checkbox" data-step="s2"> Obsidian 的 vault 或 Notion 的 integration 準備好了</label>
+      </section>
+
+      <!-- 3 -->
+      <section class="step" id="s3" data-title="下載 ZotMax（.xpi）">
+        <div class="step-h"><span class="num">STEP 3</span><h2>下載 ZotMax（.xpi 檔）</h2></div>
+        <span class="time">1 分鐘</span>
+        <ol>
+          <li>打開 <a href="https://github.com/bobyu89/ZotMax/releases/latest" target="_blank" rel="noopener">GitHub 的最新版頁面</a>。</li>
+          <li>在 <b>Assets</b> 下面，點 <code>zotero-bridge-0.39.0.xpi</code>（版本號會跟著更新）。<br>檔名是舊名 zotero-bridge，是同一個外掛，放心下載。</li>
+        </ol>
+        <figure><div class="shot"><img src="img/releases.jpg" alt="GitHub 的 ZotMax 0.39.0 版本頁面，Assets 底下第一個檔案是 zotero-bridge-0.39.0.xpi" loading="lazy"></div>
+          <figcaption>Releases 頁面：點 Assets 裡的 .xpi 檔下載。</figcaption></figure>
+        <div class="call warn"><b class="t">用 Firefox 的人注意</b><p>直接點連結時，Firefox 會把 .xpi 當成自己的擴充功能。請在連結上按右鍵 →「另存連結」。用 Chrome、Edge 直接點就好。</p></div>
+        <label class="done-box"><input type="checkbox" data-step="s3"> .xpi 檔已經下載</label>
+      </section>
+
+      <!-- 4 -->
+      <section class="step" id="s4" data-title="把外掛裝進 Zotero">
+        <div class="step-h"><span class="num">STEP 4</span><h2>把外掛裝進 Zotero</h2></div>
+        <span class="time">1 分鐘</span>
+        <ol>
+          <li>Zotero 上方選單：<b>工具 → 附加元件</b>（英文介面：Tools → Plugins）。</li>
+          <li>右上角的 <b>齒輪</b> → <b>Install Plugin From File…</b>。</li>
+          <li>選剛剛下載的 .xpi，按開啟。清單裡出現 <b>ZotMax</b> 就裝好了。</li>
+        </ol>
+        <figure class="narrow"><div class="shot"><img src="img/install.jpg" alt="Zotero 外掛管理員，右上角齒輪選單裡的 Install Plugin From File" loading="lazy"></div>
+          <figcaption>外掛管理員 → 齒輪 → Install Plugin From File…</figcaption></figure>
+        <div class="call tip"><b class="t">只要裝一次</b><p>之後有新版，Zotero 會自動更新 ZotMax，不用再下載。</p></div>
+        <label class="done-box"><input type="checkbox" data-step="s4"> 外掛清單裡看得到 ZotMax</label>
+      </section>
+
+      <!-- 5 -->
+      <section class="step" id="s5" data-title="跟著設定精靈走">
+        <div class="step-h"><span class="num">STEP 5</span><h2>跟著設定精靈走</h2></div>
+        <span class="time">約 3 分鐘 · 裝好後會自動跳出來</span>
+        <p>精靈一共 6 步。每一步按「下一步」才會存，按「略過」或「上一步」什麼都不改；中途按 <kbd>Esc</kbd> 關掉，已經存的設定會留著。</p>
+        <div class="two">
+          <figure><div class="shot"><img src="img/wiz1.jpg" alt="設定精靈第 1 步：歡迎使用 ZotMax" loading="lazy"></div><figcaption>① 歡迎：說明 ZotMax 做什麼、不做什麼。</figcaption></figure>
+          <figure><div class="shot"><img src="img/wiz2.jpg" alt="設定精靈第 2 步：選研究生引導或進階" loading="lazy"></div><figcaption>② 選模式：新手選 <b>研究生引導</b>。</figcaption></figure>
+        </div>
+        <h3>② 研究生引導 vs. 進階</h3>
+        <ul>
+          <li><b>研究生引導</b>（建議新手）：自動找新文獻、引文追蹤和 AI 寫草稿的功能先關著；整理、評讀、搜尋照常能用。</li>
+          <li><b>進階</b>：全部打開，包括 AI 草稿、批次 API、主題搜尋機器人。熟悉後再到 設定 → ZotMax → 功能 打開。</li>
+        </ul>
+        <h3>③ 筆記放哪裡</h3>
+        <div class="two">
+          <figure><div class="shot"><img src="img/wiz3-obsidian.jpg" alt="選 Obsidian：按選擇資料夾，選你的 vault" loading="lazy"></div><figcaption>選 Obsidian：按「選擇資料夾…」選你的 vault，下方會確認它是 Obsidian vault。</figcaption></figure>
+          <figure><div class="shot"><img src="img/wiz3-notion.jpg" alt="選 Notion：貼上 integration token 和資料庫連結，按測試連線" loading="lazy"></div><figcaption>選 Notion：貼上 token；沒有資料庫就用「找可以放資料庫的頁面」讓它幫你建，再按「測試連線」。</figcaption></figure>
+        </div>
+        <h3>④ AI（選填）</h3>
+        <figure class="narrow"><div class="shot"><img src="img/wiz4.jpg" alt="設定精靈第 4 步：AI 文獻筆記，四個選項" loading="lazy"></div><figcaption>四個選項：Claude、OpenAI、OpenRouter（有免費模型）、不用 key 的網頁版 AI。不確定就按「先不用 AI」，下一步會說明怎麼選。</figcaption></figure>
+        <h3>⑤ 試一次、⑥ 完成</h3>
+        <ul>
+          <li><b>試一次</b>：用你選的文獻（沒選就用清單第一篇）同步一次。不呼叫 AI、不花錢，完成後會告訴你筆記寫到哪裡，可以直接「在 Obsidian 開啟」。</li>
+          <li><b>完成</b>：告訴你工具列按鈕、右側面板、快速指令和設定頁在哪裡。</li>
+        </ul>
+        <div class="call"><b class="t">想再跑一次精靈</b><p>按 <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>（Mac：<kbd>⇧</kbd><kbd>⌘</kbd><kbd>P</kbd>）打開快速指令，搜尋「設定精靈」。</p></div>
+        <label class="done-box"><input type="checkbox" data-step="s5"> 設定精靈走完了</label>
+      </section>
+
+      <!-- 6 -->
+      <section class="step" id="s6" data-title="選 AI 怎麼用（可以先跳過）">
+        <div class="step-h"><span class="num">STEP 6</span><h2>選 AI 怎麼用（可以先跳過）</h2></div>
+        <span class="time">2 分鐘 · 之後可以在 設定 → ZotMax → AI 改</span>
+        <p>AI 會替每篇文獻寫一份研讀筆記：研究設計、樣本、PICO、證據等級、評讀初稿。<b>不用 AI，其他功能都照常可用。</b></p>
+        <div class="tbl"><table>
+          <tr><th>你的情況</th><th>選</th><th>費用</th></tr>
+          <tr><td>不會申請 API key；或已經有 ChatGPT、Claude、Gemini（免費或訂閱）、學校的 AI</td><td><b>網頁版 AI（複製貼上）</b></td><td>不用另外付費</td></tr>
+          <tr><td>想同步時自動產生，但不想花錢</td><td><b>OpenRouter</b> 免費模型（Google 帳號註冊，不用信用卡）</td><td>免費，沒儲值時每天約 50 篇</td></tr>
+          <tr><td>要穩定的品質，或一次很多篇</td><td><b>Claude</b> 或 <b>OpenAI</b> 的 API key</td><td>依用量計費；超過 5 篇會先確認</td></tr>
+          <tr><td>先不用</td><td>「先不用 AI」</td><td>不花錢</td></tr>
+        </table></div>
+        <div class="call warn"><b class="t">訂閱不等於 API key</b><p>ChatGPT Plus、Claude Pro 這類月費訂閱，不能當成 API key 填進去；但可以用下面的「網頁版 AI」。</p></div>
+        <h3>網頁版 AI：免 API key，三步驟</h3>
+        <div class="two">
+          <figure><div class="shot"><img src="img/rightclick.jpg" alt="文獻右鍵 → ZotMax → AI 筆記（複製貼上，免 API key）" loading="lazy"></div><figcaption>在文獻上按右鍵 → ZotMax ▸ <b>AI 筆記（複製貼上，免 API key）…</b></figcaption></figure>
+          <figure><div class="shot"><img src="img/manual-ai.jpg" alt="AI 筆記複製貼上視窗：複製提示詞、開啟 AI 網站、把回答貼回來" loading="lazy"></div><figcaption>複製提示詞 → 開啟 ChatGPT／Claude／Gemini 貼上 → 把回答貼回來 → 儲存並同步。</figcaption></figure>
+        </div>
+        <ol>
+          <li>按 <b>複製提示詞（含全文）</b>。太長或是掃描版 PDF 時，改按「只複製指令」，在 AI 網站自己附上 PDF。</li>
+          <li>按 <b>開啟 ChatGPT／Claude／Gemini</b>（或打開學校的 AI），貼上送出。寫完後用回答下面的「複製」按鈕複製。</li>
+          <li>貼回視窗，下方會即時檢查格式。沒問題就按 <b>儲存 AI 筆記並同步</b>。</li>
+        </ol>
+        <div class="call ai"><b class="t">隱私提醒</b><p>全文會送到你選的 AI 網站。含病人資料或未發表的資料，請先確認醫院、學校的規定，必要時先去識別化；免費方案的內容可能被拿去訓練模型。</p></div>
+        <label class="done-box"><input type="checkbox" data-step="s6"> 決定好 AI 要怎麼用（或先不用）</label>
+      </section>
+
+      <!-- 7 -->
+      <section class="step" id="s7" data-title="第一次同步">
+        <div class="step-h"><span class="num">STEP 7</span><h2>第一次同步</h2></div>
+        <span class="time">1 分鐘</span>
+        <ol>
+          <li>在 Zotero 的文獻清單選幾篇（第一次建議 3–5 篇）。</li>
+          <li>按清單上方工具列（「新增筆記」右邊）的 <b>ZotMax 按鈕</b>（橋形圖示）。</li>
+          <li>選 <b>同步到 Notion + Obsidian</b>。只想更新、不想花 AI 費用就選「同步但不呼叫 AI」。</li>
+        </ol>
+        <div class="two">
+          <figure><div class="shot"><img src="img/menu-only.jpg" alt="ZotMax 工具列選單：同步、整理、找文獻、篩選與評讀、AI 輔助與寫作" loading="lazy"></div><figcaption>工具列按鈕的選單，依研究流程分組。</figcaption></figure>
+          <figure><div class="shot"><img src="img/panel.jpg" alt="Zotero 右側的 ZotMax 面板：重點、在 Obsidian 開啟、動作按鈕" loading="lazy"></div><figcaption>選一篇文獻，右側面板的 <b>ZotMax</b> 區塊就是這篇的重點和常用按鈕。</figcaption></figure>
+        </div>
+        <h3>找不到功能？三個入口</h3>
+        <ul>
+          <li><b>工具列按鈕</b>：文獻清單上方的 ZotMax 按鈕。</li>
+          <li><b>右鍵</b>：在文獻或分類上按右鍵 → ZotMax ▸。</li>
+          <li><b>快速指令</b>：<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>，打字找功能，中英文都可以（例如「PRISMA」「評讀」「sync」）。</li>
+        </ul>
+        <label class="done-box"><input type="checkbox" data-step="s7"> 同步完成，進度視窗顯示「完成」</label>
+      </section>
+
+      <!-- 8 -->
+      <section class="step" id="s8" data-title="看結果">
+        <div class="step-h"><span class="num">STEP 8</span><h2>看結果</h2></div>
+        <span class="time">2 分鐘</span>
+        <h3>Obsidian</h3>
+        <p>打開 vault 裡的 <code>Zotero/00 首頁</code>（舊版資料夾結構是 <code>Zotero/首頁</code>）。「▶️ 從這裡開始」告訴你下一篇讀哪篇、哪些評讀還沒核對。點任一篇，就是那篇的文獻筆記。</p>
+        <div class="two">
+          <figure><div class="shot"><img src="img/home-a.jpg" alt="Obsidian 首頁：從這裡開始、總覽數字卡" loading="lazy"></div><figcaption>首頁：從這裡開始＋總覽數字卡。</figcaption></figure>
+          <figure><div class="shot"><img src="img/note-b.jpg" alt="文獻筆記下半部：主要發現、下一步、摺疊的評讀表與 AI 筆記" loading="lazy"></div><figcaption>文獻筆記：主要發現、下一步；評讀表、AI 筆記收在摺疊區塊。</figcaption></figure>
+        </div>
+        <div class="call tip"><b class="t">卡片沒有排成格狀？</b><p>在 Obsidian 的 設定 → 外觀 → <b>CSS 片段</b>，按重新整理，確認 <code>zotmax</code> 是打開的。沒有的話，到 Zotero → 設定 → ZotMax → 同步 → Obsidian，按 <b>安裝看板樣式到 Obsidian</b>。</p></div>
+        <h3>Notion</h3>
+        <p>資料庫裡每篇文獻一頁；閱讀狀態、研究設計、證據等級、評讀結果都是欄位，可以排序、篩選、改成看板。欄位可以改名，但不要刪除或改類型。</p>
+        <div class="call"><b class="t">重新同步會蓋掉我寫的東西嗎？</b><p>不會。ZotMax 只更新它自己產生的區塊；你寫在「✍️ 我的筆記」的內容都會留著。</p></div>
+        <label class="done-box"><input type="checkbox" data-step="s8"> 在 Obsidian 或 Notion 看到第一篇筆記</label>
+      </section>
+
+      <!-- 9 選做 -->
+      <section class="step opt" id="s9" data-title="選做：Word 的中文 APA 引用">
+        <div class="step-h"><span class="num">選做 A</span><h2>Word 的中文 APA 引用</h2></div>
+        <span class="time">3 分鐘 · 寫論文用 Zotero 的 Word 外掛時</span>
+        <p>Zotero 官方的 APA 樣式會把中文文獻變成「陳, 美., &amp; 林, 小. (2023)」。ZotMax 附兩個中英混排樣式：中文用中文 APA 7，英文維持官方 APA 7。</p>
+        <ol>
+          <li>ZotMax 按鈕或快速指令 → <b>安裝 Word 中文 APA 樣式</b>。</li>
+          <li>用 <b>檢查中文文獻資料…</b> 整理中文文獻，最重要的是 <b>語言欄要是 <code>zh-TW</code></b>，語言不對就會用英文規則。</li>
+          <li>Word → Zotero 分頁 → <b>Document Preferences</b> → 選「APA 7 中英混排（臺灣，ZotMax）」或「臺灣護理學會」版 → OK → <b>Refresh</b>。</li>
+          <li>中文變成方框 □：Word 的「書目」樣式 → 字型 → 亞洲文字字型設成新細明體或標楷體。</li>
+        </ol>
+        <div class="tbl"><table>
+          <tr><th></th><th>中文文獻</th><th>英文文獻</th></tr>
+          <tr><td>參考文獻</td><td>陳美玲、林小華（2023）。題目。<i>護理雜誌，70</i>(2)，45–56。</td><td>Lee, A., &amp; Smith, J. (2021). Title. <i>Journal, 12</i>(3), 100–110.</td></tr>
+          <tr><td>內文</td><td>(陳美玲、林小華，2023)、(王大明等，2021)</td><td>(Lee et al., 2021)</td></tr>
+        </table></div>
+        <label class="done-box"><input type="checkbox" data-step="s9"> Word 裡的中文引用變成中文 APA 了</label>
+      </section>
+
+      <!-- 10 選做 -->
+      <section class="step opt" id="s10" data-title="選做：星球與群島地圖">
+        <div class="step-h"><span class="num">選做 B</span><h2>星球與群島地圖</h2></div>
+        <span class="time">2 分鐘 · Obsidian 使用者</span>
+        <p>一個研究主題是一顆<b>星球</b>，它的 Zotero 子分類是一座座<b>島</b>。讀得越多、評讀核對越多，島就從 🌱 荒島長成 🏙️ 城鎮；每週一，ZotMax 會從最需要開墾的島挑 2–4 件「本週任務」，做完自動打勾。</p>
+        <ol>
+          <li>分類有兩個以上的子分類，就自動變成星球。</li>
+          <li>還沒有子分類？在分類上按右鍵 → ZotMax ▸ <b>建造星球：把這個分類分成島…</b>，勾選、改名後確定（不滿意可以「復原上次建造星球」）。</li>
+          <li>在分類上按右鍵 → ZotMax ▸ <b>開啟群島地圖</b>，用瀏覽器打開；右上角可以下載圖片，放進投影片和指導教授討論。</li>
+        </ol>
+        <figure><div class="shot"><img src="img/planet-map.jpg" alt="群島地圖：湖中央是研究問題，周圍五座島是子分類，房子是文獻，左邊是本週任務" loading="lazy"></div>
+          <figcaption>群島地圖：房子＝文獻（越高證據等級越強），屋頂顏色＝閱讀狀態，旗子＝本週任務。檔案只存在你的電腦，打開時不連網。</figcaption></figure>
+        <label class="done-box"><input type="checkbox" data-step="s10"> 打開過自己的群島地圖</label>
+      </section>
+
+      <!-- FAQ -->
+      <section class="faq" id="faq" data-title="常見問題">
+        <h2>常見問題與疑難排解</h2>
+        <details><summary>沒有 API key 可以用嗎？</summary><div class="in"><p>可以。同步、閱讀狀態、評讀表、篩選與 PRISMA、儀表板、搜尋連結都不需要 AI。AI 文獻筆記也可以用「網頁版 AI」複製貼上，或 OpenRouter 的免費模型。</p></div></details>
+        <details><summary>選單裡找不到某個功能？</summary><div class="in"><p>先到 設定 → ZotMax → 功能，看開關是不是關著（研究生引導模式有些功能預設關閉）。找重複、PRISMA、評讀總表要先在左側選一個<b>分類</b>；其他功能要先選<b>文獻</b>。</p></div></details>
+        <details><summary>更新後 Obsidian 的筆記還是舊樣子？</summary><div class="in"><p>版面在下次同步時才會換。先在 Zotero 對文獻「同步但不呼叫 AI」一次；首頁和儀表板可以用 ZotMax 按鈕 → 更新研究儀表板。卡片沒排成格狀，看第 8 步的 CSS 片段說明。</p></div></details>
+        <details><summary>AI 筆記看起來只讀了摘要？</summary><div class="in"><p>多半是掃描版 PDF（沒有文字層）或沒有 PDF。先用 OCR 讓 PDF 有文字，再「重新產生 AI 筆記」。</p></div></details>
+        <details><summary>同步到一半想停，或 Zotero 當掉了？</summary><div class="in"><p>工具 → <b>停止 ZotMax 同步</b>；之後選 <b>繼續未完成的 ZotMax 同步</b>，失敗的會一起重試。</p></div></details>
+        <details><summary>舊版升級上來，資料夾結構不一樣？</summary><div class="in"><p>0.22 以前同步的 vault 會維持原本的平鋪結構，不會自己搬。準備好時用快速指令 → <b>整理 Obsidian 資料夾結構…</b>，會先列出要搬幾個檔案，按確定才搬（建議先關閉 Obsidian）。不想換就維持「舊版平鋪」。</p></div></details>
+        <details><summary>可以在 iPad 上看嗎？</summary><div class="in"><p>可以。筆記在電腦產生，平板負責看：用 Obsidian Sync、iCloud，或直接用 Notion app。PDF 劃線可以用 Zotero 官方 iPad app，會同步回電腦。</p></div></details>
+        <details><summary>Zotero 出新的大版本後外掛被停用？</summary><div class="in"><p>ZotMax 宣告支援到 Zotero 10.x。Zotero 11 推出時會先停用，確認相容後會自動恢復，不用重裝。</p></div></details>
+        <details><summary>資料安全嗎？會被送到哪裡？</summary><div class="in"><p>API key 和 Notion token 存在 Zotero 的密碼管理員。只有你打開 AI 功能而且有 key 時，才會把書目、摘要、全文送給 AI；自動同步不呼叫 AI。用網頁版 AI 時，外掛什麼都不送，是你自己貼到網站。群島地圖打開時完全不連網。</p></div></details>
+        <details><summary>出錯了去哪裡問？</summary><div class="in"><p>進度視窗會列出每一篇的結果。仍然有問題，用快速指令「回報問題…」，或到 <a href="https://github.com/bobyu89/ZotMax/issues" target="_blank" rel="noopener">GitHub Issues</a> 回報。</p></div></details>
+      </section>
+    </main>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap row">
+    <div><b>ZotMax 完整安裝指南</b> · 依 ZotMax 0.39.0 撰寫（2026-11）· 介面若有更新，以實際畫面為準</div>
+    <div><a href="https://github.com/bobyu89/ZotMax#readme" target="_blank" rel="noopener">完整使用說明</a> · <a href="https://bobyu89.github.io/ZotMax/" target="_blank" rel="noopener">ZotMax 官網</a> · <a href="../../">回到博士班超前部署</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var KEY = 'zotmax-guide-0.39';
+  var done = {};
+  try { done = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { done = {}; }
+  function save(){ try { localStorage.setItem(KEY, JSON.stringify(done)); } catch (e) {} }
+
+  var sections = Array.prototype.slice.call(document.querySelectorAll('main > section[data-title]'));
+  var toc = document.getElementById('toc');
+  var links = {};
+  sections.forEach(function(s){
+    var li = document.createElement('li');
+    var a = document.createElement('a');
+    a.href = '#' + s.id;
+    a.innerHTML = '<span class="d"></span><span></span>';
+    a.lastChild.textContent = s.dataset.title;
+    li.appendChild(a); toc.appendChild(li);
+    links[s.id] = a;
+  });
+
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('.done-box input'));
+  function render(){
+    var n = 0;
+    boxes.forEach(function(b){
+      var id = b.dataset.step;
+      b.checked = !!done[id];
+      if (links[id]) links[id].classList.toggle('done', !!done[id]);
+      if (done[id]) n++;
+    });
+    document.getElementById('bar').style.transform = 'scaleX(' + (boxes.length ? n / boxes.length : 0) + ')';
+    document.getElementById('barlab').textContent = '已完成 ' + n + ' / ' + boxes.length + ' 步';
+  }
+  boxes.forEach(function(b){
+    b.addEventListener('change', function(){ done[b.dataset.step] = b.checked; save(); render(); });
+  });
+  render();
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if (e.isIntersecting) {
+          Object.keys(links).forEach(function(k){ links[k].classList.remove('on'); });
+          if (links[e.target.id]) links[e.target.id].classList.add('on');
+        }
+      });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+    sections.forEach(function(s){ io.observe(s); });
+  }
+})();
+</script>
+</body>
+</html>

@@ -100,12 +100,12 @@ aside.notes{display:none}
 .shot img{display:block;width:100%}
 .shot.plain{box-shadow:none}
 .shot.crop{overflow:hidden}
-.cap{font-family:var(--mono);font-size:20px;color:var(--mute);margin-top:12px;letter-spacing:.04em}
 .vs{display:grid;grid-template-columns:1fr 1fr;gap:36px}
 .qa h3{font-size:34px}
 .qa p{font-size:27px}
-.thumb{border:4px solid var(--ink);background:#fff;overflow:hidden;margin-top:18px}
-.thumb img{display:block;width:100%}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px}
+.mini h3{font-size:34px}
+.mini p{font-size:25px}
 </style>
 </head>
 <body>
@@ -120,10 +120,10 @@ aside.notes{display:none}
 <!-- 1 封面 -->
 <section class="slide" data-sec="0">
   <div class="grid-bg"></div>
-  <div style="position:absolute;left:112px;top:230px;width:1100px">
-    <span class="kicker">博士生的超前部署 · Zotero 主題</span>
+  <div style="position:absolute;left:112px;top:230px;width:1120px">
+    <span class="kicker">博士生的超前部署 · Zotero 主題 · 0.39 新版</span>
     <h1 style="font-size:150px;margin-top:6px"><span class="en" style="font-size:168px">ZotMax</span><br>新手上路</h1>
-    <p class="lede" style="margin-top:34px">把 Zotero 裡的文獻、劃線和評讀，自動整理進你的 Obsidian 或 Notion</p>
+    <p class="lede" style="margin-top:34px">把 Zotero 裡的文獻、劃線和評讀，整理進 Obsidian 或 Notion；沒有 API key 也能用 AI</p>
   </div>
   <div class="card fill-yellow shadow" style="position:absolute;right:150px;top:300px;width:440px;height:440px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:18px">
     <div class="card" style="position:relative;padding:10px 30px;font-size:40px;font-weight:900">Zotero</div>
@@ -131,7 +131,7 @@ aside.notes{display:none}
     <div class="card fill-green" style="position:relative;padding:10px 22px;font-size:30px;font-weight:900;color:var(--cream);white-space:nowrap">Obsidian／Notion</div>
   </div>
   <div class="mono small" style="position:absolute;left:112px;bottom:56px">報告人：宋建美 助理教授　｜　協助：游明勳 碩士生</div>
-  <aside class="notes">前面介紹了 Zotero 怎麼收文獻、在 Word 插入引用。這一段介紹 ZotMax：一個裝在 Zotero 上的外掛，把讀過的文獻、畫的重點、寫的評讀，自動整理到 Obsidian 或 Notion。先播 2 分鐘影片。</aside>
+  <aside class="notes">ZotMax 是裝在 Zotero 上的外掛，這次介紹的是 0.39 新版。和上一版比，最大的改變有三個：沒有 API key 也能產生 AI 筆記、Obsidian 多了首頁和看板版面、研究主題可以變成「星球與島嶼」追蹤進度。先播 2 分鐘影片。</aside>
 </section>
 
 <!-- 2 影片 -->
@@ -139,7 +139,7 @@ aside.notes{display:none}
   <div class="vidwrap" id="vidwrap">
     <video id="intro-video" src="video.mp4" controls preload="auto" playsinline poster="poster.jpg"></video>
   </div>
-  <aside class="notes">按空白鍵或點畫面播放影片（約 2 分鐘）。影片裡都是實際操作畫面。</aside>
+  <aside class="notes">按空白鍵或點畫面播放影片（約 2 分鐘）。開場和星球那一段是用 Blender 做的 3D 動畫，其餘都是實際操作畫面。</aside>
 </section>
 
 <!-- 3 它是什麼 -->
@@ -150,15 +150,15 @@ aside.notes{display:none}
   <div class="vs" style="margin-top:20px">
     <div class="card fill-cream2 step">
       <h3>交給 ZotMax</h3>
-      <ul><li>書目、劃線、筆記同步到 Obsidian／Notion</li><li>閱讀狀態三邊一致（待讀、閱讀中、已讀、已引用）</li><li>CASP／JBI 評讀表、PRISMA 計數與流程圖</li><li>中文文獻也有 APA 7 格式</li></ul>
+      <ul><li>書目、劃線、評讀同步到 Obsidian／Notion</li><li>首頁告訴你下一篇讀哪篇</li><li>星球與島嶼：一眼看出每個子題的進度</li><li>CASP／JBI、PRISMA、GRADE、中文 APA</li></ul>
     </div>
     <div class="card fill-yellow shadow step">
       <h3>留給你</h3>
       <ul><li>決定研究問題、找文獻、訂納入排除</li><li>讀全文，自己回答每一題評讀</li><li>寫文獻探討、實證報告和論文</li></ul>
     </div>
   </div>
-  <p class="small step" style="margin-top:40px">免費外掛，放在 GitHub 公開下載；大部分功能不需要 AI，也不需要付費服務。</p>
-  <aside class="notes">這是 ZotMax 的定位：它做整理、追蹤、計數這些雜事，不替你判斷、不替你寫。新安裝預設是「研究生引導」模式，會自動找文獻和寫草稿的功能都先關著。</aside>
+  <p class="small step" style="margin-top:40px">免費外掛；大部分功能不需要 AI。新安裝預設「研究生引導」模式，找文獻和寫草稿的功能先關著。</p>
+  <aside class="notes">它做整理、追蹤、計數這些雜事，不替你判斷、不替你寫。這也是它和「AI 幫你寫回顧」類工具最大的不同。</aside>
 </section>
 
 <!-- 4 三個工具 -->
@@ -168,11 +168,11 @@ aside.notes{display:none}
   <h2>三個軟體，各用一句話認識</h2>
   <div class="row" style="align-items:stretch;margin-top:20px">
     <div class="card step" style="flex:1"><div class="en" style="font-size:72px">Zotero</div><h3 style="margin-top:16px">收文獻的書櫃</h3><p>存書目和 PDF、畫重點、產生引用格式。<b>一定要裝</b>（Zotero 10）。</p></div>
-    <div class="card fill-yellow step" style="flex:1"><div class="en" style="font-size:72px">Obsidian</div><h3 style="margin-top:16px">自己電腦裡的筆記本</h3><p>筆記是一般文字檔，存在自己電腦；建議 1.14 以上，可以看彩色劃線和看板。</p></div>
+    <div class="card fill-yellow step" style="flex:1"><div class="en" style="font-size:72px">Obsidian</div><h3 style="margin-top:16px">自己電腦裡的筆記本</h3><p>首頁、看板、星球地圖這些新功能都在這裡；建議 1.14 以上。</p></div>
     <div class="card fill-pink step" style="flex:1"><div class="en" style="font-size:72px">Notion</div><h3 style="margin-top:16px">線上的資料庫</h3><p>每篇一頁，手機也能看；設定精靈可以幫你建好資料庫。</p></div>
   </div>
-  <div class="card fill-green shadow step" style="position:relative;display:inline-block;margin-top:40px;padding:14px 34px;color:var(--cream)"><h3 style="font-size:38px">Obsidian、Notion 至少選一個，兩個都要也可以</h3></div>
-  <aside class="notes">很多老師沒用過 Obsidian 和 Notion。可以這樣比喻：Zotero 是書櫃，Obsidian 是放在自己電腦的筆記本，Notion 是放在網路上的資料庫。只想要一個就選一個，不用兩個都學。在意資料放在自己電腦的，選 Obsidian；想要在手機看、跟同學分享的，選 Notion。</aside>
+  <div class="card fill-green shadow step" style="position:relative;display:inline-block;margin-top:40px;padding:14px 34px;color:var(--cream)"><h3 style="font-size:38px">Obsidian、Notion 至少選一個；拿不定主意先選 Obsidian</h3></div>
+  <aside class="notes">比喻：Zotero 是書櫃，Obsidian 是放在自己電腦的筆記本，Notion 是放在網路上的資料庫。在意資料留在自己電腦、想用星球地圖的選 Obsidian；想在手機看、和同學分享的選 Notion。</aside>
 </section>
 
 <!-- 5 安裝 -->
@@ -181,160 +181,197 @@ aside.notes{display:none}
   <div class="sign"><div class="num">01</div><div class="nm"><b>安裝</b><span>INSTALL</span></div></div>
   <div class="row" style="align-items:flex-start;gap:60px">
     <div class="col" style="width:640px;gap:18px">
-      <div class="card step" style="padding:20px 30px"><h3>① 到 GitHub 下載 .xpi</h3><p>Releases 頁面的 zotero-bridge-版本號.xpi（舊名，同一個外掛）</p></div>
-      <div class="card step" style="padding:20px 30px"><h3>② Zotero → 工具 → 附加元件</h3><p>打開外掛管理員</p></div>
-      <div class="card fill-yellow step" style="padding:20px 30px"><h3>③ 齒輪 → Install Plugin From File</h3><p>選剛剛下載的 .xpi，裝好後設定精靈會自動跳出來</p></div>
+      <div class="card  step" style="padding:18px 26px;"><h3 style="font-size:34px">① 到 GitHub 下載 .xpi</h3><p style="font-size:25px">Releases 頁面的 zotero-bridge-0.39.0.xpi（舊名，同一個外掛）</p></div>
+      <div class="card  step" style="padding:18px 26px;"><h3 style="font-size:34px">② Zotero → 工具 → 附加元件</h3><p style="font-size:25px">右上角齒輪 → Install Plugin From File…</p></div>
+      <div class="card fill-yellow step" style="padding:18px 26px;"><h3 style="font-size:34px">③ 只要裝一次</h3><p style="font-size:25px">之後 Zotero 會自動更新 ZotMax；裝好設定精靈會自己跳出來</p></div>
     </div>
-    <div style="flex:1;position:relative;height:660px">
-      <div class="shot step" style="width:880px"><img src="img/release.jpg" alt="GitHub Releases 頁面"></div>
-      <div class="shot plain step" style="position:absolute;right:0;top:280px;width:560px"><img src="img/install.jpg" alt="Zotero 外掛管理員的從檔案安裝選單"></div>
+    <div style="flex:1;position:relative;height:640px">
+      <div class="shot step" style="width:900px"><img src="img/releases.jpg" alt="GitHub Releases 頁面"></div>
+      <div class="shot plain step" style="position:absolute;right:0;top:360px;width:640px"><img src="img/install.jpg" alt="外掛管理員的從檔案安裝選單"></div>
     </div>
   </div>
-  <aside class="notes">檔名還是舊名 zotero-bridge，是同一個外掛，不用擔心。官網 bobyu89.github.io/ZotMax 有「下載最新版 .xpi」按鈕和一步一步的安裝精靈。</aside>
+  <aside class="notes">用 Firefox 下載時，要在連結上按右鍵「另存連結」，不然 Firefox 會把 .xpi 當成自己的擴充功能。完整步驟和截圖都在「ZotMax 完整安裝指南」那一頁。</aside>
 </section>
 
 <!-- 6 設定精靈 -->
 <section class="slide" data-sec="3" style="--c:var(--pink)">
   <div class="grid-bg"></div>
-  <div class="sign"><div class="num">02</div><div class="nm"><b>設定精靈</b><span>SETUP WIZARD</span></div></div>
-  <div class="row" style="align-items:flex-start;gap:40px">
-    <div class="shot step" style="width:500px"><img src="img/wiz2.jpg" alt="設定精靈：選模式"></div>
-    <div class="shot plain step" style="width:500px"><img src="img/wiz3.jpg" alt="設定精靈：筆記要放哪裡"></div>
+  <div class="sign"><div class="num">02</div><div class="nm"><b>設定精靈</b><span>SETUP WIZARD · 約 3 分鐘</span></div></div>
+  <div class="row" style="align-items:flex-start;gap:44px">
+    <div class="col" style="width:600px;gap:22px">
+      <div class="shot step"><img src="img/wiz2.jpg" alt="設定精靈：選研究生引導或進階"></div>
+      <div class="shot crop plain step" style="width:600px;height:300px;box-shadow:none"><img src="img/wiz3-obsidian.jpg" alt="設定精靈：選 Obsidian vault 資料夾" style="margin-top:-0px"></div>
+    </div>
     <div class="col" style="flex:1;gap:18px">
-      <div class="card fill-yellow step" style="padding:20px 26px"><h3 style="font-size:34px">新手選「研究生引導」</h3><p style="font-size:25px">自動找文獻、AI 草稿先關著；整理、評讀、搜尋照常能用</p></div>
-      <div class="card step" style="padding:20px 26px"><h3 style="font-size:34px">選筆記放哪裡</h3><p style="font-size:25px">Obsidian：選筆記庫資料夾<br>Notion：精靈會帶你接上資料庫</p></div>
-      <div class="card step" style="padding:20px 26px"><h3 style="font-size:34px">AI 可以先跳過</h3><p style="font-size:25px">每個功能之後都能在設定裡單獨開關</p></div>
+      <div class="card fill-yellow step" style="padding:18px 26px;"><h3 style="font-size:34px">新手選「研究生引導」</h3><p style="font-size:25px">找文獻、AI 草稿先關著；整理、評讀、搜尋照常能用</p></div>
+      <div class="card  step" style="padding:18px 26px;"><h3 style="font-size:34px">筆記放哪裡</h3><p style="font-size:25px">Obsidian：按「選擇資料夾」選 vault<br>Notion：貼 token，精靈可以幫你建資料庫</p></div>
+      <div class="card  step" style="padding:18px 26px;"><h3 style="font-size:34px">按「略過」什麼都不改</h3><p style="font-size:25px">Esc 關掉，存過的設定都會留著；快速指令搜「設定精靈」可以重跑</p></div>
     </div>
   </div>
-  <aside class="notes">設定精靈共六步：歡迎、選模式、筆記放哪、AI（選用）、同步一次、完成。按 Esc 可以隨時關掉，設定會留著。「進階」模式會打開 AI 草稿、批次 API 和自動追蹤新文獻，熟悉之後再開。</aside>
+  <aside class="notes">精靈共六步：歡迎、選模式、筆記放哪、AI（選填）、試一次、完成。「試一次」會用一篇文獻同步，不呼叫 AI、不花錢。Notion 要先建 integration、把頁面分享給它，指南第 2 步有逐步說明。</aside>
 </section>
 
-<!-- 7 同步 -->
-<section class="slide" data-sec="4" style="--c:var(--yellow)">
+<!-- 7 AI 怎麼選 -->
+<section class="slide" data-sec="4" style="--c:var(--orange)">
+  <div class="grid-bg"></div>
+  <span class="kicker">AI 是選用的</span>
+  <h2>AI 要選哪一個？四種都可以</h2>
+  <div class="row" style="align-items:flex-start;gap:44px">
+    <div class="col" style="width:880px;gap:16px">
+      <div class="card fill-yellow step" style="padding:18px 26px;"><h3 style="font-size:32px">沒有 API key → 網頁版 AI</h3><p style="font-size:24px">把提示詞貼到 ChatGPT、Claude、Gemini 網頁，再貼回來。不用另外付費</p></div>
+      <div class="card  step" style="padding:18px 26px;"><h3 style="font-size:32px">想自動又不想花錢 → OpenRouter</h3><p style="font-size:24px">Google 帳號註冊、免信用卡，沒儲值時每天約 50 篇</p></div>
+      <div class="card  step" style="padding:18px 26px;"><h3 style="font-size:32px">要穩定、量大 → Claude／OpenAI API key</h3><p style="font-size:24px">依用量計費；超過 5 篇會先確認費用</p></div>
+      <div class="card  step" style="padding:18px 26px;"><h3 style="font-size:32px">先不用</h3><p style="font-size:24px">同步、評讀、PRISMA、儀表板都不需要 AI</p></div>
+    </div>
+    <div class="shot crop step" style="width:640px;height:410px;"><img src="img/wiz4.jpg" alt="設定精靈第 4 步：AI 服務商四個選項" style="margin-top:-0px"></div>
+  </div>
+  <aside class="notes">最常被問：「我有 ChatGPT Plus／Claude Pro 可以用嗎？」訂閱不能當 API key，但可以用網頁版 AI，筆記一樣完整。之後可以在 設定 → ZotMax → AI 改。</aside>
+</section>
+
+<!-- 8 網頁版 AI -->
+<section class="slide" data-sec="4" style="--c:var(--orange)">
+  <div class="grid-bg"></div>
+  <span class="kicker">新功能 · 免 API key</span>
+  <h2>網頁版 AI：複製、貼上、存回來</h2>
+  <div class="row" style="align-items:flex-start;gap:40px">
+    <div class="shot crop step" style="width:440px;height:630px;"><img src="img/rightclick.jpg" alt="文獻右鍵 ZotMax 子選單的 AI 筆記（複製貼上，免 API key）" style="margin-top:-0px"></div>
+    <div class="shot crop plain step" style="width:560px;height:630px;box-shadow:none"><img src="img/manual-ai.jpg" alt="AI 筆記複製貼上視窗" style="margin-top:-0px"></div>
+    <div class="col" style="flex:1;gap:16px">
+      <div class="card  step" style="padding:18px 26px;"><h3 style="font-size:30px">① 右鍵 → ZotMax</h3><p style="font-size:23px">選「AI 筆記（複製貼上，免 API key）」</p></div>
+      <div class="card  step" style="padding:18px 26px;"><h3 style="font-size:30px">② 複製提示詞</h3><p style="font-size:23px">貼到 ChatGPT／Claude／Gemini 或學校的 AI</p></div>
+      <div class="card fill-yellow step" style="padding:18px 26px;"><h3 style="font-size:30px">③ 把回答貼回來</h3><p style="font-size:23px">按「儲存 AI 筆記並同步」</p></div>
+    </div>
+  </div>
+  <aside class="notes">提示詞裡包含書目、摘要、你的劃線和整理過的全文，和 API 送出的完全一樣。要注意：全文會送到你選的網站，含病人資料或未發表資料要先確認規定，必要時去識別化；免費方案的內容可能被拿去訓練。</aside>
+</section>
+
+<!-- 9 同步 -->
+<section class="slide" data-sec="5" style="--c:var(--yellow)">
   <div class="grid-bg"></div>
   <div class="sign"><div class="num">03</div><div class="nm"><b>同步</b><span>SYNC</span></div></div>
-  <div class="row" style="align-items:flex-start;gap:44px">
-    <div class="shot crop step" style="width:690px;height:640px;"><img src="img/menu.jpg" alt="Zotero 工具列的 ZotMax 選單" style="margin-top:-0px"></div>
-    <div class="shot plain step" style="width:258px"><img src="img/panel.jpg" alt="Zotero 右側的 ZotMax 面板"></div>
-    <div class="col" style="flex:1;gap:18px">
-      <div class="card step" style="padding:20px 26px"><h3 style="font-size:34px">① 選幾篇文獻</h3><p style="font-size:25px">第一次先選 3～5 篇試試</p></div>
-      <div class="card step" style="padding:20px 26px"><h3 style="font-size:34px">② 按工具列的 ZotMax 按鈕</h3><p style="font-size:25px">選「同步到 Notion + Obsidian」</p></div>
-      <div class="card fill-yellow step" style="padding:20px 26px"><h3 style="font-size:34px">不想花 AI 費用</h3><p style="font-size:25px">選「同步但不呼叫 AI」</p></div>
-    </div>
-  </div>
-  <aside class="notes">選單依用途分成同步、整理、找文獻、篩選與評讀、AI 輔助與寫作。右邊是 Zotero 右側面板的 ZotMax 區塊：重點摘要、在 Obsidian／Notion 開啟的連結，以及常用按鈕。記不得功能在哪，按 Ctrl+Shift+P 打開快速指令，輸入關鍵字就找得到。</aside>
-</section>
-
-<!-- 8 Obsidian 成果 -->
-<section class="slide" data-sec="5" style="--c:var(--green)">
-  <div class="grid-bg"></div>
-  <span class="kicker">同步之後 · Obsidian</span>
-  <h2>每篇文獻一份筆記</h2>
-  <div class="row" style="align-items:flex-start;gap:56px">
-    <div class="col" style="width:600px;gap:24px">
-      <div class="shot crop step" style="width:600px;height:288px;"><img src="img/note-a.jpg" alt="筆記的屬性欄：研究設計、證據等級、PICO" style="margin-top:-465px"></div>
-      <div class="shot crop step" style="width:600px;height:360px;box-shadow:none"><img src="img/note-b.jpg" alt="筆記最上方的重點摘要" style="margin-top:-112px"></div>
-    </div>
+  <div class="row" style="align-items:flex-start;gap:40px">
+    <div class="shot crop step" style="width:400px;height:640px;"><img src="img/menu-only.jpg" alt="Zotero 工具列的 ZotMax 選單" style="margin-top:-0px"></div>
+    <div class="shot crop plain step" style="width:300px;height:640px;box-shadow:none"><img src="img/panel.jpg" alt="Zotero 右側的 ZotMax 面板" style="margin-top:-0px"></div>
     <div class="col" style="flex:1;gap:16px">
-      <div class="card fill-yellow step" style="padding:18px 28px"><h3 style="font-size:36px">研究設計、證據等級、PICO</h3><p style="font-size:25px">寫在屬性欄，可以排序、篩選、做成看板</p></div>
-      <div class="card step" style="padding:18px 28px"><h3 style="font-size:36px">最上方是重點摘要</h3><p style="font-size:25px">劃線、評讀表、AI 筆記收在下面，點開才展開</p></div>
-      <div class="card step" style="padding:18px 28px"><h3 style="font-size:36px">劃線點得回 PDF 原位置</h3><p style="font-size:25px">引用前回原文核對很方便</p></div>
-      <div class="card fill-green step" style="padding:18px 28px;color:var(--cream)"><h3 style="font-size:36px">重新同步不會蓋掉你寫的內容</h3><p style="font-size:25px">ZotMax 只更新它自己產生的區塊</p></div>
+      <div class="card  step" style="padding:18px 26px;"><h3 style="font-size:32px">① 選幾篇文獻</h3><p style="font-size:24px">第一次先選 3～5 篇</p></div>
+      <div class="card  step" style="padding:18px 26px;"><h3 style="font-size:32px">② 工具列的 ZotMax 按鈕</h3><p style="font-size:24px">選「同步到 Notion + Obsidian」</p></div>
+      <div class="card fill-yellow step" style="padding:18px 26px;"><h3 style="font-size:32px">不想花 AI 費用</h3><p style="font-size:24px">選「同步但不呼叫 AI」</p></div>
+      <div class="card  step" style="padding:18px 26px;"><h3 style="font-size:32px">找不到功能？</h3><p style="font-size:24px">按 Ctrl+Shift+P 打字找，中英文都可以</p></div>
     </div>
   </div>
-  <aside class="notes">左上是筆記的屬性欄，研究設計、證據等級、JBI 等級、PICO 都在這裡。左下是重點摘要。筆記裡標著「此區塊由 ZotMax 自動產生」的範圍以外，都是你自己的空間，重新同步不會覆蓋。示範的是 Osman 等人 2026 年的系統性回顧。</aside>
+  <aside class="notes">三個入口：工具列按鈕、文獻或分類上按右鍵 → ZotMax、快速指令 Ctrl+Shift+P。右邊是選一篇文獻時 Zotero 右側的 ZotMax 面板：重點、在 Obsidian／Notion 開啟、常用按鈕。</aside>
 </section>
 
-<!-- 9 Notion 成果 -->
-<section class="slide" data-sec="5" style="--c:var(--green)">
+<!-- 10 首頁 -->
+<section class="slide" data-sec="6" style="--c:var(--green)">
   <div class="grid-bg"></div>
-  <span class="kicker">同步之後 · Notion 與閱讀狀態</span>
-  <h2>每篇一頁，閱讀進度三邊一致</h2>
-  <div class="row" style="align-items:flex-start;gap:50px">
-    <div class="shot step" style="width:1040px"><img src="img/notion.jpg" alt="Notion 的 Zotero 文獻資料庫"></div>
+  <span class="kicker">同步之後 · Obsidian 首頁</span>
+  <h2>打開首頁，就知道下一步</h2>
+  <div class="row" style="align-items:flex-start;gap:56px">
+    <div class="shot crop step" style="width:760px;height:640px;"><img src="img/home-a.jpg" alt="Obsidian 首頁：從這裡開始與總覽數字卡" style="margin-top:-300px"></div>
     <div class="col" style="flex:1;gap:18px">
-      <div class="card step" style="padding:18px 26px"><h3 style="font-size:32px">Notion 欄位自動建立</h3><p style="font-size:25px">APA、摘要、評讀結果、評讀工具</p></div>
-      <div class="card fill-yellow step" style="padding:18px 26px"><h3 style="font-size:32px">四種閱讀狀態</h3><p style="font-size:25px">待讀、閱讀中、已讀、已引用</p></div>
-      <div class="card step" style="padding:18px 26px"><h3 style="font-size:32px">改一邊，三邊跟著改</h3><p style="font-size:25px">Obsidian 另有閱讀進度看板，拖曳卡片就能改</p></div>
+      <div class="card fill-yellow step" style="padding:18px 26px;"><h3 style="font-size:34px">▶️ 從這裡開始</h3><p style="font-size:25px">繼續閱讀、待核對的評讀、最近 14 天加入</p></div>
+      <div class="card  step" style="padding:18px 26px;"><h3 style="font-size:34px">總覽</h3><p style="font-size:25px">文獻篇數、已讀完成率、AI 筆記、評讀已核對</p></div>
+      <div class="card  step" style="padding:18px 26px;"><h3 style="font-size:34px">🪐 我的星球、主題卡</h3><p style="font-size:25px">每個 Zotero 分類一張：證據說什麼、最該做的下一步</p></div>
     </div>
   </div>
-  <aside class="notes">畫面是 Notion 資料庫；Obsidian 那邊另有一個閱讀進度看板（影片裡有出現）。在任何一邊改閱讀狀態，下次同步時另外兩邊會跟著更新。請不要改 Notion 裡的英文欄位名稱，外掛靠這些名稱對應資料。</aside>
+  <aside class="notes">首頁在 vault 的 Zotero/00 首頁（舊版資料夾結構是 Zotero/首頁）。只讀 vault、不連網、不呼叫 AI。建議加入 Obsidian 書籤，一打開就看到。</aside>
 </section>
 
-<!-- 10 寫回顧論文 -->
-<section class="slide" data-sec="6">
+<!-- 11 文獻筆記 -->
+<section class="slide" data-sec="6" style="--c:var(--green)">
+  <div class="grid-bg"></div>
+  <span class="kicker">同步之後 · 每篇一頁重點</span>
+  <h2>十秒看完一篇文獻</h2>
+  <div class="row" style="align-items:flex-start;gap:56px">
+    <div class="shot crop step" style="width:820px;height:640px;"><img src="img/note-a.jpg" alt="新版文獻筆記：研究設計、場域、證據等級、JBI、一句話、PICO、評讀燈號" style="margin-top:-60px"></div>
+    <div class="col" style="flex:1;gap:16px">
+      <div class="card fill-yellow step" style="padding:18px 26px;"><h3 style="font-size:32px">數字方塊</h3><p style="font-size:24px">研究設計、場域、證據等級、JBI 等級</p></div>
+      <div class="card  step" style="padding:18px 26px;"><h3 style="font-size:32px">一句話、PICO、評讀燈號</h3><p style="font-size:24px">主要發現和下一步也在同一張看板</p></div>
+      <div class="card  step" style="padding:18px 26px;"><h3 style="font-size:32px">長的內容收起來</h3><p style="font-size:24px">評讀表、AI 筆記、摘要都是摺疊區塊；手機也好讀</p></div>
+      <div class="card fill-green step" style="padding:18px 26px;color:var(--cream)"><h3 style="font-size:32px">重新同步不會蓋掉你寫的</h3><p style="font-size:24px">你的想法寫在「✍️ 我的筆記」</p></div>
+    </div>
+  </div>
+  <aside class="notes">卡片沒有排成格狀時：Obsidian 設定 → 外觀 → CSS 片段，確認 zotmax 是打開的。劃線依顏色的意義分組，點一下就回到 PDF 原位置。示範的是 Osman 等人 2026 年的系統性回顧。</aside>
+</section>
+
+<!-- 12 星球與島嶼 -->
+<section class="slide" data-sec="7" style="--c:var(--pink)">
+  <div class="grid-bg"></div>
+  <span class="kicker">新功能 · 星球與島嶼</span>
+  <h2>一個主題是一顆星球，子分類是島</h2>
+  <div class="row" style="align-items:flex-start;gap:48px">
+    <div class="shot step" style="width:900px"><img src="img/planet-map.jpg" alt="群島地圖：湖中央是研究問題，五座島是子分類，房子是文獻"></div>
+    <div class="col" style="flex:1;gap:16px">
+      <div class="card fill-yellow step" style="padding:18px 26px;"><h3 style="font-size:32px">開發度</h3><p style="font-size:24px">已讀＋評讀核對＋AI 筆記；🌱 荒島 → 🏙️ 城鎮</p></div>
+      <div class="card  step" style="padding:18px 26px;"><h3 style="font-size:32px">升級提示</h3><p style="font-size:24px">例如「再讀 2 篇 → 開墾中」</p></div>
+      <div class="card  step" style="padding:18px 26px;"><h3 style="font-size:32px">🎯 本週任務</h3><p style="font-size:24px">每週一挑 2–4 件事，做完自動打勾</p></div>
+      <div class="card  step" style="padding:18px 26px;"><h3 style="font-size:32px">群島地圖</h3><p style="font-size:24px">房子＝文獻，可以下載圖片放進投影片</p></div>
+    </div>
+  </div>
+  <aside class="notes">分類有兩個以上的子分類就會變成星球；沒有的話，在分類上按右鍵 → ZotMax → 建造星球，依介入和標籤建議怎麼分島。群島地圖是本機的 HTML 檔，打開時不連網。這是我們自己文獻庫「生成式 AI 應用於 CDSS」的真實地圖。</aside>
+</section>
+
+<!-- 13 寫回顧論文 -->
+<section class="slide" data-sec="8">
   <div class="grid-bg"></div>
   <span class="kicker">寫回顧論文時</span>
   <h2>它還能幫你做這些</h2>
-  <div class="row" style="align-items:stretch;gap:24px;margin-top:10px">
-    <div class="card step" style="flex:1;padding:24px 26px"><h3 style="font-size:34px">篩選 · PRISMA</h3><p style="font-size:24px">標題摘要、全文篩選存成標籤，產生 PRISMA 2020 流程圖</p><div class="thumb"><img src="img/m-screen.jpg" alt="篩選與評讀選單"></div></div>
-    <div class="card fill-yellow step" style="flex:1;padding:24px 26px"><h3 style="font-size:34px">CASP · JBI 評讀</h3><p style="font-size:24px">逐題記下答案與根據，雙人評讀可算 Cohen's κ</p><div class="thumb" style="height:200px"><img src="img/appraisal.jpg" alt="文獻評讀表" style="margin-top:-60px"></div></div>
-    <div class="card step" style="flex:1;padding:24px 26px"><h3 style="font-size:34px">概念串成網</h3><p style="font-size:24px">概念卡片把多篇文獻連起來，在 Obsidian 看關聯圖</p><div class="thumb" style="height:200px"><img src="img/graph.jpg" alt="Obsidian 關聯圖"></div></div>
-    <div class="card fill-pink shadow step" style="flex:1;padding:24px 26px"><h3 style="font-size:34px">進度報告</h3><p style="font-size:24px">整理閱讀與篩選進度給指導教授，不需要 AI</p><div class="thumb"><img src="img/m-report.jpg" alt="AI 輔助與寫作選單"></div></div>
+  <div class="grid3 mini" style="margin-top:10px">
+    <div class="card step"><h3>篩選 · PRISMA 2020</h3><p>篩選決定存成 Zotero 標籤，產生流程圖與證據表</p></div>
+    <div class="card fill-yellow step"><h3>CASP · JBI 評讀</h3><p>逐題記下答案與根據；雙人評讀算 Cohen's κ</p></div>
+    <div class="card step"><h3>PICO 問題卡與 PICO 表</h3><p>引導你收斂問題；選取文獻一鍵整理成表</p></div>
+    <div class="card step"><h3>GRADE 證據確定性</h3><p>逐個結果指標評等，產出證據摘要表</p></div>
+    <div class="card fill-pink step"><h3>Word 的中文 APA</h3><p>中文用中文 APA 7、英文維持官方格式；附護理學會版</p></div>
+    <div class="card step"><h3>文獻探討大綱</h3><p>依島列出每段要回答的問題和先讀的 3 篇；只提問、不代寫</p></div>
   </div>
-  <p class="small step" style="margin-top:34px">另有：醫學資料庫搜尋與 PICO 檢索式、PubMed 新文獻追蹤、引文追蹤（OpenAlex）、文獻比較表。</p>
-  <aside class="notes">做系統性回顧、範圍回顧、EBHC 報告或論文第二章時特別有用。要提醒：外掛只負責記錄和計數，納入、排除的決定還是由你自己判斷。</aside>
+  <p class="small step" style="margin-top:30px">另有：醫學資料庫搜尋與 PICO 檢索式、PubMed 新文獻追蹤、主題搜尋機器人、給指導教授的進度報告。</p>
+  <aside class="notes">外掛只負責記錄和計數，納入、排除、評讀結果都由你決定。Word 中文 APA 的關鍵是 Zotero 文獻的「語言」欄要設成 zh-TW，ZotMax 的「檢查中文文獻資料」可以幫忙找出來。</aside>
 </section>
 
-<!-- 11 AI 怎麼用 -->
-<section class="slide" data-sec="7" style="--c:var(--orange)">
-  <div class="grid-bg"></div>
-  <span class="kicker">AI 是選用的</span>
-  <h2>要用 AI，先知道這三件事</h2>
-  <div class="row" style="align-items:flex-start;gap:44px">
-    <div class="shot step" style="width:600px"><img src="img/aikey.jpg" alt="設定精靈的 AI 步驟"></div>
-    <div class="shot plain step" style="width:600px"><img src="img/draft.jpg" alt="評讀表上的「AI 初評，尚未核對」"></div>
-  </div>
-  <div class="row" style="margin-top:44px;gap:22px">
-    <div class="card step" style="flex:1;padding:22px 26px"><h3 style="font-size:32px">自備 API 金鑰</h3><p style="font-size:25px">Claude 或 OpenAI，依用量付費；Claude Pro、ChatGPT Plus 訂閱不能用</p></div>
-    <div class="card step" style="flex:1;padding:22px 26px"><h3 style="font-size:32px">大量產生先估費用</h3><p style="font-size:25px">批次 API 約半價、最久等 24 小時；大量作業前會請你確認</p></div>
-    <div class="card fill-yellow step" style="flex:1;padding:22px 26px"><h3 style="font-size:32px">產出都是初稿</h3><p style="font-size:25px">數字和引用一定回原文核對</p></div>
-  </div>
-  <aside class="notes">API 金鑰存在 Zotero 的密碼管理員，不會寫進設定檔。AI 筆記會寫研究設計、樣本、PICO、證據等級和評讀初稿，但都標示為初稿；評讀表上會寫「AI 初評，尚未核對」，核對完要自己勾選「我已核對」。</aside>
-</section>
-
-<!-- 12 三件事 -->
-<section class="slide" data-sec="8">
+<!-- 14 三件事 -->
+<section class="slide" data-sec="9">
   <div class="grid-bg"></div>
   <span class="kicker">方向盤在你手上</span>
   <h2>用 ZotMax，記住三件事</h2>
   <div class="row" style="align-items:stretch">
     <div class="card fill-orange step" style="flex:1"><div class="en" style="font-size:96px">01</div><h3 style="margin-top:20px;font-size:52px">從引導模式開始</h3><p>先用不花錢的整理與同步，熟了再開 AI</p></div>
     <div class="card fill-yellow step" style="flex:1"><div class="en" style="font-size:96px">02</div><h3 style="margin-top:20px;font-size:52px">回原文核對</h3><p>AI 筆記和評讀是初稿；數字、引用自己翻回 PDF 看</p></div>
-    <div class="card fill-green shadow step" style="flex:1"><div class="en" style="font-size:96px">03</div><h3 style="margin-top:20px;font-size:52px">判斷留給自己</h3><p>納入排除、評讀結果由你決定；它只負責記錄和計數</p></div>
+    <div class="card fill-green shadow step" style="flex:1"><div class="en" style="font-size:96px">03</div><h3 style="margin-top:20px;font-size:52px">判斷留給自己</h3><p>納入排除、評讀、文獻探討的主張由你決定</p></div>
   </div>
-  <aside class="notes">第二點對研究誠信最重要：AI 可能誤解結果或過度概括，掃描版 PDF 沒有文字層時效果也會變差。</aside>
+  <aside class="notes">「證據說什麼」的有效、無差異是 AI 初判，只代表主要結果有沒有統計上顯著的差異，不等於臨床上有意義；整體證據確定性要用 GRADE 判斷。</aside>
 </section>
 
-<!-- 13 Q&A -->
-<section class="slide" data-sec="8">
+<!-- 15 Q&A -->
+<section class="slide" data-sec="9">
   <div class="grid-bg"></div>
   <span class="kicker">老師最常問</span>
   <h2>Q&amp;A</h2>
   <div class="vs qa">
-    <div class="card step"><h3>要付費嗎？</h3><p>外掛免費，大部分功能不用 AI。AI 功能用自己的 API 帳號另外計費。</p></div>
-    <div class="card step"><h3>只用 Obsidian 或只用 Notion 可以嗎？</h3><p>可以，至少接一個就能用；兩個都接也可以。</p></div>
-    <div class="card step"><h3>文獻會被送給 AI 嗎？</h3><p>只有開啟 AI 功能並設定金鑰時才會送；自動同步不呼叫 AI。病人資料不要放進 AI 筆記。</p></div>
-    <div class="card step"><h3>中文文獻可以嗎？</h3><p>有中文 APA 7 專用格式，也能檢查並修正匯入資料的常見錯誤，改錯可以復原。</p></div>
+    <div class="card step"><h3>要付費嗎？</h3><p>外掛免費。AI 可以用網頁版（不另外付費）或 OpenRouter 免費模型；用自己的 API key 才依用量計費。</p></div>
+    <div class="card step"><h3>文獻會被送給 AI 嗎？</h3><p>只有打開 AI 功能時才會送；自動同步不呼叫 AI。病人資料不要放進 AI。</p></div>
+    <div class="card step"><h3>更新後筆記還是舊樣子？</h3><p>下次同步才會換版面；先對文獻「同步但不呼叫 AI」一次。</p></div>
+    <div class="card step"><h3>可以在 iPad 看嗎？</h3><p>可以。筆記在電腦產生，用 Obsidian Sync、iCloud 或 Notion app 在平板上看。</p></div>
   </div>
-  <aside class="notes">其他常見問題：Zotero 11 推出時外掛可能暫時停用，確認相容後會恢復；OpenAlex 對中文期刊和較舊文獻的資料可能不完整。有問題可以用外掛裡的「回報問題」，或到 GitHub 開 Issue。</aside>
+  <aside class="notes">金鑰和 Notion token 都存在 Zotero 的密碼管理員，不寫進設定檔。有問題可以用外掛裡的「回報問題」，或到 GitHub 開 Issue。</aside>
 </section>
 
-<!-- 14 結尾 -->
-<section class="slide" data-sec="9" style="background:var(--green);color:var(--cream)">
+<!-- 16 結尾 -->
+<section class="slide" data-sec="10" style="background:var(--green);color:var(--cream)">
   <div style="position:absolute;left:112px;top:240px">
     <div style="font-size:110px;font-weight:900;line-height:1.15">雜事交班給 ZotMax，</div>
     <div style="display:inline-block;margin-top:34px;background:var(--yellow);color:var(--ink);border:4px solid var(--ink);padding:10px 36px;font-size:96px;font-weight:900;line-height:1.2">判斷留給你。</div>
   </div>
-  <div class="card shadow" style="position:absolute;right:150px;top:300px;width:360px;padding:26px;text-align:center">
-    <img src="img/qr.jpg" alt="ZotMax 官網 QR code" style="width:100%;display:block">
-    <div class="mono" style="font-size:22px;font-weight:700;margin-top:16px;color:var(--ink);white-space:nowrap">bobyu89.github.io/ZotMax</div>
+  <div class="card shadow" style="position:absolute;right:150px;top:270px;width:380px;padding:26px;text-align:center">
+    <img src="img/qr-guide.jpg" alt="ZotMax 完整安裝指南 QR code" style="width:100%;display:block">
+    <div style="font-size:30px;font-weight:900;margin-top:14px;color:var(--ink)">完整安裝指南</div>
+    <div class="mono" style="font-size:18px;margin-top:6px;color:var(--ink)">一步一步裝好 ZotMax</div>
   </div>
-  <aside class="notes">QR code 連到 ZotMax 官網，有安裝精靈、下載按鈕，也有不用安裝的醫學文獻快速搜尋和評讀表網頁工具，可以請大家現場掃。</aside>
+  <aside class="notes">QR code 連到我們網站上的「ZotMax 完整安裝指南」：從安裝 Zotero、準備 Obsidian／Notion、下載外掛到第一次同步，每一步都有截圖和打勾進度。可以請大家現場掃，回家照著裝。</aside>
 </section>
 
 
-<div id="counter">01 • 14</div>
+<div id="counter">01 • 16</div>
 <div id="hint">← → 換頁　F 全螢幕　N 講稿　? 說明</div>
 </div></div>
 <div id="notes"><h4>SPEAKER NOTES</h4><div id="notes-body"></div></div>
@@ -350,8 +387,9 @@ aside.notes{display:none}
   const video = document.getElementById('intro-video');
   const SECS = [
     {n:'起點', c:'var(--ink)'}, {n:'它是什麼', c:'var(--ink)'}, {n:'安裝', c:'var(--orange)'},
-    {n:'精靈', c:'var(--pink)'}, {n:'同步', c:'var(--yellow)'}, {n:'成果', c:'var(--green)'},
-    {n:'回顧', c:'var(--ink)'}, {n:'AI', c:'var(--orange)'}, {n:'規則', c:'var(--ink)'}, {n:'下一步', c:'var(--green)'}
+    {n:'精靈', c:'var(--pink)'}, {n:'AI', c:'var(--orange)'}, {n:'同步', c:'var(--yellow)'},
+    {n:'成果', c:'var(--green)'}, {n:'星球', c:'var(--pink)'}, {n:'回顧', c:'var(--ink)'},
+    {n:'規則', c:'var(--ink)'}, {n:'下一步', c:'var(--green)'}
   ];
   let idx = 0;
 
