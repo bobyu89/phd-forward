@@ -59,6 +59,20 @@ export const site = {
     audience: "各校護理碩博士新生及本會會員，或對本座談會有興趣之各校學生",
     fee: "免費，提供護理師教育認證積分 1 小時",
     intro: "為協助護理碩博士生妥善規劃研究生涯，掌握研究資源，藉典範學習，薪火相傳，提高專業視野，並透過本會與世界接軌。",
+    // 報名與流程：主辦單位報名頁 stti.org.tw/register_detail.php?id=161（2026-11-03 擷取）
+    register: {
+      href: "https://stti.org.tw/register_detail.php?id=161",
+      deadline: "2026 年 11 月 4 日（三）",
+      shortDeadline: "11/4（三）",
+      quota: "200 名為限，本會會員優先",
+    },
+    // 我們負責的場次（座談會其他場次不屬於本站範圍，不列）
+    session: {
+      time: "13:10–14:00",
+      topic: "博士生必備 AI 利器",
+      speaker: "宋建美助理教授",
+      host: "陳淑卿所長",
+    },
   },
   // 講者介紹內容來自「博士生必備AI利器.pptx」第 2、3 頁（2026-11-02）
   speakers: [
@@ -66,7 +80,7 @@ export const site = {
       name: "宋建美",
       title: "助理教授",
       role: "主講",
-      org: "國防醫學大學護理學院",
+      org: "國防醫學大學護理學院　·　國際護理榮譽學會中華民國分會秘書長",
       tagline: "從臨床帶領，到研究陪伴。",
       stat: { value: "32+", label: "逾 32 年臨床與護理管理經驗" },
       groups: [

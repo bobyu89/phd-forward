@@ -136,12 +136,24 @@ function Hero() {
       className="relative z-10 mx-auto grid max-w-7xl gap-12 px-5 pt-8 pb-16 sm:px-8 md:pt-12 lg:grid-cols-12 lg:items-center lg:gap-8 lg:pt-10 lg:pb-24"
     >
       <div className="lg:col-span-6">
-        <p className="animate-fade-rise mb-6 text-base leading-relaxed text-pretty text-[#3F3F3F] sm:text-lg">
-          {site.event.organizer}　·　<span className="text-[#000000]">{site.event.title}</span>
-          <a href="#event" className="mt-1 block text-sm text-[#3F3F3F] underline decoration-[#BDBAB3] underline-offset-4 hover:decoration-[#000000] sm:text-base">
-            {site.event.date} {site.event.time}　·　{site.event.place}
-          </a>
-        </p>
+        <div className="animate-fade-rise mb-6 text-base leading-relaxed text-pretty text-[#3F3F3F] sm:text-lg">
+          <p>
+            {site.event.organizer}　·　<span className="text-[#000000]">{site.event.title}</span>
+          </p>
+          <p className="mt-1 text-sm sm:text-base">
+            <a href="#event" className="underline decoration-[#BDBAB3] underline-offset-4 hover:decoration-[#000000]">
+              11 月 6 日（五）{site.event.session.time}「{site.event.session.topic}」　·　{site.event.place}
+            </a>
+            <a
+              href={site.event.register.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ml-3 inline-flex items-center gap-1 whitespace-nowrap text-[#000000] underline decoration-[#000000] underline-offset-4"
+            >
+              線上報名（至 {site.event.register.shortDeadline}）<ArrowIcon className="size-3.5" />
+            </a>
+          </p>
+        </div>
         <h1
           id="hero-title"
           className="font-display text-[clamp(2.75rem,12vw,5.5rem)] font-medium whitespace-nowrap text-[#000000] lg:text-[clamp(3.25rem,5.6vw,5.75rem)]"
@@ -199,10 +211,11 @@ function EventInfo() {
   const e = site.event;
   const rows: [string, string][] = [
     ["日期", e.date],
-    ["時間", e.time],
+    ["座談會時間", e.time],
     ["地點", e.place],
     ["參加對象", e.audience],
     ["收費", e.fee],
+    ["報名", `線上報名至 ${e.register.deadline}；${e.register.quota}`],
     ["主辦單位", e.organizer],
   ];
   return (
@@ -211,7 +224,22 @@ function EventInfo() {
         <div>
           <SectionTitle id="event-title">活動資訊</SectionTitle>
           <p className="mt-6 font-display text-2xl text-[#000000] sm:text-3xl">{e.title}</p>
-          <p className="mt-6 max-w-[28rem] text-lg leading-relaxed text-pretty text-[#3F3F3F]">{e.intro}</p>
+          <div className="mt-8 rounded-2xl border border-[#000000] p-6 sm:p-8">
+            <p className="text-sm text-[#6F6F6F]">本站場次　·　<span className="tabular-nums">{e.session.time}</span></p>
+            <p className="mt-2 font-display text-3xl text-[#000000] sm:text-4xl">{e.session.topic}</p>
+            <p className="mt-4 text-base text-[#3F3F3F]">
+              主講　<span className="text-[#000000]">{e.session.speaker}</span>　·　主持　<span className="text-[#000000]">{e.session.host}</span>
+            </p>
+          </div>
+          <p className="mt-8 max-w-[28rem] text-lg leading-relaxed text-pretty text-[#3F3F3F]">{e.intro}</p>
+          <a
+            href={e.register.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#000000] px-8 py-4 text-base text-[#FFFFFF] transition-transform duration-200 ease-out hover:scale-[1.03] active:scale-[0.98]"
+          >
+            前往報名（至 {e.register.shortDeadline}）<ArrowIcon className="size-4" />
+          </a>
         </div>
         <dl className="border-b border-line">
           {rows.map(([k, v]) => (
