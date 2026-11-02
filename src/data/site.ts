@@ -27,15 +27,62 @@ export interface Resource {
   comingSoon?: boolean;
 }
 
+export interface Speaker {
+  name: string;
+  title: string;
+  /** 主講／協助 */
+  role: string;
+  org?: string;
+  /** 名字下面的一句話 */
+  tagline?: string;
+  /** 大數字重點，例如 32+ */
+  stat?: { value: string; label: string };
+  groups?: { label: string; items: string[] }[];
+  quote?: string;
+  link?: { label: string; href: string };
+}
+
 export const site = {
   name: "博士超前部署",
   tagline: "用 AI 來幫助你掌握人生跟課業",
   description:
     "給博士生的 AI 研究工作法：從找研究問題、讀文獻、做分析到寫論文，學會和 AI 一起工作，同時守住研究誠信。",
+  // 講者介紹內容來自「博士生必備AI利器.pptx」第 2、3 頁（2026-11-02）
   speakers: [
-    { name: "宋建美", title: "助理教授", role: "主講" },
-    { name: "游明勳", title: "碩士生", role: "協助" },
-  ],
+    {
+      name: "宋建美",
+      title: "助理教授",
+      role: "主講",
+      org: "國防醫學大學護理學院",
+      tagline: "從臨床帶領，到研究陪伴。",
+      stat: { value: "32+", label: "逾 32 年臨床與護理管理經驗" },
+      groups: [
+        { label: "臨床與管理", items: ["曾任護理部副主任、督導長、護理長、護理之家機構負責人", "內科專科護理師與急重症照護經驗"] },
+        { label: "教學與研究", items: ["臺北醫學大學護理學系 博士", "專科護理師教育、臨床推理與護理創新"] },
+        { label: "善用 Notion", items: ["研究室管理", "研究生論文進度", "研究計畫管理與回報"] },
+      ],
+      quote: "善用管理工具，讓研究進度看得見、指導歷程有累積。",
+      link: { label: "個人網頁：護理創新及專科訓練研究室", href: "https://labsite-sites.shiftguard-navicare.workers.dev/sung-lab-website/" },
+    },
+    {
+      name: "游明勳",
+      title: "碩士生",
+      role: "協助",
+      org: "國防醫學大學護理學院",
+      tagline: "AI 學習歷程",
+      groups: [
+        { label: "政府甄選培訓", items: ["2026 AI 實戰職涯營（新北市政府青年局）", "177 人報名，遴選 25 人", "2026 年 8–10 月，三個月密集培訓"] },
+        { label: "國際認證", items: ["AWS Certified AI Practitioner（AWS AI 基礎認證）"] },
+        { label: "專業能力鑑定", items: ["iPAS AI 應用規劃師 初級（經濟部產業人才能力鑑定）"] },
+        {
+          label: "AWS 相關課程",
+          items: ["Introduction to Generative AI – Art of the Possible", "Evaluate and Enhance RAG Performance with Amazon Bedrock", "AWS Cloud Practitioner Essentials"],
+        },
+        { label: "AI 素養與應用", items: ["Google AI Essentials", "公民 AI 素養合格行動家證明", "產業 AI 人才培訓"] },
+        { label: "生成式 AI 與工具", items: ["生成式 AI 辦公室應用能力認證", "資策會 生成式 AI 能力認證", "Claude Code in Action"] },
+      ],
+    },
+  ] as Speaker[],
   film: {
     src: "decks/ai-research-metro/video.mp4",
     poster: "media/ai-research-metro-poster.jpg",

@@ -432,15 +432,62 @@ function SpeakersPage() {
         {site.speakers.map((s) => (
           <li
             key={s.name}
-            className="grid items-baseline gap-2 border-t border-line py-10 md:grid-cols-[7rem_minmax(0,1fr)] md:gap-8"
+            className="grid gap-4 border-t border-line py-12 md:grid-cols-[7rem_minmax(0,1fr)] md:gap-8 sm:py-16"
           >
-            <span className="text-sm text-[#6F6F6F]">{s.role}</span>
-            <span className="flex flex-wrap items-baseline gap-x-6 gap-y-2">
-              <span className="font-display text-6xl text-[#000000] sm:text-7xl" style={{ lineHeight: 1, letterSpacing: "-1.5px" }}>
-                {s.name}
-              </span>
-              <span className="text-lg text-[#6F6F6F]">{s.title}</span>
-            </span>
+            <span className="pt-2 text-sm text-[#6F6F6F]">{s.role}</span>
+            <div className="min-w-0">
+              <div className="flex flex-wrap items-baseline gap-x-6 gap-y-2">
+                <span className="font-display text-6xl text-[#000000] sm:text-7xl" style={{ lineHeight: 1, letterSpacing: "-1.5px" }}>
+                  {s.name}
+                </span>
+                <span className="text-xl text-[#3F3F3F]">{s.title}</span>
+              </div>
+              {s.org && <p className="mt-4 text-lg text-[#3F3F3F]">{s.org}</p>}
+              {s.tagline && <p className="mt-6 font-display text-2xl text-[#000000] sm:text-3xl">{s.tagline}</p>}
+
+              {s.stat && (
+                <div className="mt-10 flex flex-wrap items-baseline gap-x-5 gap-y-1">
+                  <span className="font-display text-7xl text-[#000000] sm:text-8xl" style={{ lineHeight: 1 }}>
+                    {s.stat.value}
+                  </span>
+                  <span className="text-lg text-[#3F3F3F]">{s.stat.label}</span>
+                </div>
+              )}
+
+              {s.groups && (
+                <div className="mt-10 grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
+                  {s.groups.map((g) => (
+                    <div key={g.label} className="border-t border-line pt-4">
+                      <h3 className="text-sm tracking-wide text-[#6F6F6F]">{g.label}</h3>
+                      <ul className="mt-3 space-y-2">
+                        {g.items.map((it) => (
+                          <li key={it} className="text-base leading-relaxed text-pretty text-[#000000]">
+                            {it}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {s.quote && (
+                <blockquote className="mt-10 max-w-2xl border-l-2 border-[#000000] pl-5 text-lg leading-relaxed text-pretty text-[#000000]">
+                  {s.quote}
+                </blockquote>
+              )}
+
+              {s.link && (
+                <a
+                  href={s.link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-8 inline-flex items-center gap-2 text-base text-[#000000] underline decoration-[#BDBAB3] underline-offset-[6px] hover:decoration-[#000000]"
+                >
+                  {s.link.label} <ArrowIcon className="size-4" />
+                </a>
+              )}
+            </div>
           </li>
         ))}
       </ul>
