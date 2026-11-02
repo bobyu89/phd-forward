@@ -161,8 +161,13 @@ function Hero() {
             直接挑一個工具
           </a>
         </div>
-        <p className="animate-fade-rise-delay-2 mt-10 text-sm text-[#5A5A5A]">
-          {site.speakers.map((s) => `${s.role}　${s.name} ${s.title}`).join("　/　")}
+        <p className="animate-fade-rise-delay-2 mt-10 flex flex-wrap gap-x-5 gap-y-2 text-lg text-[#3F3F3F] sm:text-xl">
+          {site.speakers.map((s, i) => (
+            <span key={s.name} className="whitespace-nowrap">
+              {i > 0 && <span className="mr-5 hidden text-[#BDBAB3] sm:inline" aria-hidden="true">/</span>}
+              {s.role}　<span className="text-[#000000]">{s.name}</span> {s.title}
+            </span>
+          ))}
         </p>
       </div>
       <div className="animate-fade-rise-delay lg:col-span-6">
